@@ -6,16 +6,8 @@ import string
 
 from src.server.utils.db.tools  import db_utils
 
-
-def init_applications_table():
-    db_utils.exec_command("DROP TABLE applications")
-    db_utils.exec_command(
-        "CREATE TABLE applications (id serial not null primary key, name text, developer text, category name, dev_url text , pp_url text )")
-
-
 def id_generator(size=6, chars=string.ascii_lowercase):
     return ''.join(random.choice(chars) for _ in range(size))
-
 
 def scrape_gplay_to_db_by_search():
     text_file = open("/Users/alonsinger/git/my-privacypolicy-thesis/book1.txt", "r")
@@ -68,8 +60,6 @@ def scrape_gplay_to_db():
                     print(e)
                     e = sys.exc_info()[0]
 
-
-# init_applications_table()
 # scrape_gplay_to_db()
 scrape_gplay_to_db_by_search()
 
