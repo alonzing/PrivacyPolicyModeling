@@ -4,7 +4,7 @@ import play_scraper
 import random
 import string
 
-from ..utils.db.tools  import db_utils
+from src.server.utils.db.tools  import db_utils
 
 
 def init_applications_table():
