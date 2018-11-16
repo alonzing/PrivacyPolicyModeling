@@ -11,7 +11,7 @@ def init_pp_tables():
                                                         application_id numeric, pp_url text, html text, clean_html text,\
                                                         process_status text, process_status_details text, url_return_code numeric, url_return_value text)")  
     db_utils.exec_command("CREATE TABLE privacy_policy_paragraphs (id serial not null primary key, \
-                                                        paragraph text, filename text,index numeric)")  
+                                                                   pp_url text, paragraph text, index numeric,privacy_policy_id numeric)")  
 
 def init_paragraphs_prediction_tables():
     db_utils.exec_command("DROP TABLE privacy_policy_paragraphs_prediction")
