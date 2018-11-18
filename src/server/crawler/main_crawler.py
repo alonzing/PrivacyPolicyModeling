@@ -4,10 +4,13 @@ import play_scraper
 import random
 import string
 
-from src.server.utils.db.tools  import db_utils
+from src.server.utils.db.tools import db_utils
+from play_scraper import lists
+
 
 def id_generator(size=6, chars=string.ascii_lowercase):
     return ''.join(random.choice(chars) for _ in range(size))
+
 
 def scrape_gplay_to_db_by_search():
     text_file = open("/Users/alonsinger/git/my-privacypolicy-thesis/book1.txt", "r")
@@ -60,7 +63,6 @@ def scrape_gplay_to_db():
                     print(e)
                     e = sys.exc_info()[0]
 
-# scrape_gplay_to_db()
-scrape_gplay_to_db_by_search()
 
-#
+scrape_gplay_to_db()
+# scrape_gplay_to_db_by_search()
