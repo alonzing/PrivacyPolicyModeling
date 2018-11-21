@@ -1,26 +1,20 @@
 import graphlab as gl
 import os
 import shutil
+import datetime
 
 from src.server.utils.db.tools  import db_utils
 
-def build_csv_from_paragraphs():
+def build_SFrame_from_db():
     
     paragraph_records = db_utils.db_select("select count(*) as ccc,paragraph from privacy_policy_paragraphs \
                                             group by paragraph order by ccc desc");
-    #create csv from all files
-    rootDir='/Users/alonsinger/git/my-privacypolicy-thesis/Raws/parasplit_alon'
-    # iterate over all files in dir
-    outF1='/Users/alonsinger/git/my-privacypolicy-thesis/Raws/all_para_alon.csv'
-    fw=open(outF1,"w")
+    paragraphs_list = []
     
-    print("start to generte CSV")
     for paragraph_record in paragraph_records:
-        doc = paragraph_record.get("paragraph")
-        doc=doc.replace(",", " ")
-        fw.write(doc+"\n")
-    fw.close() 
-    print("completed to generte CSV")
+        paragraphs_list.append(paragraph_record.get("paragraph"))
+    sframe = gl.SFrame(paragraphs_list)
+    return sframe
 
 def get_word_frequency(docs):
     """
@@ -48,9 +42,7 @@ def get_word_frequency(docs):
     return docs_sf
 
 
-def get_freq_words():
-    # Sample SArray
-    docs4freq = gl.SFrame.read_csv('/Users/alonsinger/git/my-privacypolicy-thesis/Raws/all_para_alon.csv', header=False)
+def get_freq_words(docs4freq):
     docs_count = get_word_frequency(docs4freq['X1'])
     print (docs_count)
     docs_count=docs_count.sort(['count','frequency','word'],ascending=False)   
@@ -58,18 +50,18 @@ def get_freq_words():
     freq_words.print_rows(num_rows=100)
     return freq_words  
 
-def build_docs_for_modeling(in_docs):
-    # Remove stopwords and convert to bag of words
+def build_docs_for_modeling(in_docs,sframe_raw_filename):
+    # Remove stop words and convert to bag of words
     in_docs = gl.text_analytics.count_words(in_docs['X1'])
-    in_docs = in_docs.dict_trim_by_keys(gl.text_analytics.stopwords(), exclude=True)
-    freq_words = get_freq_words()
+    in_docs = in_docs.dict_trim_by_keys(gl.text_analytics.stopwords(), exclude=True)   
+    freq_words = get_freq_words(gl.load_sframe(sframe_raw_filename))
     in_docs = in_docs.dict_trim_by_keys(freq_words['word'], exclude=False)
     in_docs = in_docs.dict_trim_by_keys(['information','data','privacy'], exclude=True)
     return in_docs
 
 def build_model(in_docs,topic_count):
     model = gl.topic_model.create(in_docs,num_topics=topic_count,
-                                   num_iterations=600)
+                                   num_iterations=100)
     return model
 
 def build_model_and_print(in_docs,topic_count):
@@ -79,29 +71,38 @@ def build_model_and_print(in_docs,topic_count):
     print (model.get_topics().print_rows(num_rows=100))
     return model
 
-def model_pp( topic_count = 100, model_file_name = None, save_from = 0, predictions_file_name = None):
-    docs = gl.SFrame.read_csv('/Users/alonsinger/git/my-privacypolicy-thesis/Raws/all_para_alon.csv', header=False)    
-    docs_for_modeling = build_docs_for_modeling(docs)
-    if model_file_name is None:
-        model = build_model_and_print(docs_for_modeling,topic_count)
-        model.save("/Users/alonsinger/git/my-privacypolicy-thesis/model{}.mdl".format(topic_count))
+def model_pp(sframe_raw_filename,sframe_filename,model_filename, predictions_filename, topic_count = 100, save_from = 0):
+    if not os.path.exists(sframe_filename):
+        print("Building SFrame file...")
+        sframe_raw = build_SFrame_from_db()
+        sframe_raw.save(sframe_raw_filename)
+        sframe_for_modeling = build_docs_for_modeling(sframe_raw,sframe_raw_filename)
+        sframe_for_modeling.save(sframe_filename)
+        print("Building SFrame files...completed")
     else:
-        model = gl.load_model(model_file_name)
+        sframe_for_modeling = gl.load_sframe(sframe_filename) 
+    
+    if not os.path.exists(model_filename):
+        print("Building topic model...") 
+        model = build_model_and_print(sframe_for_modeling,topic_count)
+        model.save(model_filename)
+        print("Building topic model...completed")
+    else:
+        model = gl.load_model(model_filename)
 
-    if predictions_file_name is None:
-        docs_res = gl.SFrame.read_csv('/Users/alonsinger/git/my-privacypolicy-thesis/Raws/all_para_alon.csv', header=False)    
-        docs_res['res'] = model.predict(docs_for_modeling)
-        docs_res['res_prob'] = model.predict(docs_for_modeling, output_type='probability') 
-        docs_res.save("/Users/alonsinger/git/my-privacypolicy-thesis/model{}.prd".format(topic_count))
+    if not os.path.exists(predictions_filename) is None:
+        print("Building predictions...")
+        docs_res = sframe_raw;   
+        docs_res['res'] = model.predict(sframe_for_modeling)
+        docs_res['res_prob'] = model.predict(sframe_for_modeling, output_type='probability') 
+        docs_res.save(predictions_filename.format(topic_count))
+        print("Building predictions...completed")
     else:
-        docs_res = gl.load_sframe(predictions_file_name)
+        docs_res = gl.load_sframe(predictions_filename)
         
     total_docs = len(docs_res)
     db_rows = []
     records_count = 0
-    
- #   docs_res.export_csv("/Users/alonsinger/git/my-privacypolicy-thesis/predictions.csv")
-
     for i in range(save_from,total_docs):
         db_row = [topic_count,\
                   docs_res['res'][i],\
@@ -119,9 +120,6 @@ def model_pp( topic_count = 100, model_file_name = None, save_from = 0, predicti
             print("saved up to {}".format(i))
         else:
             records_count+=1
-        
- 
-
         
 def build_prediction_results(topic_count,model_file_name):   
     model = gl.load_model(model_file_name)   
@@ -156,23 +154,15 @@ def build_prediction_results(topic_count,model_file_name):
      
     print("done")
 
-model_pp(model_file_name="/Users/alonsinger/git/my-privacypolicy-thesis/model100.mdl",
-         predictions_file_name = "/Users/alonsinger/git/my-privacypolicy-thesis/model100.prd",save_from=17776)
-#cProfile.run('build_prediction_results(100,model_file_name="""/Users/alonsinger/git/my-privacypolicy-thesis/model100.mdl""")',filename='alon.cprof') 
-#build_prediction_results(100,model_file_name="/Users/alonsinger/git/my-privacypolicy-thesis/model100.mdl")
-#build_csv_from_paragraphs()
-#model_pp(topic_count = 100)
-#cProfile.run('model_pp(model_file_name="""/Users/alonsinger/git/my-privacypolicy-thesis/model100.mdl""")', filename='model_pp.cprof' )
-#init_db()
-#get_freq_words()
-
-
-
-# text_file = open("/Users/alonsinger/git/my-privacypolicy-thesis/paragraphs_words.txt", "w")
-# docs = gl.SFrame.read_csv('/Users/alonsinger/git/my-privacypolicy-thesis/Raws/all_para_alon.csv', header=False)    
-# print("{0}".format(len(docs['X1'])))
-# for x in docs['X1']:
-#     text_file.write("{0}\n".format(len(x)))
-# text_file.close()
- 
-          
+def build_topics_models():
+    working_dir = '/Users/alonsinger/git/barilan/models_and_data/run-{date:%Y-%m-%d %H-%M-%S-%s}'.format( date=datetime.datetime.now() ) 
+    os.makedirs(working_dir)
+    print('directory {0} was created'.format(working_dir))
+    sframe_raw_filename = working_dir+'/'+'paragraphs.sfrm.raw'
+    sframe_filename = working_dir+'/'+'paragraphs.sfrm'
+    model_filename = working_dir+'/'+'paragraphs.mdl'
+    predictions_filename = working_dir+'/'+'paragraphs.prd'
+    model_pp(sframe_raw_filename,sframe_filename,model_filename,predictions_filename)
+    
+    
+build_topics_models()
