@@ -1,8 +1,9 @@
 import logging
 import sys
+import traceback
+
 import psycopg2
 import psycopg2.extras
-import traceback
 
 working_db_name = "postgres"
 working_db_host = "localhost"

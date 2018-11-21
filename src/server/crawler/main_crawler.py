@@ -1,11 +1,11 @@
+import random
+import string
 import sys
 
 import play_scraper
-import random
-import string
+from play_scraper import lists
 
 from src.server.utils.db.tools import db_utils
-from play_scraper import lists
 
 
 def id_generator(size=6, chars=string.ascii_lowercase):
