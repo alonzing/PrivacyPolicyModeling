@@ -64,11 +64,13 @@ def scrape_gplay_to_db_by_search():
             e = sys.exc_info()[0]
 
 
-def _on_finished_task(col_cat_tuple):
-    print('Task with collection value {} and category_value {} is done.'.format(col_cat_tuple[0], col_cat_tuple[1]))
+def _on_finished_task(_, collection, category):
+    print('Task with collection value {} and category_value {} is done.'.format(collection, category))
 
 
 def scrape_gplay_to_db(num_of_threads=1):
+    from functools import partial
+
     pool = ThreadPool(num_of_threads)
     categories = play_scraper.categories()
     results = []
@@ -76,11 +78,10 @@ def scrape_gplay_to_db(num_of_threads=1):
         for category_value in categories:
             try:
                 results.append(pool.apply_async(_scrape_category, (collection_value, category_value),
-                                                callback=lambda _, __=(
-                                                    collection_value, category_value): _on_finished_task(
-                                                    (collection_value, category_value))))
-                print('An async scraping task with collection value {0} and category_value {1} has been added '
-                      'to the thread pool.'.format(collection_value, category_value))
+                                                callback=partial(_on_finished_task, collection=collection_value,
+                                                                 category=category_value)))
+                # print('An async scraping task with collection value {0} and category_value {1} has been added '
+                #       'to the thread pool.'.format(collection_value, category_value))
             except threading.ThreadError:
                 print('Error starting thread with collection value {0}.'.format(collection_value))
     pool.close()
