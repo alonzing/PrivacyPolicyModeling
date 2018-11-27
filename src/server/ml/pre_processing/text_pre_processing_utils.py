@@ -2,9 +2,10 @@ import re
 import string
 import urllib2
 
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 from goose import Goose
 from nltk.tokenize.texttiling import TextTilingTokenizer
+from HTMLParser import HTMLParser
 
 from src.server.utils.db.tools import db_utils
 
@@ -50,10 +51,9 @@ def clean_pp_html(url, pp_html):
     if ret_val == '':
         try:
             soup = BeautifulSoup(pp_html)
-            ret_val = soup.body.getText()
+            ret_val = soup.body.get_text()
         except Exception as ee:
             print(ee)
-
     return ret_val
 
 
@@ -106,7 +106,7 @@ def split_or_bypass_pp():
 
 def is_defective_pp(clean_pp):
     low_text = clean_pp.lower()
-    if not 'privacy' in low_text or 'function(' in low_text or 'catch(' in low_text or 'exception(' in low_text \
+    if 'privacy' not in low_text or 'function(' in low_text or 'function (' in low_text or 'catch(' in low_text or 'exception(' in low_text \
             or '{' in low_text or 'personnelles' in low_text or 'voor' in low_text or 'servicios' in low_text \
             or 'maggior' in low_text or 'posizione' in low_text or 'werden' in low_text:
         return True
@@ -120,4 +120,7 @@ def split_pp_to_paragraphs(clean_pp):
     return paragraphs
 
 
+db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
+load_pp_html_to_db()
+clean_pp_html_records()
 split_or_bypass_pp()
