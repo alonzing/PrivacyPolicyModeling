@@ -15,7 +15,8 @@ class RequestHandler(BaseHTTPRequestHandler):
     def view_html(self, pp_id):
         url_records = self.db_query_handler.clean_html_query(pp_id)
         # self.wfile.write(url_records[0]['clean_html'])
-        self.wfile.write(url_records[0])
+        ret_html = '<html><head><meta charset="utf-8"/></head>{0}</html>'
+        self.wfile.write(ret_html.format(url_records[0]['clean_html']))
 
     def show_paragraphs_and_pp(self):
         url_records = self.db_query_handler.paragraphs_table_query()

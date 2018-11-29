@@ -4,7 +4,7 @@ class HttpServerHTMLGenerator:
 
     @staticmethod
     def generate_main_table(url_records):
-        ret_html = '<html><table border=\'1\'>{0}</table></html>'
+        ret_html = '<html><head><meta charset="utf-8"/></head><table border=\'1\'>{0}</table></html>'
         main_table = "<tr><td>Application ID</td><td>URL</td><td>View</td><td>View HTML</td></tr>"
         for url_record in url_records:
             main_table += "<tr>" \
@@ -20,7 +20,7 @@ class HttpServerHTMLGenerator:
 
     @staticmethod
     def generate_show_paragraphs(paragraphs_records):
-        ret_html = '<html><table border=\'1\'>{0}</table></html>'
+        ret_html = '<html><head><meta charset="utf-8"/></head><table border=\'1\'>{0}</table></html>'
         main_table = "<tr><td>Paragraph #</td><td>Paragraph Text</td></tr>"
         for paragraph_record in paragraphs_records:
             main_table += "<tr><td>{0}</td><td>{1}</td></tr>".format(
@@ -30,7 +30,7 @@ class HttpServerHTMLGenerator:
 
     @staticmethod
     def generate_main_paragraphs_table(url_records):
-        ret_html = '<html><table border=\'1\'>{0}</table></html>'
+        ret_html = '<html><head><meta charset="utf-8"/></head><table border=\'1\'>{0}</table></html>'
         main_table = "<tr><td>Privacy Policy ID</td><td>URL</td><td>View</td></tr>"
         for url_record in url_records:
             main_table += "<tr><td>{0}</td><td><a href='{1}'>{1}</a></td><td><a href='/view_pp_and_paragraphs?id={2}'>View Paragraphs</a></td></tr>".format(
