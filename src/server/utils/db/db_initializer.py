@@ -27,3 +27,6 @@ def init_db():
     init_applications_table()
     init_pp_tables()
     init_paragraphs_prediction_tables()
+
+
+init_db()
