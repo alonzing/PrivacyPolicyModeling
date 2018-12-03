@@ -26,8 +26,9 @@ def _scrape_category(collection_value, category_value):
                 pp_url = result.get('developer_pp_address')
 
                 # Replaces ' with '' to support strings with ' in SQL queries
-                db_row = [str(w).replace('\'', '\'\'') for w in [result.get('app_id'), result.get('developer_id'),
-                                                                 result.get('category'), url, pp_url]]
+                db_row = [str(result.get('app_id')).replace('\'', '\'\''),
+                          str(result.get('developer_id')).replace('\'', '\'\''), result.get(
+                        'category')[0], url, pp_url]
 
                 db_utils.exec_command(
                     "INSERT INTO applications (name,developer,category,dev_url, pp_url) "
@@ -77,9 +78,7 @@ def scrape_gplay_to_db_by_search(words_file_name):
                     "SELECT name FROM applications WHERE name = '{0[0]}' );".format(db_row))
 
         except Exception as e:
-            e = sys.exc_info()[0]
             traceback.print_exc()
-            print(e)
 
 
 def _on_finished_task(_, collection, category):
@@ -88,6 +87,8 @@ def _on_finished_task(_, collection, category):
 
 def scrape_gplay_to_db(num_of_threads=1):
     from functools import partial
+
+    # TODO Keep track of progress
 
     pool = ThreadPool(num_of_threads)
     categories = play_scraper.lists.CATEGORIES
