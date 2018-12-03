@@ -1,3 +1,4 @@
+import json
 import random
 import string
 import sys
@@ -15,50 +16,64 @@ def id_generator(size=6, chars=string.ascii_lowercase):
 
 
 def _scrape_category(collection_value, category_value):
-    # collection_value = collection_cat_value_tuple[0]
-    # category_value = collection_cat_value_tuple[1]
     for page in range(400):
         try:
-            db_rows = []
             results = play_scraper.collection(collection=collection_value, category=category_value,
                                               detailed=True, page=page)
             for result in results:
                 url = result.get('developer_url')
                 pp_url = result.get('developer_pp_address')
 
-                db_row = [result.get('app_id'), result.get('developer_id'), category_value, url, pp_url]
-                db_rows.append(db_row)
-            db_utils.exec_command('INSERT INTO applications \
-                     (name,developer,category,dev_url, pp_url)\
-                     VALUES \
-                     (%s,%s,%s,%s,%s)', db_rows)
-            # print ("added rows {0} for category {1} collection {2} page {3} ".format(len(db_rows), category_value,
-            #                                                                          collection_value, page))
+                # Replaces ' with '' to support strings with ' in SQL queries
+                db_row = [str(w).replace('\'', '\'\'') for w in [result.get('app_id'), result.get('developer_id'),
+                                                                 result.get('category'), url, pp_url]]
+
+                db_utils.exec_command(
+                    "INSERT INTO applications (name,developer,category,dev_url, pp_url) "
+                    "SELECT '{0[0]}','{0[1]}','{0[2]}','{0[3]}','{0[4]}' "
+                    "WHERE NOT EXISTS ("
+                    "SELECT name FROM applications WHERE name = '{0[0]}');".format(db_row))
         except:
             # Must NOT print anything to stdout from thread
             pass
 
 
-def scrape_gplay_to_db_by_search():
-    text_file = open("/Users/alonsinger/git/my-privacypolicy-thesis/book1.txt", "r")
-    lines = text_file.readlines()
+def scrape_gplay_to_db_by_search(words_file_name):
+    status_file_name = 'words_files_status.txt'
+    try:
+        with open(status_file_name, 'r') as status_file:
+            status_dict = json.load(status_file)
+    except (IOError, ValueError):
+        status_dict = {}
+
+    if words_file_name not in status_dict:
+        status_dict[words_file_name] = 0
+
+    text_file = open(words_file_name, "r")
+    keywords = [keyword.strip() for keyword in text_file.readlines()[status_dict[words_file_name]:]]
     text_file.close()
-    for line_index in range(2649, len(lines)):
-        print("word with index {0} = {1}".format(line_index, lines[line_index]))
+    for i, keyword in enumerate(keywords):
+        if i % 5 == 0:
+            with open(status_file_name, 'w') as status_file:
+                json.dump(status_dict, status_file)
+        status_dict[words_file_name] += 1
+
+        print("Current Keyword: {}".format(keyword))
         try:
-            db_rows = []
-            results = play_scraper.search(query=lines[line_index])
+            results = play_scraper.search(query=keyword)
             for result in results:
                 url = result.get('developer_url')
                 pp_url = result.get('developer_pp_address')
 
-                db_row = [result.get('app_id'), result.get('developer_id'), result.get('category'), url, pp_url]
-                db_rows.append(db_row)
-            print("save results: {0}".format(len(results)))
-            db_utils.exec_command("INSERT INTO applications \
-                 (name,developer,category,dev_url, pp_url)\
-                 VALUES \
-                 (%s,%s,%s,%s,%s)", db_rows)
+                # Replaces ' with '' to support strings with ' in SQL queries
+                db_row = [str(w).replace('\'', '\'\'') for w in [result.get('app_id'), result.get('developer_id'),
+                                                                 result.get('category'), url, pp_url]]
+                db_utils.exec_command(
+                    "INSERT INTO applications (name,developer,category,dev_url, pp_url) "
+                    "SELECT '@{0[0]}', '@{0[1]}', '@{0[2]}', '@{0[3]}', '@{0[4]}' "
+                    "WHERE NOT EXISTS ("
+                    "SELECT name FROM applications WHERE name = '@{0[0]}' );".format(db_row))
+
         except Exception as e:
             print(e)
             e = sys.exc_info()[0]
@@ -89,5 +104,5 @@ def scrape_gplay_to_db(num_of_threads=1):
 
 
 if __name__ == '__main__':
-    scrape_gplay_to_db(2)
-    # scrape_gplay_to_db_by_search()
+    # scrape_gplay_to_db(1)
+    scrape_gplay_to_db_by_search('words.txt')
