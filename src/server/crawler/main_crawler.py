@@ -1,7 +1,6 @@
 import json
 import random
 import string
-import sys
 import threading
 import traceback
 from multiprocessing.pool import ThreadPool
@@ -108,5 +107,5 @@ def scrape_gplay_to_db(num_of_threads=1):
 
 
 if __name__ == '__main__':
-    scrape_gplay_to_db(1)
-    # scrape_gplay_to_db_by_search('words.txt')
+    # scrape_gplay_to_db(1)
+    scrape_gplay_to_db_by_search('words.txt')
