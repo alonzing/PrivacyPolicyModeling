@@ -90,7 +90,7 @@ def scrape_gplay_to_db(num_of_threads=1):
     from functools import partial
 
     pool = ThreadPool(num_of_threads)
-    categories = play_scraper.categories()
+    categories = play_scraper.lists.CATEGORIES
     results = []
     for collection_value in play_scraper.lists.COLLECTIONS:
         for category_value in categories:
@@ -107,5 +107,5 @@ def scrape_gplay_to_db(num_of_threads=1):
 
 
 if __name__ == '__main__':
-    # scrape_gplay_to_db(1)
-    scrape_gplay_to_db_by_search('words.txt')
+    scrape_gplay_to_db(1)
+    # scrape_gplay_to_db_by_search('words.txt')
