@@ -11,7 +11,8 @@ from src.server.utils.db.tools import db_utils
 
 punc_reg = re.compile('[%s]' % re.escape(string.punctuation))
 db_handler = PreProcessingDBHandler()
-to_be_remove = string.punctuation + string.digits
+special_cases = string.punctuation + string.digits
+
 
 def load_pp_html_to_db():
     url_records = db_utils.db_select(db_handler.url_from_applications_table)
@@ -76,7 +77,7 @@ def is_defective_pp(clean_pp):
     low_text = clean_pp.lower()
     identifier = LanguageIdentifier.from_modelstring(model, norm_probs=True)
     language_detect = identifier.classify(clean_pp)
-    if language_detect[0] != "en" or 'privacy' not in low_text or 'function(' in low_text or 'function (' in low_text or 'catch(' in low_text or 'exception(' in low_text \
+    if language_detect[0] != "en" or 'privacy' not in low_text or 'class=' in low_text or 'function(' in low_text or 'function (' in low_text or 'catch(' in low_text or 'exception(' in low_text \
             or '{' in low_text or low_text is None:
         return True
     else:
@@ -84,14 +85,20 @@ def is_defective_pp(clean_pp):
 
 
 def split_pp_to_paragraphs(clean_pp):
-    clean_pp = clean_pp.translate(None, to_be_remove)
+    from unidecode import unidecode
+    # Converting non-ascii to their nearest ascii code
+    clean_pp_unicode = clean_pp.decode("utf-8")
+    clean_pp = unidecode(clean_pp_unicode)
+    # Removes all punctuation and digits
+    clean_pp = clean_pp.translate(None, special_cases)
     ttt = TextTilingTokenizer()
     paragraphs = ttt.tokenize(clean_pp)
     return paragraphs
 
 
-db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
-load_pp_html_to_db()
-clean_pp_html_records()
+# cleans DB for deubging
+# db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
+# load_pp_html_to_db()
+# clean_pp_html_records()
 split_or_bypass_pp()
 
