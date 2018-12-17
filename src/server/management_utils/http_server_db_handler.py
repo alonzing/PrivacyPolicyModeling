@@ -25,3 +25,7 @@ class HttpServerDBHandler:
     def paragraph_by_id_query(self, pp_id):
         query = "SELECT * FROM privacy_policy_paragraphs WHERE privacy_policy_id={0} ORDER BY index ASC".format(pp_id)
         return self.db_util.db_select(query)
+
+    def paragraph_by_url_query(self, url):
+        query = "SELECT * FROM privacy_policy_paragraphs WHERE pp_url LIKE \'{0}\' ORDER BY index ASC".format(url)
+        return self.db_util.db_select(query)
