@@ -1,4 +1,8 @@
-var clientTCP = require('./clientTCP');
+// var clientTCP = require('./clientTCP');
+
+var ClientTCP = require('./tcpClient');
+var clientTCP = new ClientTCP();
+
 const http = require('http'); // BUILT-IN MODULE
 
 // One of the functions of the module

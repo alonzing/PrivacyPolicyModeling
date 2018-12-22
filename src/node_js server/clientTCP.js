@@ -6,7 +6,7 @@ var PORT = 8080;
 
 // Create Client instance
 var client = new net.Socket();
-var len = 0;
+// var len = 0;
 var new_data = '';
 const end_of_json = 'END_OF_MESSAGE&#';
 
