@@ -13,7 +13,7 @@ import requests
 from bs4 import BeautifulSoup
 from requests_futures.sessions import FuturesSession
 
-from play_scraper import settings as s
+from src.server.crawler.modified_play_scraper import settings as s
 
 log = logging.getLogger(__name__)
 
