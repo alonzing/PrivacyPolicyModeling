@@ -5,9 +5,8 @@ import threading
 import traceback
 from multiprocessing.pool import ThreadPool
 
-import play_scraper
-from play_scraper import lists
-
+from modified_play_scraper.lists import CATEGORIES, COLLECTIONS
+from src.server.crawler import modified_play_scraper as play_scraper
 from src.server.utils.db.tools import db_utils
 
 
@@ -57,7 +56,6 @@ def scrape_gplay_to_db_by_search(words_file_name):
         if i % 5 == 0:
             with open(status_file_name, 'w') as status_file:
                 json.dump(status_dict, status_file)
-        status_dict[words_file_name] += 1
 
         print("Current Keyword: {}".format(keyword))
         try:
@@ -75,6 +73,7 @@ def scrape_gplay_to_db_by_search(words_file_name):
                     "SELECT '{0[0]}', '{0[1]}', '{0[2]}', '{0[3]}', '{0[4]}' "
                     "WHERE NOT EXISTS ("
                     "SELECT name FROM applications WHERE name = '{0[0]}' );".format(db_row))
+                status_dict[words_file_name] += 1
 
         except Exception as e:
             traceback.print_exc()
@@ -90,9 +89,9 @@ def scrape_gplay_to_db(num_of_threads=1):
     # TODO Keep track of progress
 
     pool = ThreadPool(num_of_threads)
-    categories = play_scraper.lists.CATEGORIES
+    categories = CATEGORIES
     results = []
-    for collection_value in play_scraper.lists.COLLECTIONS:
+    for collection_value in COLLECTIONS:
         for category_value in categories:
             try:
                 results.append(pool.apply_async(_scrape_category, (collection_value, category_value),
