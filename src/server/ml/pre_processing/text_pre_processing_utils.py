@@ -20,7 +20,6 @@ def load_pp_html_to_db():
         try:
             pp_html = urllib2.urlopen(url_record.get("pp_url"), timeout=5).read().decode('utf-8')
             db_handler.insert_db_http_ok(url_record, pp_html)
-
         except Exception as e:
             print(e)
             code = -1
@@ -48,6 +47,7 @@ def clean_pp_html(url, pp_html):
 
 
 def clean_pp_html_records():
+    count = 0
     pp_html_records = db_utils.db_select(db_handler.pp_pending_200_table)
     for pp_html_record in pp_html_records:
         result = clean_pp_html(pp_html_record.get("pp_url"), pp_html_record.get("html"))
@@ -77,7 +77,9 @@ def is_defective_pp(clean_pp):
     low_text = clean_pp.lower()
     identifier = LanguageIdentifier.from_modelstring(model, norm_probs=True)
     language_detect = identifier.classify(clean_pp)
-    if language_detect[0] != "en" or 'privacy' not in low_text or 'class=' in low_text or 'function(' in low_text or 'function (' in low_text or 'catch(' in low_text or 'exception(' in low_text \
+    if language_detect[0] != "en" or (language_detect[0] == "en" and language_detect[1] < 0.9) or \
+            'privacy' not in low_text or 'class=' in low_text or 'function(' in low_text or \
+            'function (' in low_text or 'catch(' in low_text or 'exception(' in low_text \
             or '{' in low_text or low_text is None:
         return True
     else:
@@ -97,8 +99,8 @@ def split_pp_to_paragraphs(clean_pp):
 
 
 # cleans DB for deubging
-# db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
-# load_pp_html_to_db()
-# clean_pp_html_records()
+db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
+load_pp_html_to_db()
+clean_pp_html_records()
 split_or_bypass_pp()
 
