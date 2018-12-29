@@ -8,6 +8,8 @@ from goose import Goose
 from nltk.tokenize.texttiling import TextTilingTokenizer
 from src.server.ml.pre_processing.pre_processing_db_handler import PreProcessingDBHandler
 from src.server.utils.db.tools import db_utils
+from unidecode import unidecode
+from src.server.ml.pre_processing.contractions_dict import ContractionsDict
 
 punc_reg = re.compile('[%s]' % re.escape(string.punctuation))
 db_handler = PreProcessingDBHandler()
@@ -47,7 +49,6 @@ def clean_pp_html(url, pp_html):
 
 
 def clean_pp_html_records():
-    count = 0
     pp_html_records = db_utils.db_select(db_handler.pp_pending_200_table)
     for pp_html_record in pp_html_records:
         result = clean_pp_html(pp_html_record.get("pp_url"), pp_html_record.get("html"))
@@ -59,10 +60,13 @@ def clean_pp_html_records():
 
 def split_or_bypass_pp():
     pp_html_records = db_utils.db_select(db_handler.clean_htmls_table)
+    # preparing for the expansion of contractions
+    contractions_dict = dict((re.escape(k.lower()), v) for k, v in ContractionsDict.contractions.iteritems())
+    pattern = re.compile("|".join(contractions_dict.keys()), re.IGNORECASE)
     for html_record in pp_html_records:
         try:
             clean_pp = html_record.get("clean_html")
-            paragraphs = split_pp_to_paragraphs(clean_pp)
+            paragraphs = split_pp_to_paragraphs(clean_pp, contractions_dict, pattern)
             db_rows = []
             for i, paragraph in enumerate(paragraphs):
                 db_rows.append([paragraph.strip(), html_record.get("pp_url"), i, html_record.get("id")])
@@ -86,16 +90,22 @@ def is_defective_pp(clean_pp):
         return False
 
 
-def split_pp_to_paragraphs(clean_pp):
-    from unidecode import unidecode
-    # Converting non-ascii to their nearest ascii code
-    clean_pp_unicode = clean_pp.decode("utf-8")
-    clean_pp = unidecode(clean_pp_unicode)
-    # Removes all punctuation and digits
-    clean_pp = clean_pp.translate(None, special_cases)
+def split_pp_to_paragraphs(clean_pp, contractions_dict, pattern):
+    clean_pp = clean_pp_advanced(clean_pp, contractions_dict, pattern)
     ttt = TextTilingTokenizer()
     paragraphs = ttt.tokenize(clean_pp)
     return paragraphs
+
+
+def clean_pp_advanced(clean_pp, contractions_dict, pattern):
+    # Converting non-ascii to their nearest ascii code
+    clean_pp_unicode = clean_pp.decode("utf-8")
+    clean_pp = unidecode(clean_pp_unicode)
+    # Expansion of contractions
+    clean_pp = pattern.sub(lambda m: contractions_dict[re.escape(m.group(0).lower())], clean_pp)
+    # Removes all punctuation and digits
+    clean_pp = clean_pp.translate(None, special_cases)
+    return clean_pp
 
 
 # cleans DB for deubging
@@ -103,4 +113,3 @@ db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, priva
 load_pp_html_to_db()
 clean_pp_html_records()
 split_or_bypass_pp()
-
