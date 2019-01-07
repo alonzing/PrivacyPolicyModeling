@@ -5,8 +5,7 @@ class PreProcessingDBHandler:
 
 	def __init__(self):
 		self.db_util = DBUtils()
-		self.url_from_applications_table = "select pp_url from applications where pp_url <> 'none' and pp_url not in" \
-									  "(select pp_url from privacy_policy group by pp_url ) group by pp_url"
+		self.url_from_applications_table = "select DISTINCT pp_url from applications where pp_url <> 'none' group by pp_url"
 
 		self.pp_pending_200_table = "select id,pp_url,html from privacy_policy where process_status='PENDING' and url_return_code=200"
 
