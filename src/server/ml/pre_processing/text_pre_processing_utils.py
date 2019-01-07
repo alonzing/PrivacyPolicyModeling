@@ -20,7 +20,7 @@ def load_pp_html_to_db():
     url_records = db_utils.db_select(db_handler.url_from_applications_table)
     for url_record in url_records:
         try:
-            pp_html = urllib2.urlopen(url_record.get("pp_url"), timeout=5).read().decode('utf-8')
+            pp_html = urllib2.urlopen(url_record.get('pp_url'), timeout=5).read().decode('utf-8')
             db_handler.insert_db_http_ok(url_record, pp_html)
         except Exception as e:
             print(e)
@@ -50,6 +50,7 @@ def clean_pp_html(url, pp_html):
 
 def clean_pp_html_records():
     pp_html_records = db_utils.db_select(db_handler.pp_pending_200_table)
+    # TODO Have one thread take one URL and clean it
     for pp_html_record in pp_html_records:
         result = clean_pp_html(pp_html_record.get("pp_url"), pp_html_record.get("html"))
         if is_defective_pp(result):
@@ -71,7 +72,7 @@ def split_or_bypass_pp():
             for i, paragraph in enumerate(paragraphs):
                 db_rows.append([paragraph.strip(), html_record.get("pp_url"), i, html_record.get("id")])
             db_handler.insert_pp_paragraphs(db_rows)
-            db_handler.pp_splitted_ok(html_record)
+            db_handler.pp_split_ok(html_record)
 
         except Exception as e:
             print e
@@ -109,7 +110,9 @@ def clean_pp_advanced(clean_pp, contractions_dict, pattern):
 
 
 # cleans DB for deubging
-db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
+# db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
 load_pp_html_to_db()
+
+# TODO One thread for these functions (together)
 clean_pp_html_records()
 split_or_bypass_pp()
