@@ -93,6 +93,7 @@ def split_or_bypass_pp(batch_size=100):
 
             except Exception as e:
                 print e
+                db_handler.pp_split_failed(html_record)
 
 
 def is_defective_pp(clean_pp):
