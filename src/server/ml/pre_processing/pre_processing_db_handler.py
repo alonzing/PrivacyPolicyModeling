@@ -5,16 +5,33 @@ class PreProcessingDBHandler:
 
     def __init__(self):
         self.db_util = DBUtils()
-        self.url_from_applications_table = "select DISTINCT pp_url from applications where pp_url <> 'none' group by " \
-                                           "pp_url "
-        # TODO: Add LIMIT and STATUS column filters
-        self.pp_pending_200_table = "select id,pp_url,html from privacy_policy where process_status='PENDING' and " \
-                                    "url_return_code=200 "
+        self._url_from_applications_table = "select DISTINCT pp_url from applications where pp_url <> 'none' and " \
+                                            "is_new = true group by pp_url "
 
-        self.clean_htmls_table = "select id,clean_html,pp_url from privacy_policy where url_return_code=200 and " \
-                                 "process_status='HTML_CLEANED' "
+        # TODO: Add LIMIT and STATUS column filters
+        self._pp_pending_200_table = "select id,pp_url,html from privacy_policy where process_status='PENDING' and " \
+                                     "url_return_code=200 "
+
+        self._clean_htmls_table = "select id,clean_html,pp_url from privacy_policy where url_return_code=200 and " \
+                                  "process_status='HTML_CLEANED' "
 
         self._update_pp_process_status_str = "UPDATE privacy_policy SET process_status = %s where id=%s"
+        self._update_is_new = "UPDATE applications SET is_new = false where pp_url='{}'"
+
+    def sql_get_cleaned_html_files(self, limit=None):
+        return self._clean_htmls_table if not limit \
+            else self._clean_htmls_table + ' limit {}'.format(limit)
+
+    def sql_get_urls_from_applications_table(self, limit=None):
+        return self._url_from_applications_table if not limit \
+            else self._url_from_applications_table + ' limit {}'.format(limit)
+
+    def sql_get_pending_raw_html_files_from_privacy_policy_table(self, limit=None):
+        return self._pp_pending_200_table if not limit \
+            else self._pp_pending_200_table + ' limit {}'.format(limit)
+
+    def update_application_not_new(self, url_record):
+        self.db_util.exec_command(self._update_is_new.format(url_record))
 
     def insert_db_http_ok(self, url_record, pp_html):
         db_rows = [[url_record.get("pp_url"), pp_html, "PENDING", "200", "HTTP OK 200"]]
