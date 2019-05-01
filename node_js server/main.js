@@ -1,4 +1,4 @@
-// createForm();
+createForm();
 getRequest('http://localhost:3000/?pp_url=http://afrogfx.com/Appspoilcy/com.MuslimRefliction.Al.Adab.Al.Mufrad-privacy_policy.html', onResponse);
 
 function createForm() {

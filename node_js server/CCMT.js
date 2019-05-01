@@ -1,10 +1,5 @@
-var request = require('request');
-var Cookie = require('request-cookies').Cookie;
-
-request.post('https://www.cinema-city.co.il/order/?eventID=399218', function(err, response, body) {
-    var rawcookies = response.headers['set-cookie'];
-    for (var i in rawcookies) {
-        var cookie = new Cookie(rawcookies[i]);
-        console.log(cookie.key, cookie.value, cookie.expires);
-    }
+const request = require('request');
+request('http://localhost:5000/get-pp?url=http://afrogfx.com/Appspoilcy/com.MuslimRefliction.Al.Adab.Al.Mufrad-privacy_policy.html', {json: true}, (err, res, body) => {
+    let a = res.body;
+    console.log(a[1]);
 });
