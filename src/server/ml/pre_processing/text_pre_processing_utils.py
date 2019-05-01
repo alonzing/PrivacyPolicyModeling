@@ -93,4 +93,3 @@ db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, priva
 load_pp_html_to_db()
 clean_pp_html_records()
 split_or_bypass_pp()
-

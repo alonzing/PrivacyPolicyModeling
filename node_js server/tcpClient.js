@@ -1,19 +1,20 @@
 class tcpClient {
     constructor() {
-        this.HOST = '172.19.3.233';
-        this.PORT = 8080;
+        this.HOST = '127.0.0.1';
+        this.PORT = 8583;
 
         this.new_data = '';
-        this.end_of_json = 'END_OF_MESSAGE&#';
 
         this.net = require('net');
         this.client = new this.net.Socket();
+        this.res = null;
     }
 
-    connect(message) {
+    connect(message, res) {
         this.client.connect(this.PORT, this.HOST, () => {
             console.log(`Client connected to: ${this.HOST}:${this.PORT}`);
-            // Write a message to the socket as soon as the client is connected, the server will receive it as message from the client
+            this.res = res;
+            // Write a message to the socket as soon as the client is connected, the server will receive it as a message from the client
             this.client.write(message);
         });
     }
@@ -39,30 +40,29 @@ class tcpClient {
         return this._new_data;
     }
 
-    set end_of_json(end_of_json) {
-        this._end_of_json = end_of_json;
-    }
-
-    get end_of_json() {
-        return this._end_of_json;
-    }
-
     set client(client) {
         this._client = client;
 
         this.client.on('data', (data) => {
             this.new_data += data;
 
-            if(data.toString().endsWith(this.end_of_json)) {
-                this.new_data = this.new_data.replace(this.end_of_json, '');
-
-                console.log('Client received: ' + JSON.parse(this.new_data));
-                this.new_data = '';
-
-                if (data.toString().endsWith('exit')) {
-                    this.client.destroy();
-                }
+            if (data.toString().endsWith('exit')) {
+                this.client.destroy();
             }
+        });
+
+        // What to do when the whole response has been received
+        this.client.on('end', () => {
+            console.log('Client received: ' + JSON.parse(this.new_data));
+
+            let parsed = JSON.parse(this.new_data);
+            let str = '';
+            parsed.forEach(function(element) {
+                // console.log(element);
+                str += element.replace('\n\n', '<br><br>');
+                str += '<br><br>'
+            });
+            this.res.send(str);
         });
 
         // Add a 'close' event handler for the client socket
@@ -71,7 +71,7 @@ class tcpClient {
         });
 
         // Handle error
-        client.on('error', (err) => {
+        this.client.on('error', (err) => {
             console.error(err);
         });
     }

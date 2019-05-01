@@ -8,7 +8,7 @@ class TCPServer:
 
     def __init__(self):
         self.server_ip = '0.0.0.0'
-        self.port = 8080
+        self.port = 8583
         self.thread_num = 5
         self.pool = ThreadPool(self.thread_num)
         self.client_handler = TCPClientHandler()
@@ -20,7 +20,6 @@ class TCPServer:
         while True:
             client_socket, client_address = server.accept()
             print client_address
-            # self.client_handler.handle_client(client_socket)
             self.pool.apply_async(self.client_handler.handle_client, (client_socket,))
 
 
@@ -28,13 +27,12 @@ class TCPClientHandler:
 
     def __init__(self):
         self.db_query_handler = http_server_db_handler.HttpServerDBHandler()
-        self.end_message = "END_OF_MESSAGE&#"
 
     def handle_client(self, client_socket):
         # TODO: Change most of this. Only basic functionality exists.
         request = client_socket.recv(2048)
         request_json = json.loads(request)
-        command_id = int(request_json['commandID'])
+        command_id = int(request_json['commandID'])  # TODO Command pattern
         param = request_json['param']
         paragraphs_records = self.db_query_handler.paragraph_by_url_query(param)
         paragraph_list = []
@@ -42,7 +40,6 @@ class TCPClientHandler:
             paragraph_list.append(paragraph_record.get('paragraph'))
         response = json.dumps(paragraph_list)
         client_socket.send(response)
-        client_socket.send(self.end_message)
         client_socket.close()
 
 
