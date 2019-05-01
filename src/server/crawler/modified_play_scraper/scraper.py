@@ -14,10 +14,10 @@ except NameError:
 import requests
 from bs4 import BeautifulSoup, SoupStrainer
 
-from play_scraper import settings as s
-from play_scraper.constants import HL_LANGUAGE_CODES, GL_COUNTRY_CODES
-from play_scraper.lists import AGE_RANGE, CATEGORIES, COLLECTIONS
-from play_scraper.utils import (
+from src.server.crawler.modified_play_scraper import settings as s
+from src.server.crawler.modified_play_scraper.constants import HL_LANGUAGE_CODES, GL_COUNTRY_CODES
+from src.server.crawler.modified_play_scraper.lists import AGE_RANGE, CATEGORIES, COLLECTIONS
+from src.server.crawler.modified_play_scraper.utils import (
     build_collection_url,
     build_url,
     generate_post_data,
