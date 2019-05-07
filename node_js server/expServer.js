@@ -7,6 +7,7 @@ class expServer {
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
             next();
         });
+
         this.app.get('/',(req, res) => {
             // if we're on the home page
             console.log('Entered the home page!'); // Will be displayed on server console
@@ -77,10 +78,7 @@ class expServer {
 
 // Now the class is available "outside"
 module.exports = expServer;
-
 express_server = new expServer();
-
-
 
 // this.app.get('/api/courses/:id', (req, res) => {
 //     let course = courses.find(c => c.id === parseInt(req.params.id));
