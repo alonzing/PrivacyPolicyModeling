@@ -64,7 +64,7 @@ def clean_pp_html(url, pp_html):
 def clean_pp_html_records(pp_html_records):
     cleaned_pp_records = []
     if len(pp_html_records) == 0:
-        return
+        return cleaned_pp_records
     for pp_html_record in pp_html_records:
         result = clean_pp_html(pp_html_record.get("pp_url"), pp_html_record.get("html"))
         if is_defective_pp(result):
