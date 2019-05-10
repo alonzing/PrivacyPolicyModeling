@@ -8,7 +8,7 @@ import psycopg2.extras
 working_db_name = "postgres"
 working_db_host = "localhost"
 working_db_user = "postgres"
-working_db_password = "1234"
+working_db_password = "1"
 
 
 class DBUtils:
@@ -31,7 +31,7 @@ class DBUtils:
             conn = self.get_db_connection()
             cur = conn.cursor()
             if value_list is None:
-                cur.execute(sql)
+                cur.execute(sql, value_list)
             else:
                 cur.executemany(sql, value_list)
             cur.close()
@@ -42,6 +42,22 @@ class DBUtils:
         finally:
             if conn is not None:
                 conn.close()
+
+    def exec_command_with_result(self, sql, value_list=None):
+        try:
+            conn = self.get_db_connection()
+            cur = conn.cursor()
+            cur.execute(sql, value_list)
+            result = cur.fetchall()
+            cur.close()
+            conn.commit()
+        except Exception as e:
+            print(e)
+            logging.exception(sys.exc_info()[0])
+        finally:
+            if conn is not None:
+                conn.close()
+        return result
 
     def db_select(self, sql, value_list=None):
         try:
