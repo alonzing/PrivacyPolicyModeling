@@ -11,10 +11,15 @@ class PreProcessingExecutor:
 	def __init__(self, consumers_number, batch_size):
 		self._queue = Queue()
 		self._batch_size = batch_size
-		self._producer = thread.start_new_thread(self.start_produce_pp, ("producer",))
-		self._consumers = self._init_consumers(consumers_number)
+		self._consumers_number = consumers_number
+		self._producer = None
+		self._consumers = None
 
-	def start_produce_pp(self, thread_name):
+	def start_produce_and_consume(self):
+		self._producer = thread.start_new_thread(self._produce_pp, ("producer",))
+		self._consumers = self._init_consumers(self._consumers_number)
+
+	def _produce_pp(self, thread_name):
 		counter = 0
 		while True:
 			counter += 1
@@ -43,7 +48,8 @@ class PreProcessingExecutor:
 
 db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
 
-executor = PreProcessingExecutor(3, 20)
+executor = PreProcessingExecutor(consumers_number=3, batch_size=20)
+executor.start_produce_and_consume()
 while 1:
 	pass
 
