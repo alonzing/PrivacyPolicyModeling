@@ -1,7 +1,5 @@
-import datetime
 import os
 import shutil
-
 import graphlab as gl
 
 from src.server.utils.db.tools import db_utils
@@ -126,11 +124,12 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
             print("saved up to {}".format(i))
         else:
             records_count += 1
+    return topic_count
 
 
 def build_prediction_results(topic_count, model_file_name):
     model = gl.load_model(model_file_name)
-    root_results_dir = '/Users/alonsinger/git/my-privacypolicy-thesis/results{}'.format(topic_count)
+    root_results_dir = 'my-privacypolicy-thesis/results{}'.format(topic_count)
     if os.path.exists(root_results_dir):
         shutil.rmtree(root_results_dir)
     os.makedirs(root_results_dir)
@@ -165,15 +164,15 @@ def build_prediction_results(topic_count, model_file_name):
 
 
 def build_topics_models():
-    working_dir = '/Users/alonsinger/git/barilan/models_and_data/run-{date:%Y-%m-%d %H-%M-%S-%s}'.format(
-        date=datetime.datetime.now())
+    working_dir = 'models_and_data/run-{0}'.format('test')
     os.makedirs(working_dir)
     print('directory {0} was created'.format(working_dir))
     sframe_raw_filename = working_dir + '/' + 'paragraphs.sfrm.raw'
     sframe_filename = working_dir + '/' + 'paragraphs.sfrm'
     model_filename = working_dir + '/' + 'paragraphs.mdl'
     predictions_filename = working_dir + '/' + 'paragraphs.prd'
-    model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename)
+    topic_count = model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename)
+    build_prediction_results(topic_count, model_filename)
 
 
 build_topics_models()

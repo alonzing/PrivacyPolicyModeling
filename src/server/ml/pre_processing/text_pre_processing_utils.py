@@ -17,14 +17,22 @@ db_handler = PreProcessingDBHandler()
 special_cases = string.punctuation + string.digits
 
 
-def load_pp_html_to_db(batch_size):
+def load_pp_from_db(batch_size):
+    url_records = db_utils.db_select(db_handler.sql_get_urls_from_applications_table(batch_size))
+    if len(url_records) == 0:
+        return None
+    for url_record in url_records:
+        db_handler.update_application_not_new(url_record[0])
+    return url_records
+
+
+def load_pp_html_to_db(url_records):
     """
     Loads limited number of HTML files from new (unprocessed) URLs to the privacy_policy table.
-    :param batch_size:
-    :return: url_records
+    :param url_records:
+    :return: url_records_http_ok
     """
     url_records_http_ok = []
-    url_records = db_utils.db_select(db_handler.sql_get_urls_from_applications_table(batch_size))
     if len(url_records) == 0:
         return
     for url_record in url_records:
@@ -38,8 +46,6 @@ def load_pp_html_to_db(batch_size):
             if hasattr(e, 'code'):
                 code = e.code
             db_handler.insert_db_no_respond(url_record, code, e)
-        finally:
-            db_handler.update_application_not_new(url_record[0])
     return url_records_http_ok
 
 
