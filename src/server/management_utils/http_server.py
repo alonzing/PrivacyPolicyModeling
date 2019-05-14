@@ -54,6 +54,10 @@ def get_pp_prediction_by_url():
     return json.dumps(response)
 
     # TODO: modeling
+    # Flow: insert_url_to_db -> from crawler
+    # clean_pp_html_record -> from pre_processing
+    # split_or_bypass_pp -> from pre_processing
+    # topic_modeling
 
     # rows = db_query_handler.prediction_query_by_url(url)
     # resp = [dict(row) for row in rows]
