@@ -4,7 +4,8 @@ from tools import db_utils
 def init_applications_table():
     db_utils.exec_command("DROP TABLE applications")
     db_utils.exec_command(
-        "CREATE TABLE applications (id serial not null primary key, name text, developer text, category name, dev_url text , pp_url text )")
+        "CREATE TABLE applications (id serial not null primary key, name text, developer text, category name, "
+        "dev_url text , pp_url text, date_added date)")
 
 
 def init_pp_tables():

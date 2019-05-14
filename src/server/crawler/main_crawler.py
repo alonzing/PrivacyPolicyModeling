@@ -29,8 +29,8 @@ def _scrape_category(collection_value, category_value):
                         'category')[0], url, pp_url]
 
                 db_utils.exec_command(
-                    "INSERT INTO applications (name,developer,category,dev_url, pp_url) "
-                    "SELECT '{0[0]}','{0[1]}','{0[2]}','{0[3]}','{0[4]}' "
+                    "INSERT INTO applications (name,developer,category,dev_url, pp_url, date_added) "
+                    "SELECT '{0[0]}','{0[1]}','{0[2]}','{0[3]}','{0[4]}',DEFAULT "
                     "WHERE NOT EXISTS ("
                     "SELECT name FROM applications WHERE name = '{0[0]}');".format(db_row))
         except:
