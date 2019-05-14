@@ -9,6 +9,13 @@
 <body>
 <div class="container">
     <script src="main.js"></script>
+    <form name="theForm" onsubmit="x(); return false;">
+        <div class="form-group row">
+            <input type="text" class="col-sm-10 form-control" id="pp_url_input" placeholder="Privacy Policy URL" />
+            <button type="submit" class="col-sm-2 btn btn-primary" id="send_button">Send</button>
+            <small id="error_msg" class="text-danger"></small>
+        </div>
+    </form>
 </div>
 </body>
 </html>

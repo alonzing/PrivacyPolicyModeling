@@ -5,7 +5,6 @@ import http_server_db_handler
 
 
 class TCPServer:
-
     def __init__(self):
         self.server_ip = '0.0.0.0'
         self.port = 8583
