@@ -1,0 +1,7 @@
+{
+  "name": "PrivacyPolicyModeling",
+  "version": "1.0.0",
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}
