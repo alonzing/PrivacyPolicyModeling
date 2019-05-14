@@ -9,13 +9,15 @@
 <body>
 <div class="container">
     <script src="main.js"></script>
-    <form name="theForm" onsubmit="x(); return false;">
+    <form name="theForm" onsubmit="OnSubmit(); return false;">
         <div class="form-group row">
-            <input type="text" class="col-sm-10 form-control" id="pp_url_input" placeholder="Privacy Policy URL" />
+            <input type="text" class="col-sm-10 form-control" id="pp_url_input" placeholder="Privacy Policy URL"/>
             <button type="submit" class="col-sm-2 btn btn-primary" id="send_button">Send</button>
             <small id="error_msg" class="text-danger"></small>
         </div>
     </form>
+    <p class="text-justify" id="pp_text" ></p>
+    <h1 id="pp_score_header"><span id="pp_score_badge"></span></h1>
 </div>
 </body>
 </html>
