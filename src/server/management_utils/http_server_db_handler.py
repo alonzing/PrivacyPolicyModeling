@@ -29,3 +29,13 @@ class HttpServerDBHandler:
     def paragraph_by_url_query(self, url):
         query = "SELECT * FROM privacy_policy_paragraphs WHERE pp_url LIKE \'{0}\' ORDER BY index ASC".format(url)
         return self.db_util.db_select(query)
+
+    def prediction_query_by_url(self, url):
+        query = """SELECT name, developer, category, dev_url, applications.pp_url, index
+                    FROM applications, privacy_policy_paragraphs
+                    WHERE privacy_policy_paragraphs.pp_url LIKE '{0}'
+                    AND name = (SELECT name
+                                FROM applications 
+                                WHERE pp_url LIKE '{0}' LIMIT 1)
+                    AND privacy_policy_paragraphs.pp_url LIKE applications.pp_url""".format(url)
+        return self.db_util.db_select(query)
