@@ -1,7 +1,12 @@
 import json
 
+from psycopg2.extras import DictRow
+
 import http_server_db_handler
 from flask import Flask, request
+
+from src.server.ml.pre_processing.text_pre_processing_utils import load_pp_html_to_db, clean_pp_html_records, \
+    split_or_bypass_pp, insert_single_pp_html_to_db
 
 http_server = Flask(__name__)
 db_query_handler = http_server_db_handler.HttpServerDBHandler()
@@ -34,7 +39,8 @@ def place_holder_response(url):
         'num_of_missing_paragraphs': 7,
         'num_of_paragraphs_category_value': 12,
         'num_of_topics_category_value': 10,
-        'num_of_missing_paragraphs_category_value': 5
+        'num_of_missing_paragraphs_category_value': 5,
+        'score': 7
     }
     paragraphs_records = db_query_handler.paragraph_by_url_query(url)
     paragraph_list = [dict(paragraph_record) for paragraph_record in paragraphs_records]
@@ -50,20 +56,15 @@ def place_holder_response(url):
 @http_server.route('/pp-prediction', methods=['GET'])
 def get_pp_prediction_by_url():
     url = request.args.get('url', default=None, type=str)
-    response = place_holder_response(url)
-    return json.dumps(response)
+    url_record_http_ok = load_pp_html_to_db([{'pp_url': url}])
 
-    # TODO: modeling
-    # Flow: insert_url_to_db -> from crawler
-    # clean_pp_html_record -> from pre_processing
-    # split_or_bypass_pp -> from pre_processing
-    # topic_modeling
-
-    # rows = db_query_handler.prediction_query_by_url(url)
-    # resp = [dict(row) for row in rows]
-    # for response_dict in resp:
-    #     response_dict['index'] = int(response_dict['index'])
-    # return json.dumps(resp)
+    if url_record_http_ok:
+        # http status was 200: OK
+        cleaned_pp_records = clean_pp_html_records(url_record_http_ok)
+        split_or_bypass_pp(cleaned_pp_records)
+    return json.dumps('temp')
+    # response = place_holder_response(url)
+    # return json.dumps(response)
 
 
 if __name__ == '__main__':
