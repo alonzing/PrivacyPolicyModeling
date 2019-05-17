@@ -5,15 +5,24 @@ import graphlab as gl
 from src.server.utils.db.tools import db_utils
 
 
-def build_SFrame_from_db():
-    paragraph_records = db_utils.db_select("select count(*) as ccc,paragraph from privacy_policy_paragraphs \
-                                            group by paragraph order by ccc desc");
+def build_SFrame_from_db(script):
+    paragraph_records = db_utils.db_select(script);
     paragraphs_list = []
 
     for paragraph_record in paragraph_records:
         paragraphs_list.append(paragraph_record.get("paragraph"))
     sframe = gl.SFrame(paragraphs_list)
     return sframe
+
+
+def get_all_paragraphs_from_db():
+    return "select count(*) as ccc,paragraph from privacy_policy_paragraphs \
+                                                group by paragraph order by ccc desc"
+
+
+def get_paragraphs_from_db_for_single_pp_url(pp_url):
+    return "select count(*) as ccc, paragraph from privacy_policy_paragraphs where pp_url = '{}'" \
+           "group by paragraph order by ccc desc".format(pp_url)
 
 
 def get_word_frequency(docs):
@@ -75,10 +84,11 @@ def build_model_and_print(in_docs, topic_count):
     return model
 
 
-def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename, topic_count=100, save_from=0):
+def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename,
+             script=get_all_paragraphs_from_db(), topic_count=100, save_from=0):
     if not os.path.exists(sframe_filename):
         print("Building SFrame file...")
-        sframe_raw = build_SFrame_from_db()
+        sframe_raw = build_SFrame_from_db(script)
         sframe_raw.save(sframe_raw_filename)
         sframe_for_modeling = build_docs_for_modeling(sframe_raw, sframe_raw_filename)
         sframe_for_modeling.save(sframe_filename)
@@ -114,7 +124,7 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
                   docs_res['X1'][i]]
         db_rows.append(db_row)
 
-        if records_count == 100:
+        if records_count == 100 or i == total_docs - 1:
             records_count = 0
             db_utils.exec_command("INSERT INTO privacy_policy_paragraphs_prediction \
                                 (running_id,topic_id,probability,paragraph)\
@@ -164,15 +174,30 @@ def build_prediction_results(topic_count, model_file_name):
 
 
 def build_topics_models():
-    working_dir = 'models_and_data/run-{0}'.format('test')
+    working_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, 'test')
     os.makedirs(working_dir)
     print('directory {0} was created'.format(working_dir))
-    sframe_raw_filename = working_dir + '/' + 'paragraphs.sfrm.raw'
-    sframe_filename = working_dir + '/' + 'paragraphs.sfrm'
-    model_filename = working_dir + '/' + 'paragraphs.mdl'
-    predictions_filename = working_dir + '/' + 'paragraphs.prd'
+    sframe_raw_filename = working_dir + os.path.sep + 'paragraphs.sfrm.raw'
+    sframe_filename = working_dir + os.path.sep + 'paragraphs.sfrm'
+    model_filename = working_dir + os.path.sep + 'paragraphs.mdl'
+    predictions_filename = working_dir + os.path.sep + 'paragraphs.prd'
     topic_count = model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename)
     build_prediction_results(topic_count, model_filename)
 
 
-build_topics_models()
+def build_from_exists_modeling(pp_url):
+    working_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, "pp11")
+    working_model_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, 'test')
+    if not os.path.exists(working_dir):
+        os.makedirs(working_dir)
+    sframe_raw_filename = working_dir + os.path.sep + 'paragraphs.sfrm.raw'
+    sframe_filename = working_dir + os.path.sep + 'paragraphs.sfrm'
+    model_filename = working_model_dir + os.path.sep + 'paragraphs.mdl'
+    predictions_filename = working_dir + os.path.sep + 'paragraphs.prd'
+    script = get_paragraphs_from_db_for_single_pp_url(pp_url)
+    model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename, script)
+
+
+# build_topics_models()
+pp_url = 'http://christianchannel.us/privacy-policy/'
+build_from_exists_modeling(pp_url)
