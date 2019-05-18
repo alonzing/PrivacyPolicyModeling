@@ -2,6 +2,7 @@ import json
 
 from flask import Flask, request
 from flask_cors import CORS
+
 import http_server_db_handler
 
 http_server = Flask(__name__)
@@ -29,7 +30,8 @@ def place_holder_response(url):
         'num_of_missing_paragraphs': 7,
         'num_of_paragraphs_category_value': 12,
         'num_of_topics_category_value': 10,
-        'num_of_missing_paragraphs_category_value': 5
+        'num_of_missing_paragraphs_category_value': 5,
+        'score': 53
     }
     paragraphs_records = db_query_handler.paragraph_by_url_query(url)
     paragraph_list = [dict(paragraph_record) for paragraph_record in paragraphs_records]
