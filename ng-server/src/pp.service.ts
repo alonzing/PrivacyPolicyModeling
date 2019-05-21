@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnChanges, SimpleChanges} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
@@ -11,27 +11,24 @@ export interface TableRow {
   value: number;
   categoryValue: number;
 }
+
+export interface ParagraphRow {
+  index: number;
+  score: number;
+  value: string;
+}
 export interface PrivacyPolicy {
   table: TableRow[];
-  appCategory: string;
-  devUrl: string;
-  numOfParagraphs: number;
-  numOfTopics: number;
-  numOfMissingParagraphs: number;
-  numOfParagraphsCategoryValue: number;
-  numOfMissingParagraphsCategoryValue: number;
-  numOfTopicsCategoryValue: number;
+  paragraphs: ParagraphRow[];
   score: number;
-  paragraphs: string[];
 }
-
 
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class PpService {
+export class PpService implements OnChanges{
   privacyPolicyData: PrivacyPolicy;
   serverUrl = 'http://127.0.0.1:5000/';
   progressBar: boolean = false;
@@ -57,5 +54,9 @@ export class PpService {
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log("I was changed!");
   }
 }

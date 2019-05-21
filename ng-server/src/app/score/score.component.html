@@ -1,3 +1,4 @@
-<p>
-  score works!
-</p>
+<div class="container" *ngIf="this.privacyPolicyService.privacyPolicyData">
+  <h2>Score: <span [className]="getClass()">
+    {{this.privacyPolicyService.privacyPolicyData.score}}</span></h2>
+</div>

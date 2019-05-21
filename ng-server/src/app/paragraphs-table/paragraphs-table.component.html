@@ -1,0 +1,18 @@
+<div class="container" *ngIf="this.privacyPolicyService.privacyPolicyData">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Index</th>
+      <th scope="col">Score</th>
+      <th scope="col">Text</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let paragraphRow of this.privacyPolicyService.privacyPolicyData.paragraphs">
+      <th scope="row">{{paragraphRow.index}}</th>
+      <td>{{paragraphRow.score}}</td>
+      <td [align]="'left'">{{paragraphRow.value}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

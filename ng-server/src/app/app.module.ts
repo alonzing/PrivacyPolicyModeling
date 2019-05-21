@@ -6,6 +6,7 @@ import { PpUrlSearchComponent } from './pp-url-search/pp-url-search.component';
 import { StatisticalTableComponent } from './statistical-table/statistical-table.component';
 import {HttpClientModule} from "@angular/common/http";
 import { ScoreComponent } from './score/score.component';
+import { ParagraphsTableComponent } from './paragraphs-table/paragraphs-table.component';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { ScoreComponent } from './score/score.component';
     PpUrlSearchComponent,
     StatisticalTableComponent,
     ScoreComponent,
+    ParagraphsTableComponent,
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule
