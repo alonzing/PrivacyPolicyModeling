@@ -85,7 +85,7 @@ def build_model_and_print(in_docs, topic_count):
 
 
 def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename,
-             script=get_all_paragraphs_from_db(), topic_count=100, save_from=0):
+             script=get_all_paragraphs_from_db(), single_predict=False, topic_count=100, save_from=0):
     if not os.path.exists(sframe_filename):
         print("Building SFrame file...")
         sframe_raw = build_SFrame_from_db(script)
@@ -115,6 +115,7 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
         docs_res = gl.load_sframe(predictions_filename)
 
     total_docs = len(docs_res)
+    single_predict_rows = []
     db_rows = []
     records_count = 0
     for i in range(save_from, total_docs):
@@ -123,6 +124,8 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
                   docs_res['res_prob'][i][docs_res['res'][i]], \
                   docs_res['X1'][i]]
         db_rows.append(db_row)
+        if single_predict:
+            single_predict_rows.append(db_row)
 
         if records_count == 100 or i == total_docs - 1:
             records_count = 0
@@ -134,7 +137,10 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
             print("saved up to {}".format(i))
         else:
             records_count += 1
-    return topic_count
+    if single_predict:
+        return single_predict_rows
+    else:
+        return topic_count
 
 
 def build_prediction_results(topic_count, model_file_name):
@@ -172,32 +178,35 @@ def build_prediction_results(topic_count, model_file_name):
 
     print("done")
 
+def get_filenames(sframe_raw_working_dir, sframe_working_dir, model_working_dir, predictions_working_dir):
+    sframe_raw_filename = sframe_raw_working_dir + os.path.sep + 'paragraphs.sfrm.raw'
+    sframe_filename = sframe_working_dir + os.path.sep + 'paragraphs.sfrm'
+    model_filename = model_working_dir + os.path.sep + 'paragraphs.mdl'
+    predictions_filename = predictions_working_dir + os.path.sep + 'paragraphs.prd'
+    return sframe_raw_filename, sframe_filename, model_filename, predictions_filename
 
 def build_topics_models():
     working_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, 'test')
     os.makedirs(working_dir)
     print('directory {0} was created'.format(working_dir))
-    sframe_raw_filename = working_dir + os.path.sep + 'paragraphs.sfrm.raw'
-    sframe_filename = working_dir + os.path.sep + 'paragraphs.sfrm'
-    model_filename = working_dir + os.path.sep + 'paragraphs.mdl'
-    predictions_filename = working_dir + os.path.sep + 'paragraphs.prd'
+    sframe_raw_filename, sframe_filename, model_filename, predictions_filename =\
+        get_filenames(working_dir, working_dir, working_dir, working_dir)
     topic_count = model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename)
     build_prediction_results(topic_count, model_filename)
 
 
 def build_from_exists_modeling(pp_url):
-    working_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, "pp11")
+    working_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, "pp16")
     working_model_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, 'test')
     if not os.path.exists(working_dir):
         os.makedirs(working_dir)
-    sframe_raw_filename = working_dir + os.path.sep + 'paragraphs.sfrm.raw'
-    sframe_filename = working_dir + os.path.sep + 'paragraphs.sfrm'
-    model_filename = working_model_dir + os.path.sep + 'paragraphs.mdl'
-    predictions_filename = working_dir + os.path.sep + 'paragraphs.prd'
+    sframe_raw_filename, sframe_filename, model_filename, predictions_filename =\
+        get_filenames(working_dir, working_dir, working_model_dir, working_dir)
     script = get_paragraphs_from_db_for_single_pp_url(pp_url)
-    model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename, script)
+    single_predict_rows = model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename, script, single_predict=True)
+    return single_predict_rows
 
 
-# build_topics_models()
+build_topics_models()
 pp_url = 'http://christianchannel.us/privacy-policy/'
 build_from_exists_modeling(pp_url)
