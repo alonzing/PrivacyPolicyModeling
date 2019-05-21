@@ -3,6 +3,10 @@
   display: flex;
 }
 
+.spinner-border {
+  display: flex;
+  float: left;
+}
 .form-control {
   float: left;
 }

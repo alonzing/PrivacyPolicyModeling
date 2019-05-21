@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {PpService} from "../../pp.service";
+import {PpService, PrivacyPolicy} from "../../pp.service";
 
 @Component({
   selector: 'app-pp-url-search',
@@ -13,11 +13,18 @@ export class PpUrlSearchComponent implements OnInit {
   constructor(private privacyPolicyService: PpService) {
   }
 
-  getPrivacyPolicyData(){
+  getPrivacyPolicyData() {
+    this.privacyPolicyService.progressBar = true;
     console.log("Submitted " + this.urlFormControl.value);
-    this.privacyPolicyService.getPrivacyPolicy(this.urlFormControl.value).subscribe();
+    this.privacyPolicyService.getPrivacyPolicy(this.urlFormControl.value).subscribe(
+      (privacyPolicyData: PrivacyPolicy) => {
+        this.privacyPolicyService.privacyPolicyData = privacyPolicyData;
+        this.privacyPolicyService.progressBar = false;
+      });
   }
-  ngOnInit() {}
+
+  ngOnInit() {
+  }
 
 
 }

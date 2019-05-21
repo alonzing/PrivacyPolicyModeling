@@ -8,18 +8,11 @@ import {PpService, PrivacyPolicy} from "../../pp.service";
 })
 export class StatisticalTableComponent implements OnInit {
 
-  privacyPolicyData: PrivacyPolicy;
-
   constructor(private privacyPolicyService: PpService) {
   }
 
-  getPrivacyPolicyData(): void {
-    this.privacyPolicyService.getPrivacyPolicy("")
-      .subscribe(privacyPolicyData => this.privacyPolicyData = privacyPolicyData);
-  }
 
   ngOnInit() {
-    // this.getPrivacyPolicyData();
   }
 
 }
