@@ -70,7 +70,7 @@ def get_pp_prediction_by_url():
         pp_id = url_record_http_ok[0].get('id')[0]
         cleaned_pp_records = clean_pp_html_records(url_record_http_ok)
         split_or_bypass_pp(cleaned_pp_records)
-        rows = build_from_exists_modeling(url)
+        rows = build_from_exists_modeling(url, pp_id)
     return json.dumps(place_holder_response(url))
     # response = place_holder_response(url)
     # return json.dumps(response)
