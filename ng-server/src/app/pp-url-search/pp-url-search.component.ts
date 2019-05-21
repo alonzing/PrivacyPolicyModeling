@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {PpService, PrivacyPolicy} from "../../pp.service";
+import {ParagraphRow, PpService, PrivacyPolicy} from "../../pp.service";
 
 @Component({
   selector: 'app-pp-url-search',
@@ -19,8 +19,22 @@ export class PpUrlSearchComponent implements OnInit {
     this.privacyPolicyService.getPrivacyPolicy(this.urlFormControl.value).subscribe(
       (privacyPolicyData: PrivacyPolicy) => {
         this.privacyPolicyService.privacyPolicyData = privacyPolicyData;
+        this.removeDuplicates();
         this.privacyPolicyService.progressBar = false;
       });
+  }
+
+  removeDuplicates(){
+    let currentParagraphIndex = -1;
+    let modifiedParagraphs: ParagraphRow[] = [];
+
+    for (let paragraphRow of this.privacyPolicyService.privacyPolicyData.paragraphs){
+      if(paragraphRow.index > currentParagraphIndex){
+        modifiedParagraphs.push(paragraphRow);
+        currentParagraphIndex++;
+      }
+    }
+    this.privacyPolicyService.privacyPolicyData.paragraphs = modifiedParagraphs;
   }
 
   ngOnInit() {

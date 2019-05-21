@@ -1,9 +1,10 @@
-import {Injectable, OnChanges, SimpleChanges} from '@angular/core';
+import {Injectable, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
+
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
 export interface TableRow {
@@ -17,6 +18,7 @@ export interface ParagraphRow {
   score: number;
   value: string;
 }
+
 export interface PrivacyPolicy {
   table: TableRow[];
   paragraphs: ParagraphRow[];
@@ -28,15 +30,17 @@ export interface PrivacyPolicy {
   providedIn: 'root'
 })
 
-export class PpService implements OnChanges{
+export class PpService {
   privacyPolicyData: PrivacyPolicy;
   serverUrl = 'http://127.0.0.1:5000/';
   progressBar: boolean = false;
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient) {
+  }
 
   getPrivacyPolicy(privacyPolicyUrl: string): Observable<PrivacyPolicy> {
     const url = `pp-prediction?url=${privacyPolicyUrl}`;
-    return this.http.get<PrivacyPolicy>(this.serverUrl + url,httpOptions).pipe(
+    return this.http.get<PrivacyPolicy>(this.serverUrl + url, httpOptions).pipe(
       tap(() => console.log(`fetched privacy policy ${privacyPolicyUrl}`)),
       catchError(this.handleError<PrivacyPolicy>(`getPrivacyPolicy privacyPolicyUrl=${privacyPolicyUrl}`))
     );
@@ -54,9 +58,5 @@ export class PpService implements OnChanges{
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log("I was changed!");
   }
 }
