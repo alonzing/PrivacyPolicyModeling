@@ -178,12 +178,14 @@ def build_prediction_results(topic_count, model_file_name):
 
     print("done")
 
+
 def get_filenames(sframe_raw_working_dir, sframe_working_dir, model_working_dir, predictions_working_dir):
     sframe_raw_filename = sframe_raw_working_dir + os.path.sep + 'paragraphs.sfrm.raw'
     sframe_filename = sframe_working_dir + os.path.sep + 'paragraphs.sfrm'
     model_filename = model_working_dir + os.path.sep + 'paragraphs.mdl'
     predictions_filename = predictions_working_dir + os.path.sep + 'paragraphs.prd'
     return sframe_raw_filename, sframe_filename, model_filename, predictions_filename
+
 
 def build_topics_models():
     working_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, 'test')
@@ -195,8 +197,8 @@ def build_topics_models():
     build_prediction_results(topic_count, model_filename)
 
 
-def build_from_exists_modeling(pp_url):
-    working_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, "pp16")
+def build_from_exists_modeling(pp_url, pp_id):
+    working_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, "pp_" + str(pp_id))
     working_model_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, 'test')
     if not os.path.exists(working_dir):
         os.makedirs(working_dir)
@@ -204,9 +206,10 @@ def build_from_exists_modeling(pp_url):
         get_filenames(working_dir, working_dir, working_model_dir, working_dir)
     script = get_paragraphs_from_db_for_single_pp_url(pp_url)
     single_predict_rows = model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename, script, single_predict=True)
+    shutil.rmtree(working_dir)
     return single_predict_rows
 
 
-build_topics_models()
+# build_topics_models()
 pp_url = 'http://christianchannel.us/privacy-policy/'
-build_from_exists_modeling(pp_url)
+build_from_exists_modeling(pp_url, 1940)
