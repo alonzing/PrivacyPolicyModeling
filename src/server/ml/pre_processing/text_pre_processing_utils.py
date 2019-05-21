@@ -38,7 +38,10 @@ def insert_single_pp_html_to_db(pp_url):
         if hasattr(e, 'code'):
             code = e.code
         db_handler.insert_db_no_respond(pp_url, code, e)
-    return pp_id[0], pp_html
+    if pp_id is None:
+        return None, None
+    else:
+        return pp_id[0], pp_html
 
 
 def load_pp_html_to_db(url_records):
