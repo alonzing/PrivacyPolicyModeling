@@ -206,7 +206,7 @@ def build_from_exists_modeling(pp_url):
     single_predict_rows = model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename, script, single_predict=True)
     return single_predict_rows
 
-
-build_topics_models()
-pp_url = 'http://christianchannel.us/privacy-policy/'
-build_from_exists_modeling(pp_url)
+#
+# build_topics_models()
+# pp_url = 'http://christianchannel.us/privacy-policy/'
+# build_from_exists_modeling(pp_url)

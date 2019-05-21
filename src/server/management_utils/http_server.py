@@ -7,6 +7,7 @@ from flask import Flask, request
 
 from src.server.ml.pre_processing.text_pre_processing_utils import load_pp_html_to_db, clean_pp_html_records, \
     split_or_bypass_pp, insert_single_pp_html_to_db
+from src.server.ml.topic_modeling.pp_topic_modeling import build_from_exists_modeling
 
 http_server = Flask(__name__)
 db_query_handler = http_server_db_handler.HttpServerDBHandler()
@@ -54,7 +55,7 @@ def place_holder_response(url):
     paragraphs_records = db_query_handler.paragraph_by_url_query(url)
     paragraph_list = [{'index': int(paragraph_record['index']),
                        'value': paragraph_record['paragraph'],
-                       'score': 0.3} for paragraph_record in paragraphs_records]
+                       'topic': 0.3} for paragraph_record in paragraphs_records]
     response['paragraphs'] = paragraph_list
     return response
 
@@ -66,8 +67,10 @@ def get_pp_prediction_by_url():
 
     if url_record_http_ok:
         # http status was 200: OK
+        pp_id = url_record_http_ok[0].get('id')[0]
         cleaned_pp_records = clean_pp_html_records(url_record_http_ok)
         split_or_bypass_pp(cleaned_pp_records)
+        rows = build_from_exists_modeling(url)
     return json.dumps(place_holder_response(url))
     # response = place_holder_response(url)
     # return json.dumps(response)
