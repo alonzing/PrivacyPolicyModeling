@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { PpUrlSearchComponent } from './pp-url-search/pp-url-search.component';
 import { StatisticalTableComponent } from './statistical-table/statistical-table.component';
 import {HttpClientModule} from "@angular/common/http";
-import { SpinnerComponent } from './spinner/spinner.component';
+import { ScoreComponent } from './score/score.component';
 
 
 @NgModule({
@@ -13,7 +13,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
     AppComponent,
     PpUrlSearchComponent,
     StatisticalTableComponent,
-    SpinnerComponent,
+    ScoreComponent,
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule

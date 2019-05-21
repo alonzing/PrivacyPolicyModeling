@@ -4,14 +4,17 @@
 }
 
 .spinner-border {
-  display: flex;
-  float: left;
+  display: inline;
+  align-self: center;
+  margin-right: 10px;
 }
+
 .form-control {
   float: left;
 }
 
 .btn {
   float: right;
+  display: inline-flex;
   margin-left: 10px;
 }
