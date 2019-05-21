@@ -47,7 +47,7 @@ class httpServer {
                 console.log('');
             }
 
-            if(req.url === '/') {
+            if(req.urlFormControl === '/') {
                 // if we're on the home page
                 console.log('Entered the home page!'); // Will be displayed on server console
                 var str = '{ "commandID": "1", "param": "http://www.mizostudio.com/privacy-policy.htm" }';
@@ -57,7 +57,7 @@ class httpServer {
                 res.write('This is the home page!'); // Will be displayed on web page
             }
 
-            if(req.url === '/api/pp/') {
+            if(req.urlFormControl === '/api/pp/') {
                 console.log('Entered the PP page!'); // Will be displayed on server console
                 res.write('This is the PP page!'); // Will be displayed on web page
             }
