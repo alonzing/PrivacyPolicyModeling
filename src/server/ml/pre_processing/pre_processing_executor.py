@@ -2,9 +2,8 @@ import threading
 import time
 from Queue import Queue
 
-from text_pre_processing_utils import load_pp_html_to_db, clean_pp_html_records, \
-    split_or_bypass_pp, load_pp_from_db
-
+from src.server.ml.pre_processing.text_pre_processing_utils import load_pp_html_to_db, clean_pp_html_records, split_or_bypass_pp, load_pp_from_db
+from src.server.utils.db.tools import db_utils
 
 class PreProcessingExecutor:
 
@@ -43,7 +42,7 @@ class PreProcessingExecutor:
             if url_records is None:
                 time.sleep(5)
                 continue
-            print(thread_name + " started to produce " + str(counter) + " times")
+            print(thread_name + " started to produce " + str(counter ) + " times")
             self._queue.put(url_records)
 
     def _init_consumers(self, consumers_number):
@@ -70,3 +69,4 @@ class PreProcessingExecutor:
 
 executor = PreProcessingExecutor(consumers_number=10, batch_size=5)
 executor.start_produce_and_consume(timeout=0)
+
