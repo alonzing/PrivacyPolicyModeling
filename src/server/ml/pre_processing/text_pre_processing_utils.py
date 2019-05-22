@@ -10,7 +10,7 @@ from unidecode import unidecode
 
 from contractions_dict import ContractionsDict
 from pre_processing_db_handler import PreProcessingDBHandler
-from ...utils.db.tools import db_utils
+from src.server.utils.db.tools import db_utils
 
 punc_reg = re.compile('[{}]'.format(re.escape(string.punctuation)))
 db_handler = PreProcessingDBHandler()

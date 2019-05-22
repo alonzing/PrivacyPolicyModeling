@@ -1,6 +1,8 @@
-from ...utils.db.tools import DBUtils
+
 
 # Statuses
+from src.server.utils.db.tools import DBUtils
+
 HTTP_OK_200 = 'HTTP OK 200'
 HTML_CLEANED = 'HTML_CLEANED'
 PENDING = 'PENDING'

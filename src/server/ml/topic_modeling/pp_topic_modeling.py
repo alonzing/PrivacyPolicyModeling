@@ -2,7 +2,7 @@ import os
 import shutil
 import graphlab as gl
 
-from ...utils.db.tools import db_utils
+from src.server.utils.db.tools import db_utils
 
 
 def build_SFrame_from_db(script):
