@@ -6,8 +6,8 @@ import traceback
 from multiprocessing.pool import ThreadPool
 
 from modified_play_scraper.lists import CATEGORIES, COLLECTIONS
-from src.server.crawler import modified_play_scraper as play_scraper
-from src.server.utils.db.tools import db_utils
+import modified_play_scraper as play_scraper
+from ..utils.db.tools import db_utils
 
 
 def id_generator(size=6, chars=string.ascii_lowercase):

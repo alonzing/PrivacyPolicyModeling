@@ -1,4 +1,4 @@
-from src.server.utils.db.tools import DBUtils
+from ...utils.db.tools import DBUtils
 
 # Statuses
 HTTP_OK_200 = 'HTTP OK 200'
