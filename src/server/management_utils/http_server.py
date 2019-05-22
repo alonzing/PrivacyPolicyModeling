@@ -1,12 +1,14 @@
 import json
 import http_server_db_handler
 from flask import Flask, request
+from flask_cors import CORS
 
 from src.server.ml.pre_processing.text_pre_processing_utils import load_pp_html_to_db, clean_pp_html_records, \
-    split_or_bypass_pp, insert_single_pp_html_to_db
+    split_or_bypass_pp
 from src.server.ml.topic_modeling.pp_topic_modeling import build_from_exists_modeling
 
 http_server = Flask(__name__)
+CORS(http_server)
 db_query_handler = http_server_db_handler.HttpServerDBHandler()
 
 
@@ -55,6 +57,12 @@ def place_holder_response(url):
                        'topic': 0.3} for paragraph_record in paragraphs_records]
     response['paragraphs'] = paragraph_list
     return response
+
+
+@http_server.route('/app-categories', methods=['GET'])
+def get_app_categories():
+    categories = db_query_handler.get_categories()
+    return json.dumps(categories)
 
 
 @http_server.route('/pp-prediction', methods=['GET'])

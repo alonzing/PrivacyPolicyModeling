@@ -43,3 +43,8 @@ class HttpServerDBHandler:
                                 WHERE pp_url LIKE '{0}' LIMIT 1)
                     AND privacy_policy_paragraphs.pp_url LIKE applications.pp_url""".format(url)
         return self.db_util.db_select(query)
+
+    def get_categories(self):
+        query = """SELECT DISTINCT category
+                    FROM applications"""
+        return self.db_util.db_select(query)
