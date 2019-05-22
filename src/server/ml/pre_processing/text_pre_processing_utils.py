@@ -8,9 +8,9 @@ from langid.langid import LanguageIdentifier, model
 from nltk.tokenize.texttiling import TextTilingTokenizer
 from unidecode import unidecode
 
-from src.server.ml.pre_processing.contractions_dict import ContractionsDict
-from src.server.ml.pre_processing.pre_processing_db_handler import PreProcessingDBHandler
-from src.server.utils.db.tools import db_utils
+from contractions_dict import ContractionsDict
+from pre_processing_db_handler import PreProcessingDBHandler
+from ...utils.db.tools import db_utils
 
 punc_reg = re.compile('[{}]'.format(re.escape(string.punctuation)))
 db_handler = PreProcessingDBHandler()
