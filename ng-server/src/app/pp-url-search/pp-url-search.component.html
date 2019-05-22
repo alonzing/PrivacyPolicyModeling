@@ -2,9 +2,12 @@
   <form (ngSubmit)="getPrivacyPolicyData()">
     <div class="form-group">
       <input type="text" class="form-control" [formControl]="urlFormControl" placeholder="Privacy Policy Url">
-      <button type="submit" class="btn btn-primary" *ngIf="!this.privacyPolicyService.progressBar">Submit</button>
-      <button class="btn btn-primary" type="submit" disabled *ngIf="this.privacyPolicyService.progressBar">
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...</button>
+      <button mat-raised-button color="primary" type="submit" *ngIf="!this.privacyPolicyService.progressBar">Submit
+      </button>
+      <button mat-raised-button color="primary" class="btn btn-primary" type="submit" disabled
+              *ngIf="this.privacyPolicyService.progressBar">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...
+      </button>
     </div>
   </form>
 </div>

@@ -1,14 +1,22 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgModule, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {ParagraphRow, PpService, PrivacyPolicy} from "../../pp.service";
+import {MatButtonModule} from '@angular/material/button';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @Component({
   selector: 'app-pp-url-search',
   templateUrl: './pp-url-search.component.html',
   styleUrls: ['./pp-url-search.component.css']
 })
+
+@NgModule({
+  imports: [MatButtonModule, BrowserAnimationsModule]
+})
+
 export class PpUrlSearchComponent implements OnInit {
   urlFormControl = new FormControl('');
+
 
   constructor(public privacyPolicyService: PpService) {
   }
