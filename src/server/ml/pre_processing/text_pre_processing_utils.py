@@ -26,6 +26,24 @@ def load_pp_from_db(batch_size):
     return url_records
 
 
+def insert_single_pp_html_to_db(pp_url):
+    pp_id = None
+    pp_html = None
+    try:
+        pp_html = urllib2.urlopen(pp_url, timeout=5).read().decode('utf-8')
+        pp_id = db_handler.insert_db_http_ok(pp_url, pp_html)
+    except Exception as e:
+        print(e)
+        code = -1
+        if hasattr(e, 'code'):
+            code = e.code
+        db_handler.insert_db_no_respond(pp_url, code, e)
+    if pp_id is None:
+        return None, None
+    else:
+        return pp_id[0], pp_html
+
+
 def load_pp_html_to_db(url_records):
     """
     Loads limited number of HTML files from new (unprocessed) URLs to the privacy_policy table.
@@ -36,16 +54,9 @@ def load_pp_html_to_db(url_records):
     if len(url_records) == 0:
         return
     for url_record in url_records:
-        try:
-            pp_html = urllib2.urlopen(url_record.get('pp_url'), timeout=5).read().decode('utf-8')
-            pp_id = db_handler.insert_db_http_ok(url_record, pp_html)
-            url_records_http_ok.append({'pp_url': url_record[0], 'html': pp_html, 'id': pp_id[0]})
-        except Exception as e:
-            print(e)
-            code = -1
-            if hasattr(e, 'code'):
-                code = e.code
-            db_handler.insert_db_no_respond(url_record, code, e)
+        pp_id, pp_html = insert_single_pp_html_to_db(url_record.get('pp_url'))
+        if pp_id is not None:
+            url_records_http_ok.append({'pp_url': url_record.get('pp_url'), 'html': pp_html, 'id': pp_id})
     return url_records_http_ok
 
 

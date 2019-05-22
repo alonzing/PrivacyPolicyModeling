@@ -47,12 +47,12 @@ class PreProcessingDBHandler:
     def update_application_not_new(self, url_record):
         self.db_util.exec_command(self._update_is_new.format(url_record))
 
-    def insert_db_http_ok(self, url_record, pp_html):
+    def insert_db_http_ok(self, pp_url, pp_html):
         return self.db_util.exec_command_with_result("""INSERT INTO privacy_policy (pp_url,html,process_status,url_return_code,"""
-                                  """url_return_value) VALUES (%s,%s,%s,%s,%s) RETURNING id """, (url_record.get("pp_url"), pp_html, PENDING, "200", HTTP_OK_200))
+                                  """url_return_value) VALUES (%s,%s,%s,%s,%s) RETURNING id """, (pp_url, pp_html, PENDING, "200", HTTP_OK_200))
 
-    def insert_db_no_respond(self, url_record, code, e):
-        db_rows = [[url_record.get("pp_url"), NO_RESPONSE, "{}".format(code), "{}".format(e)]]
+    def insert_db_no_respond(self, pp_url, code, e):
+        db_rows = [[pp_url, NO_RESPONSE, "{}".format(code), "{}".format(e)]]
         self.db_util.exec_command("INSERT INTO privacy_policy (pp_url,process_status,url_return_code,"
                                   "url_return_value) VALUES (%s,%s,%s,%s)", db_rows)
 

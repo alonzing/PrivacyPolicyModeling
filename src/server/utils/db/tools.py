@@ -73,7 +73,7 @@ class DBUtils:
             logging.exception(sys.exc_info()[0])
         finally:
             if conn is not None:
-                conn.close
+                conn.close()
 
 
 db_utils = DBUtils()

@@ -211,5 +211,5 @@ def build_from_exists_modeling(pp_url, pp_id):
 
 
 # build_topics_models()
-pp_url = 'http://christianchannel.us/privacy-policy/'
-build_from_exists_modeling(pp_url, 1940)
+# pp_url = 'http://christianchannel.us/privacy-policy/'
+# build_from_exists_modeling(pp_url, 1940)
