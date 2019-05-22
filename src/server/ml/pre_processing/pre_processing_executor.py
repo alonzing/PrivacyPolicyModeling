@@ -1,8 +1,7 @@
 import threading
 import time
 from Queue import Queue
-from src.server.ml.pre_processing.text_pre_processing_utils import load_pp_html_to_db, clean_pp_html_records, \
-    split_or_bypass_pp, load_pp_from_db
+from src.server.ml.pre_processing.text_pre_processing_utils import load_pp_html_to_db, clean_pp_html_records, split_or_bypass_pp, load_pp_from_db
 from src.server.utils.db.tools import db_utils
 
 
