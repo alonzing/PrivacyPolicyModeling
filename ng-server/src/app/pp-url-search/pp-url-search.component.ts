@@ -10,7 +10,7 @@ import {ParagraphRow, PpService, PrivacyPolicy} from "../../pp.service";
 export class PpUrlSearchComponent implements OnInit {
   urlFormControl = new FormControl('');
 
-  constructor(private privacyPolicyService: PpService) {
+  constructor(public privacyPolicyService: PpService) {
   }
 
   getPrivacyPolicyData() {
@@ -18,18 +18,22 @@ export class PpUrlSearchComponent implements OnInit {
     console.log("Submitted " + this.urlFormControl.value);
     this.privacyPolicyService.getPrivacyPolicy(this.urlFormControl.value).subscribe(
       (privacyPolicyData: PrivacyPolicy) => {
+        if (privacyPolicyData == null) {
+          this.privacyPolicyService.progressBar = false;
+          return
+        }
         this.privacyPolicyService.privacyPolicyData = privacyPolicyData;
         this.removeDuplicates();
         this.privacyPolicyService.progressBar = false;
       });
   }
 
-  removeDuplicates(){
+  removeDuplicates() {
     let currentParagraphIndex = -1;
     let modifiedParagraphs: ParagraphRow[] = [];
 
-    for (let paragraphRow of this.privacyPolicyService.privacyPolicyData.paragraphs){
-      if(paragraphRow.index > currentParagraphIndex){
+    for (let paragraphRow of this.privacyPolicyService.privacyPolicyData.paragraphs) {
+      if (paragraphRow.index > currentParagraphIndex) {
         modifiedParagraphs.push(paragraphRow);
         currentParagraphIndex++;
       }

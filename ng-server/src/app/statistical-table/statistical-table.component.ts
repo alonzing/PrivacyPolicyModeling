@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {PpService, PrivacyPolicy} from "../../pp.service";
+import {PpService} from "../../pp.service";
 
 @Component({
   selector: 'app-statistical-table',
@@ -8,7 +8,7 @@ import {PpService, PrivacyPolicy} from "../../pp.service";
 })
 export class StatisticalTableComponent implements OnInit {
 
-  constructor(private privacyPolicyService: PpService) {
+  constructor(public privacyPolicyService: PpService) {
   }
 
 

@@ -8,7 +8,7 @@ import {PpService} from "../../pp.service";
 })
 export class ParagraphsTableComponent implements OnInit {
 
-  constructor(private privacyPolicyService: PpService) { }
+  constructor(public privacyPolicyService: PpService) { }
 
   ngOnInit() {
   }

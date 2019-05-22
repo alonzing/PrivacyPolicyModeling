@@ -7,6 +7,9 @@ import { StatisticalTableComponent } from './statistical-table/statistical-table
 import {HttpClientModule} from "@angular/common/http";
 import { ScoreComponent } from './score/score.component';
 import { ParagraphsTableComponent } from './paragraphs-table/paragraphs-table.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { TestComponent } from './test/test.component';
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 
 @NgModule({
@@ -16,9 +19,10 @@ import { ParagraphsTableComponent } from './paragraphs-table/paragraphs-table.co
     StatisticalTableComponent,
     ScoreComponent,
     ParagraphsTableComponent,
+    TestComponent,
   ],
   imports: [
-    BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule
+    BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule, BrowserAnimationsModule, MatProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
