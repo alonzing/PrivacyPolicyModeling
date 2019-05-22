@@ -1,7 +1,4 @@
 import json
-
-from psycopg2.extras import DictRow
-
 import http_server_db_handler
 from flask import Flask, request
 
