@@ -1,8 +1,10 @@
 import {Component, NgModule, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {FormControl, Validators} from '@angular/forms';
 import {ParagraphRow, PpService, PrivacyPolicy} from "../../pp.service";
 import {MatButtonModule} from '@angular/material/button';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-pp-url-search',
@@ -11,20 +13,22 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 })
 
 @NgModule({
-  imports: [MatButtonModule, BrowserAnimationsModule]
+  imports: [MatButtonModule, BrowserAnimationsModule, MatInputModule, MatFormFieldModule]
 })
 
 export class PpUrlSearchComponent implements OnInit {
-  urlFormControl = new FormControl('');
 
+  pPUrl = new FormControl('', [
+    Validators.required,
+  ]);
 
   constructor(public privacyPolicyService: PpService) {
   }
 
   getPrivacyPolicyData() {
     this.privacyPolicyService.progressBar = true;
-    console.log("Submitted " + this.urlFormControl.value);
-    this.privacyPolicyService.getPrivacyPolicy(this.urlFormControl.value).subscribe(
+    console.log("Submitted " + this.pPUrl.value);
+    this.privacyPolicyService.getPrivacyPolicy(this.pPUrl.value).subscribe(
       (privacyPolicyData: PrivacyPolicy) => {
         if (privacyPolicyData == null) {
           this.privacyPolicyService.progressBar = false;

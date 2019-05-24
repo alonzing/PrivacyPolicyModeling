@@ -10,7 +10,7 @@ import { ParagraphsTableComponent } from './paragraphs-table/paragraphs-table.co
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { TestComponent } from './test/test.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
-import {MatButtonModule} from "@angular/material";
+import {MatButtonModule, MatFormFieldModule, MatInputModule} from "@angular/material";
 
 
 @NgModule({
@@ -23,7 +23,7 @@ import {MatButtonModule} from "@angular/material";
     TestComponent,
   ],
   imports: [
-    BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule, BrowserAnimationsModule, MatProgressBarModule, MatButtonModule
+    BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule, BrowserAnimationsModule, MatProgressBarModule, MatButtonModule, MatFormFieldModule, MatInputModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

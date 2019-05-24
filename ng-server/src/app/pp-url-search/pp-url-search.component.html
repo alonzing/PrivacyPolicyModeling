@@ -1,14 +1,18 @@
 <div class="container">
-  <form (ngSubmit)="getPrivacyPolicyData()">
-    <div class="form-group">
-      <input type="text" class="form-control" [formControl]="urlFormControl" placeholder="Privacy Policy Url">
-      <button mat-raised-button color="primary" type="submit" *ngIf="!this.privacyPolicyService.progressBar">Submit
-      </button>
-      <button mat-raised-button color="primary" class="btn btn-primary" type="submit" disabled
-              *ngIf="this.privacyPolicyService.progressBar">
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...
-      </button>
-    </div>
+  <form class="example-form" (ngSubmit)="getPrivacyPolicyData()">
+    <mat-form-field class="example-full-width">
+      <label>
+        <input matInput placeholder="Privacy Policy URL" [formControl]="pPUrl">
+      </label>
+      <mat-error *ngIf="!pPUrl.hasError('required')"> Please enter a valid email address</mat-error>
+      <mat-error *ngIf="pPUrl.hasError('required')">
+        Privacy policy URL is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit"
+            [disabled]="this.privacyPolicyService.progressBar">{{!this.privacyPolicyService.progressBar ? "Submit" :
+      "Loading..."}}
+    </button>
   </form>
 </div>
 <app-test *ngIf="privacyPolicyService.progressBar"></app-test>
