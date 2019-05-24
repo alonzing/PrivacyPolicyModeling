@@ -30,7 +30,7 @@ def _scrape_category(collection_value, category_value):
                 db_row = [str(result.get('app_id')).replace('\'', '\'\''),
                           str(result.get('developer_id')).replace('\'', '\'\''), result.get(
                         'category')[0], url, pp_url]
-
+                
                 crawler_db_handler.insert_to_application_table(db_row)
         except:
             # Must NOT print anything to stdout from thread

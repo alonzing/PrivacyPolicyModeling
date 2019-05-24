@@ -1,0 +1,29 @@
+.form-group {
+  margin-top: 15px;
+  display: flex;
+}
+
+/*.spinner-border {*/
+/*  display: inline;*/
+/*  align-self: center;*/
+/*  margin-right: 10px;*/
+/*}*/
+
+.form-control {
+  float: left;
+}
+
+button {
+  float: right;
+  display: inline-flex;
+  margin-left: 10px;
+  height: fit-content;
+}
+
+.example-form {
+  display: flex;
+}
+
+.example-full-width {
+  width: 100%;
+}

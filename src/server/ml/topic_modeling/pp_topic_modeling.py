@@ -137,6 +137,7 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
             print("saved up to {}".format(i))
         else:
             records_count += 1
+
     if single_predict:
         return single_predict_rows
     else:

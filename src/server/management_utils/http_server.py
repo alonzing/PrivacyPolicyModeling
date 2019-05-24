@@ -55,9 +55,9 @@ def place_holder_response(url):
     paragraph_list = [{'index': int(paragraph_record['index']),
                        'value': paragraph_record['paragraph'],
                        'topic': 0.3} for paragraph_record in paragraphs_records]
+
     response['paragraphs'] = paragraph_list
     return response
-
 
 @http_server.route('/app-categories', methods=['GET'])
 def get_app_categories():
