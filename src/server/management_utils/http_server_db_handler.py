@@ -10,7 +10,7 @@ class HttpServerDBHandler:
                             SELECT category from applications GROUP BY category ORDER BY category ASC ) \
                             GROUP BY pp_url) ORDER BY id"
         self.paragraphs_table_query_str = "SELECT privacy_policy_id,pp_url from privacy_policy_paragraphs" \
-                                      " GROUP BY privacy_policy_id,pp_url ORDER BY privacy_policy_id ASC"
+                                          " GROUP BY privacy_policy_id,pp_url ORDER BY privacy_policy_id ASC"
 
     def main_table_query(self):
         return self.db_util.db_select(self.main_table_query_str)
@@ -29,7 +29,11 @@ class HttpServerDBHandler:
     def paragraph_by_url_query(self, url):
         query = "SELECT * FROM privacy_policy_paragraphs WHERE pp_url LIKE \'{0}\' ORDER BY index ASC".format(url)
         return self.db_util.db_select(query)
-
+      
+    def metadata_by_url_query(self, url):
+        query = r"SELECT * FROM applications WHERE pp_url LIKE '{0}'".format(url)
+        return self.db_util.db_select(query)
+      
     def prediction_query_by_url(self, url):
         query = """SELECT name, developer, category, dev_url, applications.pp_url, index
                     FROM applications, privacy_policy_paragraphs
@@ -38,4 +42,9 @@ class HttpServerDBHandler:
                                 FROM applications 
                                 WHERE pp_url LIKE '{0}' LIMIT 1)
                     AND privacy_policy_paragraphs.pp_url LIKE applications.pp_url""".format(url)
+        return self.db_util.db_select(query)
+
+    def get_categories(self):
+        query = """SELECT DISTINCT category
+                    FROM applications"""
         return self.db_util.db_select(query)

@@ -5,7 +5,7 @@ def init_applications_table():
     db_utils.exec_command("DROP TABLE applications")
     db_utils.exec_command(
         "CREATE TABLE applications (id serial not null primary key, name text, developer text, category name, "
-        "dev_url text , pp_url text, date_added date)")
+        "dev_url text , pp_url text, is_new boolean DEFAULT true )")
 
 
 def init_pp_tables():
@@ -30,4 +30,5 @@ def init_db():
     init_paragraphs_prediction_tables()
 
 
-init_db()
+if __name__ == '__main__':
+    init_db()
