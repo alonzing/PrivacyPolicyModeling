@@ -45,9 +45,8 @@ class PreProcessingExecutor:
             if url_records is None:
                 time.sleep(5)
                 continue
-            url_records_ok = load_pp_html_to_db(url_records)
             print(thread_name + " started to produce " + str(counter ) + " times")
-            self._queue.put(url_records_ok)
+            self._queue.put(url_records)
             time.sleep(1)
 
     def _init_consumers(self, consumers_number):
@@ -62,9 +61,10 @@ class PreProcessingExecutor:
         while not self._should_stop:
             print(thread_name + " started to consume " + str(counter + 1) + " times")
             counter += 1
-            url_records_ok = self._queue.get(block=True)
-            if url_records_ok is None or len(url_records_ok) == 0:
+            url_records = self._queue.get(block=True)
+            if url_records is None or len(url_records) == 0:
                 continue
+            url_records_ok = load_pp_html_to_db(url_records)
             cleaned_pp_records = clean_pp_html_records(url_records_ok)
             time.sleep(1)
             split_or_bypass_pp(cleaned_pp_records)

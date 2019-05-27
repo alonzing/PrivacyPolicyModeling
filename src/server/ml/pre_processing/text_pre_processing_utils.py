@@ -31,6 +31,7 @@ def insert_single_pp_html_to_db(pp_url, db_no_respond):
     try:
         pp_html = urllib2.urlopen(pp_url, timeout=5).read().decode('utf-8')
         pp_id = db_handler.insert_db_http_ok(pp_url, pp_html)
+        print("url " + pp_url + " was opened successfully")
     except Exception as e:
         print(e)
         code = -1
