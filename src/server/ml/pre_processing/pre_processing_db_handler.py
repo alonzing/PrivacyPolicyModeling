@@ -30,7 +30,7 @@ class PreProcessingDBHandler:
                                                                                            PP_SPLIT_FAILED)
 
         self._update_pp_process_status_str = "UPDATE privacy_policy SET process_status = %s where id=%s"
-        self._update_is_new = "UPDATE applications SET is_new = false where pp_url='{}'"
+        self._update_is_new = "UPDATE applications SET is_new = false where pp_url=%s"
 
     def sql_get_cleaned_html_files(self, limit=None):
         return self._clean_html_files if not limit \
@@ -44,20 +44,27 @@ class PreProcessingDBHandler:
         return self._pp_pending_200_table if not limit \
             else self._pp_pending_200_table + ' limit {}'.format(limit)
 
-    def update_application_not_new(self, url_record):
-        self.db_util.exec_command(self._update_is_new.format(url_record))
+    def update_application_not_new(self, url_records):
+        db_rows = []
+        for url_record in url_records:
+            db_rows.append([url_record[0]])
+        self.db_util.exec_command(self._update_is_new, db_rows)
 
     def insert_db_http_ok(self, pp_url, pp_html):
         return self.db_util.exec_command_with_result("""INSERT INTO privacy_policy (pp_url,html,process_status,url_return_code,"""
                                   """url_return_value) VALUES (%s,%s,%s,%s,%s) RETURNING id """, (pp_url, pp_html, PENDING, "200", HTTP_OK_200))
 
-    def insert_db_no_respond(self, pp_url, code, e):
-        db_rows = [[pp_url, NO_RESPONSE, "{}".format(code), "{}".format(e)]]
+    def insert_db_no_respond(self, db_no_responds):
+        db_rows = []
+        for db_no_respond in db_no_responds:
+            db_rows.append([db_no_respond[0], NO_RESPONSE, "{}".format(db_no_respond[1]), "{}".format(db_no_respond[2])])
         self.db_util.exec_command("INSERT INTO privacy_policy (pp_url,process_status,url_return_code,"
                                   "url_return_value) VALUES (%s,%s,%s,%s)", db_rows)
 
-    def update_html_cleaned(self, result, pp_html_record):
-        db_rows = [[HTML_CLEANED, NA, result, pp_html_record.get("id")]]
+    def update_html_cleaned(self, result_records):
+        db_rows = []
+        for result_record in result_records:
+            db_rows.append([HTML_CLEANED, NA, result_record.get("clean_html"), result_record.get("id")])
         self.db_util.exec_command("UPDATE privacy_policy SET process_status = %s,process_status_details = %s, "
                                   "clean_html = %s where id=%s", db_rows)
 
@@ -65,18 +72,17 @@ class PreProcessingDBHandler:
         self.db_util.exec_command("INSERT INTO privacy_policy_paragraphs (paragraph,pp_url,index,privacy_policy_id) "
                                   "VALUES (%s,%s,%s,%s)", db_rows)
 
-    def pp_split_ok(self, html_record):
-        db_rows = [[PP_SPLIT_OK, html_record.get("id")]]
-        self._update_pp_process_status_query(db_rows)
+    def pp_split_ok(self, html_records):
+        self._update_pp_process_status_query(html_records, PP_SPLIT_OK)
 
-    def pp_split_failed(self, html_record):
-        db_rows = [[PP_SPLIT_FAILED, html_record.get("id")]]
-        self._update_pp_process_status_query(db_rows)
+    def pp_split_failed(self, html_records):
+        self._update_pp_process_status_query(html_records, PP_SPLIT_FAILED)
 
-    def pp_defective(self, html_record):
-        db_rows = [[PP_DEFECTIVE, html_record.get("id")]]
-        self._update_pp_process_status_query(db_rows)
+    def pp_defective(self, html_records):
+        self._update_pp_process_status_query(html_records, PP_DEFECTIVE)
 
-    def _update_pp_process_status_query(self, db_rows):
+    def _update_pp_process_status_query(self, html_records, status):
+        db_rows = []
+        for html_record in html_records:
+            db_rows.append([status, html_record.get("id")])
         self.db_util.exec_command(self._update_pp_process_status_str, db_rows)
-
