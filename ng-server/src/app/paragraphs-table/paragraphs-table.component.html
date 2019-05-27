@@ -1,18 +1,49 @@
-<div class="container" *ngIf="this.privacyPolicyService.privacyPolicyData">
-  <table class="table table table-striped table-dark">
-    <thead>
-    <tr>
-      <th scope="col">Index</th>
-      <th scope="col">Score</th>
-      <th scope="col">Text</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let paragraphRow of this.privacyPolicyService.privacyPolicyData.paragraphs">
-      <th scope="row">{{paragraphRow.index}}</th>
-      <td>{{paragraphRow.score}}</td>
-      <td [align]="'left'">{{paragraphRow.value}}</td>
-    </tr>
-    </tbody>
+<div class="container" *ngIf="this.isReady">
+  <!--  <table class="table table table-striped table-dark">-->
+  <!--    <thead>-->
+  <!--    <tr>-->
+  <!--      <th scope="col">Index</th>-->
+  <!--      <th scope="col">Score</th>-->
+  <!--      <th scope="col">Text</th>-->
+  <!--    </tr>-->
+  <!--    </thead>-->
+  <!--    <tbody>-->
+  <!--    <tr *ngFor="let paragraphRow of this.privacyPolicyService.privacyPolicyData.paragraphs">-->
+  <!--      <th scope="row">{{paragraphRow.index}}</th>-->
+  <!--      <td>{{paragraphRow.score}}</td>-->
+  <!--      <td [align]="'left'">{{paragraphRow.value}}</td>-->
+  <!--    </tr>-->
+  <!--    </tbody>-->
+  <!--  </table>-->
+
+  <!--  displayedColumns: string[] = ['index', 'score', 'value'];-->
+
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value) //noinspection UnresolvedVariable" placeholder="Filter">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!-- Index Column -->
+    <ng-container matColumnDef="index">
+      <th mat-header-cell *matHeaderCellDef> Index</th>
+      <td mat-cell *matCellDef="let element"> {{element.index}} </td>
+    </ng-container>
+
+    <!-- Score Column -->
+    <ng-container matColumnDef="topic">
+      <th mat-header-cell *matHeaderCellDef> Score</th>
+      <td mat-cell *matCellDef="let element"> {{element.topic}} </td>
+    </ng-container>
+
+    <!-- Text Column -->
+    <ng-container matColumnDef="value">
+      <th mat-header-cell *matHeaderCellDef> Text</th>
+      <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>

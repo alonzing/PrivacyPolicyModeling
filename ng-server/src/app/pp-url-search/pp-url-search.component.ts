@@ -5,6 +5,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {Observable} from "rxjs";
+import {MatTableDataSource} from "@angular/material";
 
 @Component({
   selector: 'app-pp-url-search',
@@ -27,31 +29,19 @@ export class PpUrlSearchComponent implements OnInit {
 
   getPrivacyPolicyData() {
     this.privacyPolicyService.progressBar = true;
-    console.log("Submitted " + this.pPUrl.value);
-    this.privacyPolicyService.getPrivacyPolicy(this.pPUrl.value).subscribe(
-      (privacyPolicyData: PrivacyPolicy) => {
-        if (privacyPolicyData == null) {
-          this.privacyPolicyService.progressBar = false;
+    this.privacyPolicyService.privacyPolicyData.asObservable().subscribe((privacyPolicyObservable: Observable<PrivacyPolicy>) => {
+      privacyPolicyObservable.subscribe((privacyPolicy: PrivacyPolicy) => {
+        this.privacyPolicyService.progressBar = false;
+        if (privacyPolicy == null) {
           return
         }
-        this.privacyPolicyService.privacyPolicyData = privacyPolicyData;
-        this.removeDuplicates();
-        this.privacyPolicyService.progressBar = false;
-      });
+      })
+    });
+    this.privacyPolicyService.getPrivacyPolicy(this.pPUrl.value);
+    console.log("Submitted " + this.pPUrl.value);
   }
 
-  removeDuplicates() {
-    let currentParagraphIndex = -1;
-    let modifiedParagraphs: ParagraphRow[] = [];
 
-    for (let paragraphRow of this.privacyPolicyService.privacyPolicyData.paragraphs) {
-      if (paragraphRow.index > currentParagraphIndex) {
-        modifiedParagraphs.push(paragraphRow);
-        currentParagraphIndex++;
-      }
-    }
-    this.privacyPolicyService.privacyPolicyData.paragraphs = modifiedParagraphs;
-  }
 
   ngOnInit() {
   }

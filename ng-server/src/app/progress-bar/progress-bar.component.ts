@@ -4,15 +4,15 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-test',
-  templateUrl: './test.component.html',
-  styleUrls: ['./test.component.css']
+  templateUrl: './progress-bar.component.html',
+  styleUrls: ['./progress-bar.component.css']
 })
 
 @NgModule({
   imports: [MatProgressBarModule, BrowserAnimationsModule]
 })
 
-export class TestComponent implements OnInit {
+export class ProgressBarComponent implements OnInit {
 
   constructor() { }
 
