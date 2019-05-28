@@ -1,6 +1,6 @@
 import {Injectable, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable, of} from "rxjs";
+import {Observable, of, Subject} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
 
 const httpOptions = {
@@ -31,20 +31,21 @@ export interface PrivacyPolicy {
 })
 
 export class PpService {
-  privacyPolicyData: PrivacyPolicy;
+  privacyPolicyData = new Subject<Observable<PrivacyPolicy>>();
   serverUrl = 'http://127.0.0.1:5000/';
   progressBar: boolean = false;
 
   constructor(private http: HttpClient) {
   }
 
-  getPrivacyPolicy(privacyPolicyUrl: string): Observable<PrivacyPolicy> {
+  getPrivacyPolicy(privacyPolicyUrl: string): void {
     const url = `pp-prediction?url=${privacyPolicyUrl}`;
-    return this.http.get<PrivacyPolicy>(this.serverUrl + url, httpOptions).pipe(
+    this.privacyPolicyData.next(this.http.get<PrivacyPolicy>(this.serverUrl + url, httpOptions).pipe(
       tap(() => console.log(`fetched privacy policy ${privacyPolicyUrl}`)),
       catchError(this.handleError<PrivacyPolicy>(`getPrivacyPolicy privacyPolicyUrl=${privacyPolicyUrl}`))
-    );
+    ));
   }
+
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

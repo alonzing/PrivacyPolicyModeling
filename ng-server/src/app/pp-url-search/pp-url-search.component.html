@@ -1,16 +1,14 @@
 <div class="container">
   <form class="example-form" (ngSubmit)="getPrivacyPolicyData()">
     <mat-form-field class="example-full-width">
-      <label>
-        <input matInput placeholder="Privacy Policy URL" [formControl]="pPUrl">
-      </label>
-      <mat-error *ngIf="!pPUrl.hasError('required')"> Please enter a valid email address</mat-error>
+      <input matInput placeholder="Privacy Policy URL" [formControl]="pPUrl">
       <mat-error *ngIf="pPUrl.hasError('required')">
         Privacy policy URL is <strong>required</strong>
       </mat-error>
     </mat-form-field>
     <button mat-raised-button color="primary" type="submit"
-            [disabled]="this.privacyPolicyService.progressBar">{{!this.privacyPolicyService.progressBar ? "Submit" :
+            [disabled]="this.privacyPolicyService.progressBar || pPUrl.hasError('required')">{{!this.privacyPolicyService.progressBar ?
+      "Submit" :
       "Loading..."}}
     </button>
   </form>

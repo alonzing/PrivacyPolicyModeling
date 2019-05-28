@@ -1,0 +1,13 @@
+.container {
+  padding-top: 15px;
+}
+
+table {
+  width: 100%;
+  text-align: left;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}

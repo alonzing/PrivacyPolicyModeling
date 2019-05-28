@@ -1,18 +1,27 @@
-<div class="container" *ngIf="this.privacyPolicyService.privacyPolicyData">
-  <table id="statistical_table" class="table table-striped table-dark">
-    <thead>
-    <tr>
-      <th scope="col">Parameter</th>
-      <th scope="col">Value</th>
-      <th scope="col">Category Value</th>
-    </tr>
-    </thead>
-    <tbody id="t_body">
-    <tr *ngFor="let tableRow of this.privacyPolicyService.privacyPolicyData.table">
-      <th scope="row" id="t_body_row1">{{tableRow.parameter}}</th>
-      <td>{{tableRow.value}}</td>
-      <td>{{tableRow.categoryValue}}</td>
-    </tr>
-    </tbody>
+<div class="container" *ngIf="this.isReady">
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!-- Parameter Column -->
+    <ng-container matColumnDef="parameter">
+      <th mat-header-cell *matHeaderCellDef> Parameter </th>
+      <td mat-cell *matCellDef="let element"> {{element.parameter}} </td>
+    </ng-container>
+
+    <!-- Value Column -->
+    <ng-container matColumnDef="value">
+      <th mat-header-cell *matHeaderCellDef> Value </th>
+      <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+    </ng-container>
+
+    <!-- Category Value Column -->
+    <ng-container matColumnDef="categoryValue">
+      <th mat-header-cell *matHeaderCellDef> Category Value </th>
+      <td mat-cell *matCellDef="let element"> {{element.categoryValue}} </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>
