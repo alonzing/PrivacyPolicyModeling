@@ -1,5 +1,6 @@
 import logging
 import sys
+import time
 import traceback
 
 import psycopg2
@@ -12,19 +13,34 @@ working_db_password = "1"
 
 
 class DBUtils:
-
     def __init__(self):
         pass
 
     def get_db_connection(self):
+        conn = None
+        count = 0
         try:
             conn = psycopg2.connect(
-                "dbname='{}' user='{}' host='{}' password='{}'".format(working_db_name, working_db_user,
-                                                                       working_db_host, working_db_password))
+                    "dbname='{}' user='{}' host='{}' password='{}'".format(working_db_name, working_db_user,
+                                                                             working_db_host, working_db_password))
+            time.sleep(1)
             return conn
         except:
-            traceback.print_exc()
-            logging.error(sys.exc_info()[0])
+            while conn is None and count < 10:
+                try:
+                    conn = psycopg2.connect(
+                        "dbname='{}' user='{}' host='{}' password='{}'".format(working_db_name, working_db_user,
+                                                                                 working_db_host, working_db_password))
+                except:
+                    time.sleep(1)
+                    count += 1
+            if conn is None:
+                uinput = raw_input("Postgres is down, press to continue...")
+                while True:
+                    if uinput == ' ':
+                        break
+                    uinput = raw_input("")
+                return self.get_db_connection()
 
     def exec_command(self, sql, value_list=None):
         try:
