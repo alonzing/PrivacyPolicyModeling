@@ -59,6 +59,7 @@ def place_holder_response(url):
     response['paragraphs'] = paragraph_list
     return response
 
+
 @http_server.route('/app-categories', methods=['GET'])
 def get_app_categories():
     categories = db_query_handler.get_categories()
@@ -68,6 +69,7 @@ def get_app_categories():
 @http_server.route('/pp-prediction', methods=['GET'])
 def get_pp_prediction_by_url():
     url = request.args.get('url', default=None, type=str)
+    category = request.args.get('category', default=None, type=str)
     url_record_http_ok = load_pp_html_to_db([{'pp_url': url}])
 
     if url_record_http_ok:
@@ -75,10 +77,12 @@ def get_pp_prediction_by_url():
         pp_id = url_record_http_ok[0].get('id')[0]
         cleaned_pp_records = clean_pp_html_records(url_record_http_ok)
         split_or_bypass_pp(cleaned_pp_records)
-        rows = build_from_exists_modeling(url, pp_id)
-    return json.dumps(place_holder_response(url))
-    # response = place_holder_response(url)
-    # return json.dumps(response)
+        paragraph_list = build_from_exists_modeling(url, pp_id)
+        duplicates_count = db_query_handler.get_duplicate_paragraphs_per_category(url, category, paragraph_list[1]['paragraph_text'])
+        category_avg_number_of_paragraphs = db_query_handler.get_average_paragraph_count_per_category(category)
+        return json.dumps(paragraph_list)
+    response = place_holder_response(url)
+    return json.dumps(response)
 
 
 if __name__ == '__main__':

@@ -7,10 +7,7 @@ from src.server.utils.db.tools import db_utils
 
 def build_SFrame_from_db(script):
     paragraph_records = db_utils.db_select(script)
-    paragraphs_list = []
-
-    for paragraph_record in paragraph_records:
-        paragraphs_list.append(paragraph_record.get("paragraph"))
+    paragraphs_list = [paragraph_record.get("paragraph") for paragraph_record in paragraph_records]
     sframe = gl.SFrame(paragraphs_list)
     return sframe
 
@@ -21,8 +18,8 @@ def get_all_paragraphs_from_db():
 
 
 def get_paragraphs_from_db_for_single_pp_url(pp_url):
-    return "select count(*) as ccc, paragraph from privacy_policy_paragraphs where pp_url = '{}'" \
-           "group by paragraph order by ccc desc".format(pp_url)
+    return "select paragraph, index from privacy_policy_paragraphs where pp_url like '{}'" \
+           "order by index asc".format(pp_url)
 
 
 def get_word_frequency(docs):
@@ -106,7 +103,7 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
 
     if not os.path.exists(predictions_filename) is None:
         print("Building predictions...")
-        docs_res = sframe_raw;
+        docs_res = sframe_raw
         docs_res['res'] = model.predict(sframe_for_modeling)
         docs_res['res_prob'] = model.predict(sframe_for_modeling, output_type='probability')
         docs_res.save(predictions_filename.format(topic_count))
@@ -125,7 +122,12 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
                   docs_res['X1'][i]]
         db_rows.append(db_row)
         if single_predict:
-            single_predict_rows.append(db_row)
+            result_dict = {
+                'topic': db_row[1],
+                'probability': db_row[2],
+                'paragraph_text': db_row[3]
+            }
+            single_predict_rows.append(result_dict)
 
         if records_count == 100 or i == total_docs - 1:
             records_count = 0
