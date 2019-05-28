@@ -6,7 +6,7 @@ from src.server.ml.pre_processing.text_pre_processing_utils import load_pp_html_
     split_or_bypass_pp, load_pp_from_db
 from src.server.utils.db.tools import db_utils
 
-LIMIT = 1000
+LIMIT = 50
 
 class PreProcessingExecutor:
 
@@ -73,6 +73,6 @@ class PreProcessingExecutor:
 
 # db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
 
-executor = PreProcessingExecutor(consumers_number=5, batch_size=500)
+executor = PreProcessingExecutor(consumers_number=5, batch_size=10)
 executor.start_produce_and_consume(timeout=0)
 
