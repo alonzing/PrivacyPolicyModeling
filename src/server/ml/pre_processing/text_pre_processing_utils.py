@@ -117,9 +117,9 @@ def split_or_bypass_pp(cleaned_html_records):
         except Exception as e:
             print e
             pp_split_failed_records.append(html_record)
-        db_handler.insert_pp_paragraphs(db_rows)
-        db_handler.pp_split_failed(pp_split_failed_records)
-        db_handler.pp_split_ok(pp_html_split_ok_records)
+    db_handler.insert_pp_paragraphs(db_rows)
+    db_handler.pp_split_failed(pp_split_failed_records)
+    db_handler.pp_split_ok(pp_html_split_ok_records)
 
 
 def is_defective_pp(clean_pp):

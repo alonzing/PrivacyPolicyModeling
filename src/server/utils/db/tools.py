@@ -9,7 +9,7 @@ import psycopg2.extras
 working_db_name = "postgres"
 working_db_host = "localhost"
 working_db_user = "postgres"
-working_db_password = "1234"
+working_db_password = "1"
 
 
 class DBUtils:
