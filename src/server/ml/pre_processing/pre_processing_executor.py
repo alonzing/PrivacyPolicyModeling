@@ -71,7 +71,7 @@ class PreProcessingExecutor:
             time.sleep(1)
 
 
-db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
+# db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
 
 executor = PreProcessingExecutor(consumers_number=5, batch_size=500)
 executor.start_produce_and_consume(timeout=0)
