@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {PpService, PrivacyPolicy} from "../../pp.service";
-import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-score',
@@ -15,12 +14,9 @@ export class ScoreComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.privacyPolicyService.privacyPolicyData.asObservable().subscribe((privacyPolicyObservable: Observable<PrivacyPolicy>) => {
-      privacyPolicyObservable.subscribe((privacyPolicy: PrivacyPolicy) => {
-        this.score = privacyPolicy.score;
-        this.getClass();
-        this.isReady = true;
-      })
+    this.privacyPolicyService.privacyPolicyData.asObservable().subscribe((privacyPolicy: PrivacyPolicy) => {
+      this.score = privacyPolicy.score;
+      this.isReady = true;
     });
   }
 
@@ -34,6 +30,5 @@ export class ScoreComponent implements OnInit {
       badgeClass += "badge-danger";
     }
     return badgeClass;
-
   }
 }

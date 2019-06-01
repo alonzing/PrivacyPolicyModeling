@@ -1,13 +1,14 @@
-<div class="container">
-  <form class="example-form" (ngSubmit)="getPrivacyPolicyData()">
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Privacy Policy URL" [formControl]="pPUrl">
+<div [ngClass]="{'theme': themeService.isDarkMode}" class="container">
+  <form (ngSubmit)="getPrivacyPolicyData()" class="example-form">
+    <mat-form-field class="example-full-width" color="primary">
+      <!--suppress HtmlFormInputWithoutLabel -->
+      <input [formControl]="pPUrl" matInput placeholder="Privacy Policy URL">
       <mat-error *ngIf="pPUrl.hasError('required')">
         Privacy policy URL is <strong>required</strong>
       </mat-error>
     </mat-form-field>
-    <button mat-raised-button color="primary" type="submit"
-            [disabled]="this.privacyPolicyService.progressBar || pPUrl.hasError('required')">{{!this.privacyPolicyService.progressBar ?
+    <button [disabled]="this.privacyPolicyService.progressBar || pPUrl.hasError('required')" color="primary" mat-raised-button
+            type="submit">{{!this.privacyPolicyService.progressBar ?
       "Submit" :
       "Loading..."}}
     </button>

@@ -1,6 +1,7 @@
 import {Component, NgModule, OnInit} from '@angular/core';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ThemeService} from "../../theme.service";
 
 @Component({
   selector: 'app-test',
@@ -14,7 +15,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 export class ProgressBarComponent implements OnInit {
 
-  constructor() { }
+  constructor(public themeService: ThemeService) {
+  }
 
   ngOnInit() {
   }

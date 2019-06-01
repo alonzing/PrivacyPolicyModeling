@@ -10,8 +10,16 @@ import {ParagraphsTableComponent} from './paragraphs-table/paragraphs-table.comp
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ProgressBarComponent} from './progress-bar/progress-bar.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
-import {MatButtonModule, MatFormFieldModule, MatInputModule} from "@angular/material";
+import {
+  MatButtonModule,
+  MatChipsModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSlideToggleModule
+} from "@angular/material";
 import {MatTableModule} from '@angular/material/table';
+import {ThemeToggleComponent} from './theme-toggle/theme-toggle.component';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -21,12 +29,13 @@ import {MatTableModule} from '@angular/material/table';
     ScoreComponent,
     ParagraphsTableComponent,
     ProgressBarComponent,
+    ThemeToggleComponent,
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule, BrowserAnimationsModule, MatProgressBarModule,
-    MatButtonModule, MatFormFieldModule, MatInputModule, MatTableModule,
+    MatButtonModule, MatFormFieldModule, MatInputModule, MatTableModule, MatChipsModule, MatSlideToggleModule
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

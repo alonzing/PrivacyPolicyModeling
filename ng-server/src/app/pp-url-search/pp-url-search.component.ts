@@ -1,12 +1,11 @@
 import {Component, NgModule, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
-import {ParagraphRow, PpService, PrivacyPolicy} from "../../pp.service";
+import {PpService, PrivacyPolicy} from "../../pp.service";
 import {MatButtonModule} from '@angular/material/button';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {Observable} from "rxjs";
-import {MatTableDataSource} from "@angular/material";
+import {ThemeService} from "../../theme.service";
 
 @Component({
   selector: 'app-pp-url-search',
@@ -24,23 +23,20 @@ export class PpUrlSearchComponent implements OnInit {
     Validators.required,
   ]);
 
-  constructor(public privacyPolicyService: PpService) {
+  constructor(public privacyPolicyService: PpService, public themeService: ThemeService) {
+    this.privacyPolicyService.privacyPolicyData.asObservable().subscribe((privacyPolicy: PrivacyPolicy) => {
+      this.privacyPolicyService.progressBar = false;
+      if (privacyPolicy == null) {
+        return
+      }
+    });
   }
 
   getPrivacyPolicyData() {
     this.privacyPolicyService.progressBar = true;
-    this.privacyPolicyService.privacyPolicyData.asObservable().subscribe((privacyPolicyObservable: Observable<PrivacyPolicy>) => {
-      privacyPolicyObservable.subscribe((privacyPolicy: PrivacyPolicy) => {
-        this.privacyPolicyService.progressBar = false;
-        if (privacyPolicy == null) {
-          return
-        }
-      })
-    });
-    this.privacyPolicyService.getPrivacyPolicy(this.pPUrl.value);
+    this.privacyPolicyService.getPrivacyPolicy(this.pPUrl.value).subscribe();
     console.log("Submitted " + this.pPUrl.value);
   }
-
 
 
   ngOnInit() {

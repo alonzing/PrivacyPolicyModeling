@@ -1,5 +1,7 @@
-<div style="text-align:center">
+<div [ngClass]="{'theme':themeService.isDarkMode}"
+     class="mat-app-background" style="text-align:center; display: block;min-height: 100%">
   <h1> Privacy Policy Modeling </h1>
+  <app-theme-toggle></app-theme-toggle>
   <app-pp-url-search></app-pp-url-search>
   <app-score></app-score>
   <app-statistical-table></app-statistical-table>

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ParagraphRow, PpService, PrivacyPolicy} from "../../pp.service";
 import {MatTableDataSource} from "@angular/material";
-import {Observable} from "rxjs";
+import {ThemeService} from "../../theme.service";
 
 @Component({
   selector: 'app-paragraphs-table',
@@ -13,8 +13,7 @@ export class ParagraphsTableComponent implements OnInit {
   dataSource;
   isReady: boolean = false;
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  constructor(public privacyPolicyService: PpService, public themeService: ThemeService) {
   }
 
   static removeDuplicates(privacyPolicyData: PrivacyPolicy) {
@@ -30,16 +29,15 @@ export class ParagraphsTableComponent implements OnInit {
     privacyPolicyData.paragraphs = modifiedParagraphs;
   }
 
-  constructor(public privacyPolicyService: PpService) {
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   ngOnInit() {
-    this.privacyPolicyService.privacyPolicyData.asObservable().subscribe((privacyPolicyObservable: Observable<PrivacyPolicy>) => {
-      privacyPolicyObservable.subscribe((privacyPolicy: PrivacyPolicy) => {
-        ParagraphsTableComponent.removeDuplicates(privacyPolicy);
-        this.dataSource = new MatTableDataSource(privacyPolicy.paragraphs);
-        this.isReady = true;
-      })
+    this.privacyPolicyService.privacyPolicyData.asObservable().subscribe((privacyPolicy: PrivacyPolicy) => {
+      ParagraphsTableComponent.removeDuplicates(privacyPolicy);
+      this.dataSource = new MatTableDataSource(privacyPolicy.paragraphs);
+      this.isReady = true;
     });
 
   }
