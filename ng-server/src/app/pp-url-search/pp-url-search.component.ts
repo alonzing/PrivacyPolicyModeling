@@ -1,11 +1,13 @@
 import {Component, NgModule, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
-import {PpService, PrivacyPolicy} from "../../pp.service";
+import {Category, PpService, PrivacyPolicy} from "../../pp.service";
 import {MatButtonModule} from '@angular/material/button';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {ThemeService} from "../../theme.service";
+import {MatSelectModule} from "@angular/material";
+
 
 @Component({
   selector: 'app-pp-url-search',
@@ -14,14 +16,21 @@ import {ThemeService} from "../../theme.service";
 })
 
 @NgModule({
-  imports: [MatButtonModule, BrowserAnimationsModule, MatInputModule, MatFormFieldModule]
+  imports: [MatButtonModule, BrowserAnimationsModule, MatInputModule, MatFormFieldModule, MatSelectModule]
 })
+
 
 export class PpUrlSearchComponent implements OnInit {
 
-  pPUrl = new FormControl('', [
+  privacyPolicyUrl = new FormControl('', [
     Validators.required,
   ]);
+
+  privacyPolicyCategory = new FormControl('', [
+    Validators.required,
+  ]);
+  categories: string[];
+
 
   constructor(public privacyPolicyService: PpService, public themeService: ThemeService) {
     this.privacyPolicyService.privacyPolicyData.asObservable().subscribe((privacyPolicy: PrivacyPolicy) => {
@@ -30,16 +39,21 @@ export class PpUrlSearchComponent implements OnInit {
         return
       }
     });
+
+
   }
 
   getPrivacyPolicyData() {
     this.privacyPolicyService.progressBar = true;
-    this.privacyPolicyService.getPrivacyPolicy(this.pPUrl.value).subscribe();
-    console.log("Submitted " + this.pPUrl.value);
+    this.privacyPolicyService.getPrivacyPolicy(this.privacyPolicyUrl.value, this.privacyPolicyCategory.value).subscribe();
+    console.log("Submitted " + this.privacyPolicyUrl.value);
   }
 
 
   ngOnInit() {
+    this.privacyPolicyService.getCategories().subscribe((categories: string[]) => {
+      this.categories = categories;
+    });
   }
 
 

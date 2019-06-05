@@ -2,16 +2,28 @@
   <form (ngSubmit)="getPrivacyPolicyData()" class="example-form">
     <mat-form-field class="example-full-width" color="primary">
       <!--suppress HtmlFormInputWithoutLabel -->
-      <input [formControl]="pPUrl" matInput placeholder="Privacy Policy URL">
-      <mat-error *ngIf="pPUrl.hasError('required')">
+      <input [formControl]="privacyPolicyUrl" matInput placeholder="Privacy Policy URL">
+      <mat-error *ngIf="privacyPolicyUrl.hasError('required')">
         Privacy policy URL is <strong>required</strong>
       </mat-error>
     </mat-form-field>
-    <button [disabled]="this.privacyPolicyService.progressBar || pPUrl.hasError('required')" color="primary" mat-raised-button
-            type="submit">{{!this.privacyPolicyService.progressBar ?
+    <mat-form-field>
+      <mat-label>Application Category</mat-label>
+      <mat-select [disabled]="this.categories == null" [formControl]="privacyPolicyCategory">
+        <mat-option *ngFor="let category of this.categories" [value]="category">
+          {{category}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button
+      [disabled]="this.privacyPolicyService.progressBar || privacyPolicyUrl.hasError('required') ||
+      privacyPolicyCategory.hasError('required')" color="primary" mat-raised-button
+      type="submit">{{!this.privacyPolicyService.progressBar ?
       "Submit" :
       "Loading..."}}
     </button>
+
+
   </form>
 </div>
 <app-test *ngIf="privacyPolicyService.progressBar"></app-test>

@@ -15,7 +15,8 @@ import {
   MatChipsModule,
   MatFormFieldModule,
   MatInputModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatSelectModule
 } from "@angular/material";
 import {MatTableModule} from '@angular/material/table';
 import {ThemeToggleComponent} from './theme-toggle/theme-toggle.component';
@@ -33,7 +34,7 @@ import {CookieService} from 'ngx-cookie-service';
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule, BrowserAnimationsModule, MatProgressBarModule,
-    MatButtonModule, MatFormFieldModule, MatInputModule, MatTableModule, MatChipsModule, MatSlideToggleModule
+    MatButtonModule, MatFormFieldModule, MatInputModule, MatTableModule, MatChipsModule, MatSlideToggleModule, MatSelectModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

@@ -4,7 +4,7 @@
 /*@import '~@angular/material/prebuilt-themes/pink-bluegrey.css';*/
 body {
   font-family: Roboto, Arial, sans-serif;
-  margin: 0;
+  margin-bottom: 0;
   display: block;
   height: 100%;
 }

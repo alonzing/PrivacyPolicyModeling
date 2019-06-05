@@ -25,6 +25,10 @@ export interface PrivacyPolicy {
   score: number;
 }
 
+export interface Category {
+  cat_key: string;
+  name: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -34,14 +38,17 @@ export class PpService {
   privacyPolicyData = new Subject<PrivacyPolicy>();
   serverUrl = 'http://127.0.0.1:5000/';
   progressBar: boolean = false;
+  categories: Observable<Category[]>;
 
   constructor(private http: HttpClient) {
   }
 
-  getPrivacyPolicy(privacyPolicyUrl: string): Observable<PrivacyPolicy> {
-    const url = `pp-prediction?url=${privacyPolicyUrl}`;
-    return this.http.get<PrivacyPolicy>(this.serverUrl + url, httpOptions).pipe(
-      tap((privacyPolicy:PrivacyPolicy) =>  {
+  getPrivacyPolicy(privacyPolicyUrl: string, privacyPolicyCategory: string): Observable<PrivacyPolicy> {
+    const command_name = `pp-prediction?`;
+    const parameters = [`url=${privacyPolicyUrl}`, `category=${privacyPolicyCategory}`];
+
+    return this.http.get<PrivacyPolicy>(`${this.serverUrl}${command_name}${parameters.join('&')}`, httpOptions).pipe(
+      tap((privacyPolicy: PrivacyPolicy) => {
         console.log(`fetched privacy policy ${privacyPolicyUrl}`);
         this.privacyPolicyData.next(privacyPolicy);
       }),
@@ -49,6 +56,14 @@ export class PpService {
     );
   }
 
+  getCategories(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.serverUrl}app-categories`, httpOptions).pipe(
+      tap(() => {
+        console.log(`fetched categories`);
+      }),
+      catchError(this.handleError<string[]>(`getCategories`))
+    );
+  }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
