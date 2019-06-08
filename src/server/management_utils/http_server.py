@@ -60,6 +60,35 @@ def place_holder_response(url):
     return response
 
 
+def create_stat_table(paragraph_list, category):
+    category_avg_number_of_paragraphs = db_query_handler.get_average_paragraph_count_per_category(category)
+    table = [
+        {
+            'parameter': 'Number of Paragraphs',
+            'value': len(paragraph_list),
+            'categoryValue': int(category_avg_number_of_paragraphs[0]['avg'])
+        },
+        {
+            'parameter': 'Number of Topics',
+            'value': 5,
+            'categoryValue': 10
+        },
+        {
+            'parameter': 'Missing Material Paragraphs',
+            'value': 7,
+            'categoryValue': 5
+        }
+    ]
+    return table
+
+
+def duplicate_count_per_category(url, category, paragraph_model_list):
+    duplicates_count = [
+        db_query_handler.get_duplicate_paragraphs_per_category(url, category, p['paragraph_text'])[0]['count'] for p
+        in paragraph_model_list]
+    return sum(duplicates_count)
+
+
 @http_server.route('/app-categories', methods=['GET'])
 def get_app_categories():
     categories = db_query_handler.get_categories()
@@ -77,12 +106,12 @@ def get_pp_prediction_by_url():
         pp_id = url_record_http_ok[0].get('id')[0]
         cleaned_pp_records = clean_pp_html_records(url_record_http_ok)
         split_or_bypass_pp(cleaned_pp_records)
-        paragraph_list = build_from_exists_modeling(url, pp_id)
-        duplicates_count = db_query_handler.get_duplicate_paragraphs_per_category(url, category, paragraph_list[1]['paragraph_text'])
-        category_avg_number_of_paragraphs = db_query_handler.get_average_paragraph_count_per_category(category)
-        return json.dumps(paragraph_list)
-    response = place_holder_response(url)
-    return json.dumps(response)
+        paragraph_model_list = build_from_exists_modeling(url, pp_id)
+        duplicates_count = duplicate_count_per_category(url, category, paragraph_model_list)
+        table = create_stat_table(paragraph_model_list, category)
+        response = {'table': table, 'duplicates': duplicates_count, 'p': paragraph_model_list}
+        return json.dumps(response)
+    return 'FAILURE'
 
 
 if __name__ == '__main__':
