@@ -1,9 +1,11 @@
+import os
 import re
 import string
 import urllib2
 
 from BeautifulSoup import BeautifulSoup
 from goose import Goose
+import tempfile
 from langid.langid import LanguageIdentifier, model
 from nltk.tokenize.texttiling import TextTilingTokenizer
 from unidecode import unidecode
@@ -66,6 +68,9 @@ def clean_pp_html(url, pp_html):
     ret_val = ''
     try:
         print("processing the following url {}".format(url))
+        print(tempfile.tempdir)
+        tempfile.tempdir = os.getcwd()
+        print(tempfile.tempdir)
         g = Goose()
         ret_val = g.extract(raw_html=pp_html).cleaned_text
     except Exception as e:
@@ -117,9 +122,11 @@ def split_or_bypass_pp(cleaned_html_records):
         except Exception as e:
             print e
             pp_split_failed_records.append(html_record)
-    db_handler.insert_pp_paragraphs(db_rows)
-    db_handler.pp_split_failed(pp_split_failed_records)
-    db_handler.pp_split_ok(pp_html_split_ok_records)
+
+        db_handler.insert_pp_paragraphs(db_rows)
+        db_handler.pp_split_failed(pp_split_failed_records)
+        db_handler.pp_split_ok(pp_html_split_ok_records)
+    print(db_rows)
 
 
 def is_defective_pp(clean_pp):
@@ -150,3 +157,4 @@ def clean_pp_advanced(clean_pp, contractions_dict, pattern):
     # Removes all punctuation and digits
     clean_pp = clean_pp.translate(None, special_cases)
     return clean_pp
+

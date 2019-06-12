@@ -61,7 +61,8 @@ def place_holder_response(url):
 
 @http_server.route('/app-categories', methods=['GET'])
 def get_app_categories():
-    categories = db_query_handler.get_categories()
+    result = db_query_handler.get_categories()
+    categories = [cat[0] for cat in result]
     return json.dumps(categories)
 
 

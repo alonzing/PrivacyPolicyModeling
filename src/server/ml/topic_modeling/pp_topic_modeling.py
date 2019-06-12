@@ -1,5 +1,7 @@
 import os
 import shutil
+import time
+
 import graphlab as gl
 
 from src.server.utils.db.tools import db_utils
@@ -134,7 +136,8 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
                                                    VALUES \
                                                     (%s,%s,%s,%s)", db_rows)
             db_rows = []
-            print("saved up to {}".format(i))
+            time.sleep(1)
+            print("saved up to {} out of {}".format(i, total_docs))
         else:
             records_count += 1
 
@@ -211,6 +214,6 @@ def build_from_exists_modeling(pp_url, pp_id):
     return single_predict_rows
 
 
-# build_topics_models()
+build_topics_models()
 # pp_url = 'http://christianchannel.us/privacy-policy/'
 # build_from_exists_modeling(pp_url, 1940)
