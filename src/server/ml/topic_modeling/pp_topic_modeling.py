@@ -140,7 +140,7 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
                                 (running_id,topic_id,probability,paragraph)\
                                                    VALUES (%s,%s,%s,%s)", db_rows)
             db_rows = []
-            time.sleep(3)
+            time.sleep(1)
             print("saved up to {} out of {}".format(i, total_docs))
         else:
             records_count += 1
