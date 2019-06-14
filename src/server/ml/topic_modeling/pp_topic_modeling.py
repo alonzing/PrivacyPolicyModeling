@@ -177,8 +177,8 @@ def build_prediction_results(topic_count, model_file_name):
     for topic_id in range(0, topic_count):
         results_records = db_utils.db_select(
             "select probability,paragraph from privacy_policy_paragraphs_prediction "
-            "where running_id= {} and topic_id={}"
-            "group by paragraph,probability"
+            "where running_id= {} and topic_id={} "
+            "group by paragraph,probability "
             "order by probability desc".format(topic_count, topic_id))
         topic_html = "<html><table border='1'><tr><td>Probability</td><td>Paragraph</td></tr>"
         for results_record in results_records:
