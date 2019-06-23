@@ -74,3 +74,9 @@ class HttpServerDBHandler:
                          JOIN privacy_policy_paragraphs ON apps_category.pp_url = privacy_policy_paragraphs.pp_url
                          GROUP BY apps_category.pp_url) AS p""".format(category)
         return self.db_util.db_select(query)
+
+    def is_pp_url_in_privacy_policy_table(self, url):
+        query = """SELECT id
+                   FROM privacy_policy
+                   WHERE pp_url LIKE '{0}' LIMIT 1""".format(url)
+        return self.db_util.db_select(query)
