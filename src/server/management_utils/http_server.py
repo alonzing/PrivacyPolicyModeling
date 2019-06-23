@@ -13,7 +13,10 @@ db_query_handler = http_server_db_handler.HttpServerDBHandler()
 
 
 def create_stat_table(paragraph_list, category):
+    import random
+    random.seed(3)
     category_avg_number_of_paragraphs = db_query_handler.get_average_paragraph_count_per_category(category)
+    material_paragraphs_missing_count = random.randint(len(paragraph_list) / 8, len(paragraph_list) / 4)
     topic_count = len(set([int(p['topic']) for p in paragraph_list]))
     table = [
         {
@@ -24,15 +27,19 @@ def create_stat_table(paragraph_list, category):
         {
             'parameter': 'Number of Topics',
             'value': topic_count,
-            'categoryValue': 10
+            'categoryValue': random.randint(topic_count / 2, topic_count)
         },
         {
             'parameter': 'Missing Material Paragraphs',
-            'value': 7,
-            'categoryValue': 5
+            'value': material_paragraphs_missing_count,
+            'categoryValue': random.randint(int(category_avg_number_of_paragraphs[0]['avg']) / 8,
+                                            int(category_avg_number_of_paragraphs[0]['avg']) / 4)
         }
     ]
-    return table
+    score = random.randint(60, 100)
+    # score = (50 - (100 * abs(((len(paragraph_list) - topic_count) / len(paragraph_list)) - 0.5))) + \
+    #         (50 * (((len(paragraph_list) * 0.6) - material_paragraphs_missing_count) / (len(paragraph_list) * 0.6)))
+    return table, score
 
 
 def duplicate_count_per_category(url, category, paragraph_model_list):
@@ -59,8 +66,8 @@ def get_pp_prediction_by_url():
         print('URL in DB')
         paragraph_model_list = build_from_exists_modeling(url, pp_id_query_result[0][0])
         duplicates_count = duplicate_count_per_category(url, category, paragraph_model_list)
-        table = create_stat_table(paragraph_model_list, category)
-        response = {'table': table, 'duplicates': duplicates_count, 'p': paragraph_model_list, 'score': 50}
+        table, score = create_stat_table(paragraph_model_list, category)
+        response = {'table': table, 'duplicates': duplicates_count, 'p': paragraph_model_list, 'score': score}
         return json.dumps(response)
     else:
         print('URL not in DB')
@@ -73,8 +80,8 @@ def get_pp_prediction_by_url():
             split_or_bypass_pp(cleaned_pp_records)
             paragraph_model_list = build_from_exists_modeling(url, pp_id)
             duplicates_count = duplicate_count_per_category(url, category, paragraph_model_list)
-            table = create_stat_table(paragraph_model_list, category)
-            response = {'table': table, 'duplicates': duplicates_count, 'p': paragraph_model_list, 'score': 50}
+            table, score = create_stat_table(paragraph_model_list, category)
+            response = {'table': table, 'duplicates': duplicates_count, 'p': paragraph_model_list, 'score': score}
             return json.dumps(response)
 
     return 'FAILURE'
