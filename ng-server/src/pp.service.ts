@@ -14,14 +14,14 @@ export interface TableRow {
 }
 
 export interface ParagraphRow {
-  index: number;
-  score: number;
-  value: string;
+  topic: number;
+  probability: number;
+  paragraph_text: string;
 }
 
 export interface PrivacyPolicy {
   table: TableRow[];
-  paragraphs: ParagraphRow[];
+  p: ParagraphRow[];
   score: number;
 }
 
@@ -36,7 +36,7 @@ export interface Category {
 
 export class PpService {
   privacyPolicyData = new Subject<PrivacyPolicy>();
-  serverUrl = 'http://127.0.0.1:5000/';
+  serverUrl = 'http://104.198.74.92:5000/';
   progressBar: boolean = false;
   categories: Observable<Category[]>;
 

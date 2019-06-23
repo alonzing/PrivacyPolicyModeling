@@ -6,23 +6,25 @@
 
   <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
 
-    <!-- Index Column -->
-    <ng-container matColumnDef="index">
-      <th *matHeaderCellDef mat-header-cell > Index</th>
-      <td *matCellDef="let element" mat-cell class="c1"> {{element.index}} </td>
-    </ng-container>
-
-    <!-- Score Column -->
+    <!-- Topic Column -->
     <ng-container matColumnDef="topic">
-      <th *matHeaderCellDef mat-header-cell > Score</th>
+      <th *matHeaderCellDef mat-header-cell > Topic </th>
       <!--suppress TypeScriptUnresolvedVariable -->
       <td *matCellDef="let element" mat-cell class="c1"> {{element.topic}} </td>
     </ng-container>
 
+    <!-- Probability Column -->
+    <ng-container matColumnDef="probability">
+      <th *matHeaderCellDef mat-header-cell > Probability </th>
+      <!--suppress TypeScriptUnresolvedVariable -->
+      <td *matCellDef="let element" mat-cell class="c1"> {{element.probability | number:'1.5'}} </td>
+    </ng-container>
+
     <!-- Text Column -->
-    <ng-container matColumnDef="value">
-      <th *matHeaderCellDef mat-header-cell> Text</th>
-      <td *matCellDef="let element" mat-cell> {{element.value}} </td>
+    <ng-container matColumnDef="paragraph_text">
+      <th *matHeaderCellDef mat-header-cell> Text </th>
+      <!--suppress TypeScriptUnresolvedVariable -->
+      <td *matCellDef="let element" mat-cell> {{element.paragraph_text}} </td>
     </ng-container>
 
 
