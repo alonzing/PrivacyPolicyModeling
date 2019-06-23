@@ -29,11 +29,11 @@ class HttpServerDBHandler:
     def paragraph_by_url_query(self, url):
         query = "SELECT * FROM privacy_policy_paragraphs WHERE pp_url LIKE \'{0}\' ORDER BY index ASC".format(url)
         return self.db_util.db_select(query)
-      
+
     def metadata_by_url_query(self, url):
         query = r"SELECT * FROM applications WHERE pp_url LIKE '{0}'".format(url)
         return self.db_util.db_select(query)
-      
+
     def prediction_query_by_url(self, url):
         query = """SELECT name, developer, category, dev_url, applications.pp_url, index
                     FROM applications, privacy_policy_paragraphs
@@ -47,4 +47,36 @@ class HttpServerDBHandler:
     def get_categories(self):
         query = """SELECT DISTINCT category
                     FROM applications"""
+        return self.db_util.db_select(query)
+
+    def get_duplicate_paragraphs_per_category(self, url, category, paragraph):
+        query = """SELECT COUNT(*)
+                   FROM 
+                       (SELECT paragraph
+                        FROM 
+                             (SELECT pp_url
+                              FROM applications
+                              WHERE category LIKE '{0}' AND pp_url <> '{1}') 
+                              AS apps_category 
+                              JOIN privacy_policy_paragraphs ON apps_category.pp_url = privacy_policy_paragraphs.pp_url) 
+                              AS paragraphs_category 
+                              WHERE '{2}' LIKE paragraph""".format(category, url, paragraph)
+        return self.db_util.db_select(query)
+
+    def get_average_paragraph_count_per_category(self, category):
+        query = """SELECT AVG(count) 
+                   FROM
+                     (SELECT MAX(distinct privacy_policy_paragraphs.index) + 1 AS count 
+                      FROM 
+                        (SELECT pp_url 
+                         FROM applications 
+                         WHERE category LIKE '{0}') AS apps_category 
+                         JOIN privacy_policy_paragraphs ON apps_category.pp_url = privacy_policy_paragraphs.pp_url
+                         GROUP BY apps_category.pp_url) AS p""".format(category)
+        return self.db_util.db_select(query)
+
+    def is_pp_url_in_privacy_policy_table(self, url):
+        query = """SELECT id
+                   FROM privacy_policy
+                   WHERE pp_url LIKE '{0}' LIMIT 1""".format(url)
         return self.db_util.db_select(query)
