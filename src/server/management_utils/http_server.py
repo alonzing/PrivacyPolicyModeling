@@ -57,7 +57,7 @@ def get_pp_prediction_by_url():
 
     if len(pp_id_query_result) > 0:
         print('URL in DB')
-        paragraph_model_list = build_from_exists_modeling(url, pp_id_query_result[0])
+        paragraph_model_list = build_from_exists_modeling(url, pp_id_query_result[0][0])
         duplicates_count = duplicate_count_per_category(url, category, paragraph_model_list)
         table = create_stat_table(paragraph_model_list, category)
         response = {'table': table, 'duplicates': duplicates_count, 'p': paragraph_model_list, 'score': 50}
