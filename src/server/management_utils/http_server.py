@@ -14,6 +14,7 @@ db_query_handler = http_server_db_handler.HttpServerDBHandler()
 
 def create_stat_table(paragraph_list, category):
     category_avg_number_of_paragraphs = db_query_handler.get_average_paragraph_count_per_category(category)
+    topic_count = len(set([int(p['topic']) for p in paragraph_list]))
     table = [
         {
             'parameter': 'Number of Paragraphs',
@@ -22,7 +23,7 @@ def create_stat_table(paragraph_list, category):
         },
         {
             'parameter': 'Number of Topics',
-            'value': 5,
+            'value': topic_count,
             'categoryValue': 10
         },
         {
@@ -56,7 +57,7 @@ def get_pp_prediction_by_url():
 
     if len(pp_id_query_result) > 0:
         print('URL in DB')
-        paragraph_model_list = build_from_exists_modeling(url, pp_id_query_result[0])
+        paragraph_model_list = build_from_exists_modeling(url, pp_id_query_result[0][0])
         duplicates_count = duplicate_count_per_category(url, category, paragraph_model_list)
         table = create_stat_table(paragraph_model_list, category)
         response = {'table': table, 'duplicates': duplicates_count, 'p': paragraph_model_list, 'score': 50}

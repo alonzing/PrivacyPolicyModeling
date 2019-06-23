@@ -87,6 +87,7 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
     if not os.path.exists(sframe_filename):
         print("Building SFrame file...")
         sframe_raw = build_s_frame_from_db(script)
+        print('SFRAME PATH ' + sframe_raw_filename)
         sframe_raw.save(sframe_raw_filename)
         sframe_for_modeling = build_docs_for_modeling(sframe_raw, sframe_raw_filename)
         sframe_for_modeling.save(sframe_filename)
