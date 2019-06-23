@@ -60,7 +60,6 @@ def get_freq_words(docs4freq):
 
 def build_docs_for_modeling(in_docs, sframe_raw_filename):
     # Remove stop words and convert to bag of words
-    print(in_docs)
     in_docs = gl.text_analytics.count_words(in_docs['X1'])
     in_docs = in_docs.dict_trim_by_keys(gl.text_analytics.stopwords(), exclude=True)
     freq_words = get_freq_words(gl.load_sframe(sframe_raw_filename))
@@ -220,8 +219,6 @@ def build_from_exists_modeling(pp_url, pp_id):
         os.makedirs(working_dir)
     sframe_raw_filename, sframe_filename, model_filename, predictions_filename = \
         get_filenames(working_dir, working_dir, working_model_dir, working_dir)
-
-    print('PATHS ' + sframe_raw_filename, sframe_filename, model_filename, predictions_filename)
     script = get_paragraphs_from_db_for_single_pp_url(pp_url)
     single_predict_rows = model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename, script,
                                    single_predict=True)
