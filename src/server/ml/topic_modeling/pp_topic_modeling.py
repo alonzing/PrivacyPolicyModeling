@@ -60,6 +60,7 @@ def get_freq_words(docs4freq):
 
 def build_docs_for_modeling(in_docs, sframe_raw_filename):
     # Remove stop words and convert to bag of words
+    print(in_docs)
     in_docs = gl.text_analytics.count_words(in_docs['X1'])
     in_docs = in_docs.dict_trim_by_keys(gl.text_analytics.stopwords(), exclude=True)
     freq_words = get_freq_words(gl.load_sframe(sframe_raw_filename))
