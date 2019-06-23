@@ -1,12 +1,13 @@
 import {Component, NgModule, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
-import {ParagraphRow, PpService, PrivacyPolicy} from "../../pp.service";
+import {Category, PpService, PrivacyPolicy} from "../../pp.service";
 import {MatButtonModule} from '@angular/material/button';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {Observable} from "rxjs";
-import {MatTableDataSource} from "@angular/material";
+import {ThemeService} from "../../theme.service";
+import {MatSelectModule} from "@angular/material";
+
 
 @Component({
   selector: 'app-pp-url-search',
@@ -15,35 +16,44 @@ import {MatTableDataSource} from "@angular/material";
 })
 
 @NgModule({
-  imports: [MatButtonModule, BrowserAnimationsModule, MatInputModule, MatFormFieldModule]
+  imports: [MatButtonModule, BrowserAnimationsModule, MatInputModule, MatFormFieldModule, MatSelectModule]
 })
+
 
 export class PpUrlSearchComponent implements OnInit {
 
-  pPUrl = new FormControl('', [
+  privacyPolicyUrl = new FormControl('', [
     Validators.required,
   ]);
 
-  constructor(public privacyPolicyService: PpService) {
+  privacyPolicyCategory = new FormControl('', [
+    Validators.required,
+  ]);
+  categories: string[];
+
+
+  constructor(public privacyPolicyService: PpService, public themeService: ThemeService) {
+    this.privacyPolicyService.privacyPolicyData.asObservable().subscribe((privacyPolicy: PrivacyPolicy) => {
+      this.privacyPolicyService.progressBar = false;
+      if (privacyPolicy == null) {
+        return
+      }
+    });
+
+
   }
 
   getPrivacyPolicyData() {
     this.privacyPolicyService.progressBar = true;
-    this.privacyPolicyService.privacyPolicyData.asObservable().subscribe((privacyPolicyObservable: Observable<PrivacyPolicy>) => {
-      privacyPolicyObservable.subscribe((privacyPolicy: PrivacyPolicy) => {
-        this.privacyPolicyService.progressBar = false;
-        if (privacyPolicy == null) {
-          return
-        }
-      })
-    });
-    this.privacyPolicyService.getPrivacyPolicy(this.pPUrl.value);
-    console.log("Submitted " + this.pPUrl.value);
+    this.privacyPolicyService.getPrivacyPolicy(this.privacyPolicyUrl.value, this.privacyPolicyCategory.value).subscribe();
+    console.log("Submitted " + this.privacyPolicyUrl.value);
   }
 
 
-
   ngOnInit() {
+    this.privacyPolicyService.getCategories().subscribe((categories: string[]) => {
+      this.categories = categories;
+    });
   }
 
 

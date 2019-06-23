@@ -10,9 +10,8 @@
 
 button {
   float: right;
-  display: inline-flex;
-  margin-left: 10px;
   height: fit-content;
+  width: 110px;
 }
 
 .example-form {
@@ -21,4 +20,8 @@ button {
 
 .example-full-width {
   width: 100%;
+}
+
+mat-form-field {
+  padding-right: 10px;
 }

@@ -1,27 +1,27 @@
-<div class="container" *ngIf="this.isReady">
+<div *ngIf="this.isReady" [ngClass]="{'unicorn-dark-theme':themeService.isDarkMode}" class="container">
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
 
     <!-- Parameter Column -->
     <ng-container matColumnDef="parameter">
-      <th mat-header-cell *matHeaderCellDef> Parameter </th>
-      <td mat-cell *matCellDef="let element"> {{element.parameter}} </td>
+      <th *matHeaderCellDef mat-header-cell> Parameter</th>
+      <td *matCellDef="let element" mat-cell> {{element.parameter}} </td>
     </ng-container>
 
     <!-- Value Column -->
     <ng-container matColumnDef="value">
-      <th mat-header-cell *matHeaderCellDef> Value </th>
-      <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+      <th *matHeaderCellDef mat-header-cell> Value</th>
+      <td *matCellDef="let element" mat-cell> {{element.value}} </td>
     </ng-container>
 
     <!-- Category Value Column -->
     <ng-container matColumnDef="categoryValue">
-      <th mat-header-cell *matHeaderCellDef> Category Value </th>
-      <td mat-cell *matCellDef="let element"> {{element.categoryValue}} </td>
+      <th *matHeaderCellDef mat-header-cell> Category Value</th>
+      <td *matCellDef="let element" mat-cell> {{element.categoryValue}} </td>
     </ng-container>
 
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
   </table>
 </div>

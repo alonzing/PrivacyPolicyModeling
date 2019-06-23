@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {PpUrlSearchComponent} from './pp-url-search.component';
+import {ThemeToggleComponent} from './theme-toggle.component';
 
-describe('PpUrlSearchComponent', () => {
-  let component: PpUrlSearchComponent;
-  let fixture: ComponentFixture<PpUrlSearchComponent>;
+describe('ThemeToggleComponent', () => {
+  let component: ThemeToggleComponent;
+  let fixture: ComponentFixture<ThemeToggleComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PpUrlSearchComponent]
+      declarations: [ThemeToggleComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PpUrlSearchComponent);
+    fixture = TestBed.createComponent(ThemeToggleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
