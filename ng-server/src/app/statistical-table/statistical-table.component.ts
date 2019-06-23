@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PpService, PrivacyPolicy, TableRow} from "../../pp.service";
-import {Observable} from "rxjs";
-import {MatTableDataSource} from "@angular/material";
+import {ThemeService} from "../../theme.service";
 
 @Component({
   selector: 'app-statistical-table',
@@ -13,16 +12,14 @@ export class StatisticalTableComponent implements OnInit {
   dataSource: TableRow[];
   isReady: boolean = false;
 
-  constructor(public privacyPolicyService: PpService) {
+  constructor(public privacyPolicyService: PpService, public themeService: ThemeService) {
   }
 
 
   ngOnInit() {
-    this.privacyPolicyService.privacyPolicyData.asObservable().subscribe((privacyPolicyObservable: Observable<PrivacyPolicy>) => {
-      privacyPolicyObservable.subscribe((privacyPolicy: PrivacyPolicy) => {
-        this.dataSource = privacyPolicy.table;
-        this.isReady = true;
-      })
+    this.privacyPolicyService.privacyPolicyData.asObservable().subscribe((privacyPolicy: PrivacyPolicy) => {
+      this.dataSource = privacyPolicy.table;
+      this.isReady = true;
     });
   }
 }

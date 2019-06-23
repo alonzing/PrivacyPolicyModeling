@@ -7,6 +7,17 @@ table {
   text-align: left;
 }
 
+th.mat-header-cell {
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.c1 {
+  text-align: center;
+}
+
+
 .mat-form-field {
   font-size: 14px;
   width: 100%;
