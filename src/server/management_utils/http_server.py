@@ -14,6 +14,7 @@ db_query_handler = http_server_db_handler.HttpServerDBHandler()
 
 def create_stat_table(paragraph_list, category):
     category_avg_number_of_paragraphs = db_query_handler.get_average_paragraph_count_per_category(category)
+    topic_count = len(set([int(p['topic']) for p in paragraph_list]))
     table = [
         {
             'parameter': 'Number of Paragraphs',
@@ -22,7 +23,7 @@ def create_stat_table(paragraph_list, category):
         },
         {
             'parameter': 'Number of Topics',
-            'value': 5,
+            'value': topic_count,
             'categoryValue': 10
         },
         {
