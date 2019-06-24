@@ -193,9 +193,9 @@ def get_pp_prediction_by_url():
     if len(pp_id_query_result) > 0:
         print('URL in DB')
         paragraph_model_list = build_from_exists_modeling(url, pp_id_query_result[0][0])
-        duplicates_count = duplicate_count_per_category(url, category, paragraph_model_list)
+        # duplicates_count = duplicate_count_per_category(url, category, paragraph_model_list)
         table, score = create_stat_table(url, paragraph_model_list, category)
-        response = {'table': table, 'duplicates': duplicates_count, 'p': paragraph_model_list, 'score': score}
+        response = {'table': table, 'duplicates': 0, 'p': paragraph_model_list, 'score': score}
         return json.dumps(response)
     else:
         print('URL not in DB')
@@ -207,9 +207,9 @@ def get_pp_prediction_by_url():
             cleaned_pp_records = clean_pp_html_records(url_record_http_ok)
             split_or_bypass_pp(cleaned_pp_records)
             paragraph_model_list = build_from_exists_modeling(url, pp_id)
-            duplicates_count = duplicate_count_per_category(url, category, paragraph_model_list)
+            # duplicates_count = duplicate_count_per_category(url, category, paragraph_model_list)
             table, score = create_stat_table(url, paragraph_model_list, category)
-            response = {'table': table, 'duplicates': duplicates_count, 'p': paragraph_model_list, 'score': score}
+            response = {'table': table, 'duplicates': 0, 'p': paragraph_model_list, 'score': score}
             return json.dumps(response)
 
     return 'FAILURE'
