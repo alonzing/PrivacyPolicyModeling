@@ -15,8 +15,8 @@ import {
   MatChipsModule,
   MatFormFieldModule,
   MatInputModule,
-  MatSlideToggleModule,
-  MatSelectModule
+  MatSelectModule,
+  MatSlideToggleModule
 } from "@angular/material";
 import {MatTableModule} from '@angular/material/table';
 import {ThemeToggleComponent} from './theme-toggle/theme-toggle.component';

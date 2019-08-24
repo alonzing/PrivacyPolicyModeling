@@ -1,5 +1,5 @@
 <div [ngClass]="{'theme':themeService.isDarkMode}" class="container">
-  <mat-slide-toggle (toggleChange)="themeService.toggleDarkMode()" checked="{{this.themeService.isDarkMode}}">Dark
+  <mat-slide-toggle (change)="themeService.toggleDarkMode()" checked="{{this.themeService.isDarkMode}}">Dark
     Theme
   </mat-slide-toggle>
 </div>

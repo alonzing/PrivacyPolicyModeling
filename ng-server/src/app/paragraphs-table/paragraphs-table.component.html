@@ -8,21 +8,21 @@
 
     <!-- Topic Column -->
     <ng-container matColumnDef="topic">
-      <th *matHeaderCellDef mat-header-cell > Topic </th>
+      <th *matHeaderCellDef mat-header-cell> Topic</th>
       <!--suppress TypeScriptUnresolvedVariable -->
-      <td *matCellDef="let element" mat-cell class="c1"> {{element.topic}} </td>
+      <td *matCellDef="let element" class="c1" mat-cell> {{element.topic}} </td>
     </ng-container>
 
     <!-- Probability Column -->
     <ng-container matColumnDef="probability">
-      <th *matHeaderCellDef mat-header-cell > Probability </th>
+      <th *matHeaderCellDef mat-header-cell> Probability</th>
       <!--suppress TypeScriptUnresolvedVariable -->
-      <td *matCellDef="let element" mat-cell class="c1"> {{element.probability | number:'1.5'}} </td>
+      <td *matCellDef="let element" class="c1" mat-cell> {{element.probability | number:'1.5'}} </td>
     </ng-container>
 
     <!-- Text Column -->
     <ng-container matColumnDef="paragraph_text">
-      <th *matHeaderCellDef mat-header-cell> Text </th>
+      <th *matHeaderCellDef mat-header-cell> Text</th>
       <!--suppress TypeScriptUnresolvedVariable -->
       <td *matCellDef="let element" mat-cell> {{element.paragraph_text}} </td>
     </ng-container>
