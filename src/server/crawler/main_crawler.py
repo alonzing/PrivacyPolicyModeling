@@ -7,8 +7,8 @@ from multiprocessing.pool import ThreadPool
 
 from modified_play_scraper.lists import CATEGORIES, COLLECTIONS
 from src.server.crawler import modified_play_scraper as play_scraper
+# import play_scraper
 from src.server.crawler.crawler_db_handler import CrawlerDBHandler
-from src.server.utils.db.tools import db_utils
 
 crawler_db_handler = CrawlerDBHandler()
 
@@ -24,13 +24,14 @@ def _scrape_category(collection_value, category_value):
                                               detailed=True, page=page)
             for result in results:
                 url = result.get('developer_url')
-                pp_url = result.get('developer_pp_address')
+                pp_url = result.get('developer_pp_url')
 
                 # Replaces ' with '' to support strings with ' in SQL queries
                 db_row = [str(result.get('app_id')).replace('\'', '\'\''),
                           str(result.get('developer_id')).replace('\'', '\'\''), result.get(
                         'category')[0], url, pp_url]
-                
+
+                print('INSERTED {}'.format(db_row))
                 crawler_db_handler.insert_to_application_table(db_row)
         except:
             # Must NOT print anything to stdout from thread
@@ -58,10 +59,10 @@ def scrape_gplay_to_db_by_search(words_file_name):
 
         print("Current Keyword: {}".format(keyword))
         try:
-            results = play_scraper.search(query=keyword)
+            results = play_scraper.search(query=keyword, detailed=True)
             for result in results:
                 url = result.get('developer_url')
-                pp_url = result.get('developer_pp_address')
+                pp_url = result.get('developer_pp_url')
 
                 # Replaces ' with '' to support strings with ' in SQL queries
                 db_row = [str(result.get('app_id')).replace('\'', '\'\''),

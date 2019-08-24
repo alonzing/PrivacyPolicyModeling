@@ -63,7 +63,7 @@ class PlayScraper(object):
 
         app_ids = [x.attrs['data-docid']
                    for x in soup.select('span.preview-overlay-container')]
-        return multi_futures_app_request(app_ids)
+        return multi_futures_app_request(app_ids, params=self.params)
 
     def details(self, app_id):
         """Sends a GET request and parses an application's details.
@@ -131,7 +131,7 @@ class PlayScraper(object):
         else:
             soup = BeautifulSoup(response.content, 'lxml', from_encoding='utf8')
             apps = [parse_card_info(app_card)
-                    for app_card in soup.select('div[data-uitype=500]')]
+                    for app_card in soup.select('div[data-uitype="500"]')]
 
         return apps
 
@@ -164,7 +164,7 @@ class PlayScraper(object):
         else:
             soup = BeautifulSoup(response.content, 'lxml', from_encoding='utf8')
             apps = [parse_card_info(app)
-                    for app in soup.select('div[data-uitype=500]')]
+                    for app in soup.select('div[data-uitype="500"]')]
 
         return apps
 
@@ -190,7 +190,7 @@ class PlayScraper(object):
         suggestions = [q['s'] for q in response.json()]
         return suggestions
 
-    def search(self, query, page=None, detailed=True):
+    def search(self, query, page=None, detailed=False):
         """Sends a POST request and retrieves a list of applications matching
         the query term(s).
 
@@ -219,7 +219,7 @@ class PlayScraper(object):
             apps = self._parse_multiple_apps(response)
         else:
             apps = [parse_card_info(app)
-                    for app in soup.select('div[data-uitype=500]')]
+                    for app in soup.select('div[data-uitype="500"]')]
 
         return apps
 
@@ -242,18 +242,16 @@ class PlayScraper(object):
             apps = self._parse_multiple_apps(response)
         else:
             apps = [parse_card_info(app)
-                    for app in soup.select('div[data-uitype=500]')]
+                    for app in soup.select('div[data-uitype="500"]')]
 
         return apps
 
-    def categories(self):
+    def categories(self, ignore_promotions=True):
         """Sends a GET request to the front page (app store base url), parses
         and returns a list of all available categories.
-
-        Note: May contain some promotions, e.g. "Popular Characters"
         """
         categories = {}
-        strainer = SoupStrainer('a', {'class': 'child-submenu-link'})
+        strainer = SoupStrainer('ul', {'class': 'submenu-item-wrapper'})
 
         response = send_request('GET', s.BASE_URL, params=self.params)
         soup = BeautifulSoup(response.content,
@@ -261,19 +259,23 @@ class PlayScraper(object):
                              from_encoding='utf8',
                              parse_only=strainer)
         category_links = soup.select('a.child-submenu-link')
-        age = '?age='
+        category_links += soup.select('a.parent-submenu-link')
+        age_query = '?age='
 
         for cat in category_links:
             url = urljoin(s.BASE_URL, cat.attrs['href'])
             category_id = url.split('/')[-1]
             name = cat.string.strip()
 
-            if age in category_id:
+            if age_query in category_id:
                 category_id = 'FAMILY'
                 url = url.split('?')[0]
                 name = 'Family'
 
             if category_id not in categories:
+                if ignore_promotions and '/store/apps/category/' not in url:
+                    continue
+
                 categories[category_id] = {
                     'name': name,
                     'url': url,

@@ -30,6 +30,7 @@ def generate_post_data(results=None, page=None, pagtok=None, children=0):
     """
     Creates the post data for a POST request. Mainly for pagination and
     limiting results.
+
     :param results: the number of results to return.
     :param page: the page number; used to calculate start = page * results.
     :param pagtok: a page token string for pagination in search.
@@ -56,6 +57,7 @@ def generate_post_data(results=None, page=None, pagtok=None, children=0):
 def build_url(method, id_string):
     """Creates the absolute url for a type of object. E.g. details, developer,
     or similar.
+
     :param method: the corresponding method to get for an id.
     :param id: an id string query parameter.
     :return: a URL string.
@@ -70,6 +72,7 @@ def build_url(method, id_string):
 
 def build_collection_url(category='', collection=''):
     """Creates the absolute url based on the category and collection ids.
+
     :param category: the category to filter by.
     :param collection: the collection to get.
     :return: a formatted url string.
@@ -90,6 +93,7 @@ def build_collection_url(category='', collection=''):
 def send_request(method, url, data=None, params=None, headers=None,
                  timeout=30, verify=True, allow_redirects=False):
     """Sends a request to the url and returns the response.
+
     :param method: HTTP method to use.
     :param url: URL to send.
     :param data: Dictionary of post data to send.
@@ -125,6 +129,7 @@ def send_request(method, url, data=None, params=None, headers=None,
 
 def parse_additional_info(soup):
     """Parses an app's additional information section on its detail page.
+
     :param soup: the additional_info section BeautifulSoup object
     :return: a dictionary of the app's parsed additional info
     """
@@ -185,7 +190,6 @@ def parse_additional_info(soup):
                     developer_email = (developer_email.attrs['href']
                         .split(':')[1])
                 developer_url = value_div.select_one('a[href^="http"]')
-
                 if developer_url:
                     developer_url = developer_url.attrs['href']
 
@@ -198,36 +202,34 @@ def parse_additional_info(soup):
                 if developer_address is not None:
                     developer_address = developer_address.strip()
 
-                developer_pp_address = 'none'
+                developer_pp_url = 'none'
 
                 try:
                     for t in value_div.select('div'):
                         try:
                             if t.text == 'Privacy Policy':
-                                developer_pp_address = value_div.select('div')[-1].contents[0].attrs['href']
+                                developer_pp_url = value_div.select('div')[-1].contents[0].attrs['href']
                                 break
                         except Exception as ee:
                             None
                 except Exception as e:
                     print e
-                if developer_pp_address == 'none':
+                if developer_pp_url == 'none':
                     try:
                         for t in value_div.select('a'):
                             try:
                                 if t.text == 'Privacy Policy':
-                                    developer_pp_address = value_div.select('a')[-1].attrs['href']
+                                    developer_pp_url = value_div.select('a')[-1].attrs['href']
                                     break
                             except Exception as ee:
                                 None
                     except Exception as e:
                         print e
 
-                # if developer_pp_address == 'none':
-                #     print "no PP for {0}".format(value_div)
                 dev_data = {'developer_email': developer_email,
                             'developer_url': developer_url,
                             'developer_address': developer_address,
-                            'developer_pp_address': developer_pp_address}
+                            'developer_pp_url': developer_pp_url}
                 data.update(dev_data)
                 continue
             else:
@@ -237,13 +239,31 @@ def parse_additional_info(soup):
     return data
 
 
+def parse_screenshot_src(img):
+    """
+    The screenshot img element's src isn't always present, and sometimes is set
+    to a base64 encoded empty image because they're normally hidden in the
+    scrollable carousel, for purposes of saving bandwidth and faster loading.
+
+    Instead, it seems like we can grab the src url from data-src in those cases.
+
+    :param img: the img bs4 element
+    :return: the src url string
+    """
+    src = img.attrs.get('src')
+    if src is None or not src.startswith('https://'):
+        src = img.attrs.get('data-src')
+    return src
+
+
 def parse_app_details(soup):
     """Extracts an app's details from its info page.
+
     :param soup: a strained BeautifulSoup object of an app
     :return: a dictionary of app details
     """
     title = soup.select_one('h1[itemprop="name"] span').text
-    icon = (soup.select_one('.dQrBL img.ujDFqe')
+    icon = (soup.select_one('img[class="T75of sHb2Xb"]')
         .attrs['src']
         .split('=')[0])
     editors_choice = bool(
@@ -255,8 +275,9 @@ def parse_app_details(soup):
 
     # Let the user handle modifying the URL to fetch different resolutions
     # Removing the end `=w720-h310-rw` doesn't seem to give original res?
-    # screenshots = [img.attrs['src']
-    #                for img in soup.select('button.NIc6yf img.lxGQyd')]
+    # Check 'src' and 'data-src' since it can be one or the other
+    screenshots = [parse_screenshot_src(img)
+                   for img in soup.select('button.NIc6yf img.lxGQyd')]
 
     try:
         video = (soup.select_one('button[data-trailer-url^="https"]')
@@ -287,6 +308,8 @@ def parse_app_details(soup):
                       .replace(',', ''))
         ratings_section = soup.select_one('div.VEF2C')
         num_ratings = [int(rating.attrs['title'].replace(',', ''))
+                       if rating.attrs.get('title')
+                       else None
                        for rating in ratings_section.select(
                 'div span[style^="width:"]')]
         for i in range(5):
@@ -295,8 +318,10 @@ def parse_app_details(soup):
         reviews = 0
 
     try:
+
         changes_soup = soup.select('div[itemprop="description"] content')[1]
-        recent_changes = '\n'.join([x.string.strip() for x in changes_soup])
+        recent_changes = '\n'.join([x.string.strip() if x.string is not None else ''
+                                    for x in changes_soup])
     except (IndexError, AttributeError):
         recent_changes = None
 
@@ -312,17 +337,20 @@ def parse_app_details(soup):
     free = (price == '0')
 
     additional_info_data = parse_additional_info(
-        soup.select_one('.xyOfqd'))
+        soup.select_one('.IxB2fe'))
 
     offers_iap = bool(additional_info_data.get('iap_range'))
 
-    dev_id = soup.select_one('a.hrTbp.R8zArc').attrs['href'].split('=')[1]
+    try:
+        dev_id = soup.select_one('a.hrTbp.R8zArc').attrs['href'].split('=')[1]
+    except IndexError:
+        dev_id = None
     developer_id = dev_id if dev_id else None
 
     data = {
         'title': title,
         'icon': icon,
-        # 'screenshots': screenshots,
+        'screenshots': screenshots,
         'video': video,
         'category': category,
         'score': score,
@@ -346,6 +374,7 @@ def parse_app_details(soup):
 def parse_card_info(soup):
     """Extracts basic app info from the app's card. Used when parsing pages
     with lists of apps.
+
     :param soup: a BeautifulSoup object of an app's card
     :return: a dictionary of available basic app info
     """
@@ -359,7 +388,10 @@ def parse_card_info(soup):
 
     dev_soup = soup.select_one('a.subtitle')
     developer = dev_soup.attrs['title']
-    developer_id = dev_soup.attrs['href'].split('=')[1]
+    try:
+        developer_id = dev_soup.attrs['href'].split('=')[1]
+    except IndexError:
+        developer_id = None
 
     description = soup.select_one('div.description').text.strip()
     score = soup.select_one('div.tiny-star')
@@ -402,10 +434,10 @@ def parse_card_info(soup):
     }
 
 
-def bg_parse_app_details(session, response):
+def parse_app_details_response_hook(response, *args, **kwargs):
     """
-    Requests futures background callback function to asynchronously parse app
-    details as the responses are received. Mimics the `details` api.
+    Requests futures hook function to asynchronously parse app details as the
+    responses are received. Mimics the `details` api.
     """
     if not response.status_code == requests.codes.ok:
         response.raise_for_status()
@@ -414,7 +446,7 @@ def bg_parse_app_details(session, response):
     response.app_details_data = details
 
 
-def multi_futures_app_request(app_ids, headers=None, verify=True,
+def multi_futures_app_request(app_ids, headers=None, verify=True, params=None,
                               workers=s.CONCURRENT_REQUESTS):
     """
     :param app_ids: a list of app IDs.
@@ -428,7 +460,10 @@ def multi_futures_app_request(app_ids, headers=None, verify=True,
     responses = [session.get(build_url('details', app_id),
                              headers=headers,
                              verify=verify,
-                             background_callback=bg_parse_app_details)
+                             params=params,
+                             hooks={
+                                 'response': parse_app_details_response_hook,
+                             })
                  for app_id in app_ids]
 
     apps = []
@@ -442,6 +477,8 @@ def multi_futures_app_request(app_ids, headers=None, verify=True,
             })
             apps.append(response.result().app_details_data)
         except requests.exceptions.RequestException as e:
-            log.error('Error occurred fetching {app}'.format(app=app_ids[i]))
+            log.error('Error occurred fetching {app}: {err}'.format(
+                app=app_ids[i],
+                err=str(e)))
 
     return apps
