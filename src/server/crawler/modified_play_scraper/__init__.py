@@ -10,16 +10,8 @@ __version__ = '0.5.5'
 
 import logging
 
-from src.server.crawler.modified_play_scraper.api import (
-    collection,
-    details,
-    developer,
-    search,
-    similar,
-    suggestions,
-    categories,
-)
-
+from src.server.crawler.modified_play_scraper.api import (collection, details, developer, search, similar, suggestions,
+                                                          categories, )
 
 # Set default logging handler to avoid "No handler found" warnings.
 try:  # Python 2.7+
@@ -28,6 +20,5 @@ except ImportError:
     class NullHandler(logging.Handler):
         def emit(self, record):
             pass
-
 
 logging.getLogger(__name__).addHandler(NullHandler())

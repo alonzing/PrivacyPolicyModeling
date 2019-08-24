@@ -19,11 +19,8 @@ log = logging.getLogger(__name__)
 
 
 def default_headers():
-    return {
-        'Origin': 'https://play.google.com',
-        'User-Agent': s.USER_AGENT,
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-    }
+    return {'Origin': 'https://play.google.com', 'User-Agent': s.USER_AGENT,
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8', }
 
 
 def generate_post_data(results=None, page=None, pagtok=None, children=0):
@@ -38,10 +35,7 @@ def generate_post_data(results=None, page=None, pagtok=None, children=0):
                      scraping a top-level category's collections).
     :return: a dictionary of post data.
     """
-    data = {
-        'ipf': 1,
-        'xhr': 1
-    }
+    data = {'ipf': 1, 'xhr': 1}
     if children:
         data['numChildren'] = children
     if results is not None:
@@ -65,8 +59,7 @@ def build_url(method, id_string):
     if method == 'developer':
         id_string = quote_plus(id_string)
 
-    url = "{base}/{method}?id={id}".format(
-        base=s.BASE_URL, method=method, id=id_string)
+    url = "{base}/{method}?id={id}".format(base=s.BASE_URL, method=method, id=id_string)
     return url
 
 
@@ -82,16 +75,12 @@ def build_collection_url(category='', collection=''):
     if collection:
         collection = "/collection/{col}".format(col=collection)
 
-    url = "{base}{category}{collection}".format(
-        base=s.BASE_URL,
-        category=category,
-        collection=collection)
+    url = "{base}{category}{collection}".format(base=s.BASE_URL, category=category, collection=collection)
 
     return url
 
 
-def send_request(method, url, data=None, params=None, headers=None,
-                 timeout=30, verify=True, allow_redirects=False):
+def send_request(method, url, data=None, params=None, headers=None, timeout=30, verify=True, allow_redirects=False):
     """Sends a request to the url and returns the response.
 
     :param method: HTTP method to use.
@@ -109,15 +98,8 @@ def send_request(method, url, data=None, params=None, headers=None,
         data = generate_post_data()
 
     try:
-        response = requests.request(
-            method=method,
-            url=url,
-            data=data,
-            params=params,
-            headers=headers,
-            timeout=timeout,
-            verify=verify,
-            allow_redirects=allow_redirects)
+        response = requests.request(method=method, url=url, data=data, params=params, headers=headers, timeout=timeout,
+            verify=verify, allow_redirects=allow_redirects)
         if not response.status_code == requests.codes.ok:
             response.raise_for_status()
     except requests.exceptions.RequestException as e:
@@ -138,33 +120,14 @@ def parse_additional_info(soup):
     # identical, so we get the values with a similar function.
     section_titles_divs = [x for x in soup.select('div.hAyfc div.BgcNfc')]
 
-    title_normalization = {
-        'Updated': 'updated',
-        'Size': 'size',
-        'Installs': 'installs',
-        'Current Version': 'current_version',
-        'Requires Android': 'required_android_version',
-        'Content Rating': 'content_rating',
-        'In-app Products': 'iap_range',
-        'Interactive Elements': 'interactive_elements',
-        'Offered By': 'developer',
-        'Developer': 'developer_info',
-    }
+    title_normalization = {'Updated': 'updated', 'Size': 'size', 'Installs': 'installs',
+        'Current Version': 'current_version', 'Requires Android': 'required_android_version',
+        'Content Rating': 'content_rating', 'In-app Products': 'iap_range',
+        'Interactive Elements': 'interactive_elements', 'Offered By': 'developer', 'Developer': 'developer_info', }
 
-    data = {
-        'updated': None,
-        'size': None,
-        'installs': None,
-        'current_version': None,
-        'required_android_version': None,
-        'content_rating': None,
-        'iap_range': None,
-        'interactive_elements': None,
-        'developer': None,
-        'developer_email': None,
-        'developer_url': None,
-        'developer_address': None,
-    }
+    data = {'updated': None, 'size': None, 'installs': None, 'current_version': None, 'required_android_version': None,
+        'content_rating': None, 'iap_range': None, 'interactive_elements': None, 'developer': None,
+        'developer_email': None, 'developer_url': None, 'developer_address': None, }
 
     for title_div in section_titles_divs:
         section_title = title_div.string
@@ -174,21 +137,17 @@ def parse_additional_info(soup):
 
             if title_key == 'content_rating':
                 # last string in list is 'Learn more' link
-                value = [rating.strip()
-                         for rating in value_div.strings][:-1]
+                value = [rating.strip() for rating in value_div.strings][:-1]
             elif title_key == 'interactive_elements':
-                value = [ielement.strip()
-                         for ielement in value_div.strings]
+                value = [ielement.strip() for ielement in value_div.strings]
             elif title_key == 'iap_range':
-                iaps = re.search(r'(\$\d+\.\d{2}) - (\$\d+\.\d{2})',
-                                 value_div.string)
+                iaps = re.search(r'(\$\d+\.\d{2}) - (\$\d+\.\d{2})', value_div.string)
                 if iaps:
                     value = iaps.groups()
             elif title_key == 'developer_info':
                 developer_email = value_div.select_one('a[href^="mailto:"]')
                 if developer_email:
-                    developer_email = (developer_email.attrs['href']
-                        .split(':')[1])
+                    developer_email = (developer_email.attrs['href'].split(':')[1])
                 developer_url = value_div.select_one('a[href^="http"]')
                 if developer_url:
                     developer_url = developer_url.attrs['href']
@@ -226,10 +185,8 @@ def parse_additional_info(soup):
                     except Exception as e:
                         print e
 
-                dev_data = {'developer_email': developer_email,
-                            'developer_url': developer_url,
-                            'developer_address': developer_address,
-                            'developer_pp_url': developer_pp_url}
+                dev_data = {'developer_email': developer_email, 'developer_url': developer_url,
+                            'developer_address': developer_address, 'developer_pp_url': developer_pp_url}
                 data.update(dev_data)
                 continue
             else:
@@ -263,32 +220,25 @@ def parse_app_details(soup):
     :return: a dictionary of app details
     """
     title = soup.select_one('h1[itemprop="name"] span').text
-    icon = (soup.select_one('img[class="T75of sHb2Xb"]')
-        .attrs['src']
-        .split('=')[0])
-    editors_choice = bool(
-        soup.select_one('meta[itemprop="editorsChoiceBadgeUrl"]'))
+    icon = (soup.select_one('img[class="T75of sHb2Xb"]').attrs['src'].split('=')[0])
+    editors_choice = bool(soup.select_one('meta[itemprop="editorsChoiceBadgeUrl"]'))
 
     # Main category will be first
-    category = [c.attrs['href'].split('/')[-1]
-                for c in soup.select('a[itemprop="genre"]')]
+    category = [c.attrs['href'].split('/')[-1] for c in soup.select('a[itemprop="genre"]')]
 
     # Let the user handle modifying the URL to fetch different resolutions
     # Removing the end `=w720-h310-rw` doesn't seem to give original res?
     # Check 'src' and 'data-src' since it can be one or the other
-    screenshots = [parse_screenshot_src(img)
-                   for img in soup.select('button.NIc6yf img.lxGQyd')]
+    screenshots = [parse_screenshot_src(img) for img in soup.select('button.NIc6yf img.lxGQyd')]
 
     try:
-        video = (soup.select_one('button[data-trailer-url^="https"]')
-                 .attrs.get('data-trailer-url'))
+        video = (soup.select_one('button[data-trailer-url^="https"]').attrs.get('data-trailer-url'))
         if video is not None:
             video = video.split('?')[0]
     except AttributeError:
         video = None
 
-    description_soup = soup.select_one(
-        'div[itemprop="description"] content div')
+    description_soup = soup.select_one('div[itemprop="description"] content div')
     if description_soup:
         description = '\n'.join(description_soup.stripped_strings)
         description_html = description_soup.encode_contents()
@@ -303,15 +253,10 @@ def parse_app_details(soup):
 
     histogram = {}
     try:
-        reviews = int(soup.select_one('span[aria-label$="ratings"]')
-                      .text
-                      .replace(',', ''))
+        reviews = int(soup.select_one('span[aria-label$="ratings"]').text.replace(',', ''))
         ratings_section = soup.select_one('div.VEF2C')
-        num_ratings = [int(rating.attrs['title'].replace(',', ''))
-                       if rating.attrs.get('title')
-                       else None
-                       for rating in ratings_section.select(
-                'div span[style^="width:"]')]
+        num_ratings = [int(rating.attrs['title'].replace(',', '')) if rating.attrs.get('title') else None for rating in
+                       ratings_section.select('div span[style^="width:"]')]
         for i in range(5):
             histogram[5 - i] = num_ratings[i]
     except AttributeError:
@@ -320,8 +265,7 @@ def parse_app_details(soup):
     try:
 
         changes_soup = soup.select('div[itemprop="description"] content')[1]
-        recent_changes = '\n'.join([x.string.strip() if x.string is not None else ''
-                                    for x in changes_soup])
+        recent_changes = '\n'.join([x.string.strip() if x.string is not None else '' for x in changes_soup])
     except (IndexError, AttributeError):
         recent_changes = None
 
@@ -336,8 +280,7 @@ def parse_app_details(soup):
 
     free = (price == '0')
 
-    additional_info_data = parse_additional_info(
-        soup.select_one('.IxB2fe'))
+    additional_info_data = parse_additional_info(soup.select_one('.IxB2fe'))
 
     offers_iap = bool(additional_info_data.get('iap_range'))
 
@@ -347,24 +290,10 @@ def parse_app_details(soup):
         dev_id = None
     developer_id = dev_id if dev_id else None
 
-    data = {
-        'title': title,
-        'icon': icon,
-        'screenshots': screenshots,
-        'video': video,
-        'category': category,
-        'score': score,
-        'histogram': histogram,
-        'reviews': reviews,
-        'description': description,
-        'description_html': description_html,
-        'recent_changes': recent_changes,
-        'editors_choice': editors_choice,
-        'price': price,
-        'free': free,
-        'iap': offers_iap,
-        'developer_id': developer_id,
-    }
+    data = {'title': title, 'icon': icon, 'screenshots': screenshots, 'video': video, 'category': category,
+        'score': score, 'histogram': histogram, 'reviews': reviews, 'description': description,
+        'description_html': description_html, 'recent_changes': recent_changes, 'editors_choice': editors_choice,
+        'price': price, 'free': free, 'iap': offers_iap, 'developer_id': developer_id, }
 
     data.update(additional_info_data)
 
@@ -379,11 +308,8 @@ def parse_card_info(soup):
     :return: a dictionary of available basic app info
     """
     app_id = soup.attrs['data-docid']
-    url = urljoin(s.BASE_URL,
-                  soup.select_one('a.card-click-target').attrs['href'])
-    icon = urljoin(
-        s.BASE_URL,
-        soup.select_one('img.cover-image').attrs['src'].split('=')[0])
+    url = urljoin(s.BASE_URL, soup.select_one('a.card-click-target').attrs['href'])
+    icon = urljoin(s.BASE_URL, soup.select_one('img.cover-image').attrs['src'].split('=')[0])
     title = soup.select_one('a.title').attrs['title']
 
     dev_soup = soup.select_one('a.subtitle')
@@ -419,19 +345,9 @@ def parse_card_info(soup):
     if free is True:
         price = '0'
 
-    return {
-        'app_id': app_id,
-        'url': url,
-        'icon': icon,
-        'title': title,
-        'developer': developer,
-        'developer_id': developer_id,
-        'description': description,
-        'score': score,
-        'full_price': full_price,
-        'price': price,
-        'free': free
-    }
+    return {'app_id': app_id, 'url': url, 'icon': icon, 'title': title, 'developer': developer,
+        'developer_id': developer_id, 'description': description, 'score': score, 'full_price': full_price,
+        'price': price, 'free': free}
 
 
 def parse_app_details_response_hook(response, *args, **kwargs):
@@ -446,8 +362,7 @@ def parse_app_details_response_hook(response, *args, **kwargs):
     response.app_details_data = details
 
 
-def multi_futures_app_request(app_ids, headers=None, verify=True, params=None,
-                              workers=s.CONCURRENT_REQUESTS):
+def multi_futures_app_request(app_ids, headers=None, verify=True, params=None, workers=s.CONCURRENT_REQUESTS):
     """
     :param app_ids: a list of app IDs.
     :param headers: a dictionary of custom headers to use.
@@ -457,28 +372,17 @@ def multi_futures_app_request(app_ids, headers=None, verify=True, params=None,
     session = FuturesSession(max_workers=workers)
 
     headers = default_headers() if headers is None else headers
-    responses = [session.get(build_url('details', app_id),
-                             headers=headers,
-                             verify=verify,
-                             params=params,
-                             hooks={
-                                 'response': parse_app_details_response_hook,
-                             })
-                 for app_id in app_ids]
+    responses = [session.get(build_url('details', app_id), headers=headers, verify=verify, params=params,
+                             hooks={'response': parse_app_details_response_hook, }) for app_id in app_ids]
 
     apps = []
     for i, response in enumerate(responses):
         try:
             result = response.result()
             app_json = result.app_details_data
-            app_json.update({
-                'app_id': app_ids[i],
-                'url': result.url,
-            })
+            app_json.update({'app_id': app_ids[i], 'url': result.url, })
             apps.append(response.result().app_details_data)
         except requests.exceptions.RequestException as e:
-            log.error('Error occurred fetching {app}: {err}'.format(
-                app=app_ids[i],
-                err=str(e)))
+            log.error('Error occurred fetching {app}: {err}'.format(app=app_ids[i], err=str(e)))
 
     return apps
