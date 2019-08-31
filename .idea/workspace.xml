@@ -1,118 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c5fcd507-6dac-4b42-b096-cc68b8107307" name="Default Changelist" comment="">
+    <list default="true" id="3ed2c350-7a47-4f40-99f0-3ff6bdb09635" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ng-server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ng-server/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ng-server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ng-server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ng-server/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ng-server/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ng-server/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ng-server/src/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ng-server/src/pp.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ng-server/src/pp.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ng-server/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/ng-server/src/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitignore" beforeDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/.tmp/" />
-    <ignored path="$PROJECT_DIR$/temp/" />
-    <ignored path="$PROJECT_DIR$/tmp/" />
+    <list id="2ea9b75a-c0ea-4d6c-8bf8-6f5c38c52728" name="Revert &quot;Multithreading can be stop after timeout and modeling&quot;" comment="Revert &quot;Multithreading can be stop after timeout and modeling&quot;&#10;&#10;This reverts commit 805e9c0e" />
+    <list id="49aa920c-8e00-41e6-b33a-e412fefa4f53" name="Revert &quot;Update pre_processing_executor.py&quot;" comment="Revert &quot;Update pre_processing_executor.py&quot;&#10;&#10;This reverts commit ea526604" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ng-server/src/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="31" column="20" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#58#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ng-server/src/pp.service.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="62" column="9" lean-forward="true" selection-start-line="62" selection-start-column="9" selection-end-line="62" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ng-server/src/app/app.module.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="121">
-              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
-              <folding>
-                <element signature="e#0#56#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="24" selection-start-line="3" selection-start-column="24" selection-end-line="3" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ng-server/src/app/paragraphs-table/paragraphs-table.component.html">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ng-server/src/app/paragraphs-table/paragraphs-table.component.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="1" lean-forward="true" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ng-server/src/app/app.component.css">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ng-server/src/styles.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="18" lean-forward="true" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -127,95 +26,14 @@
       </map>
     </option>
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/ng-server/e2e/src/app.e2e-spec.ts" />
-        <option value="$PROJECT_DIR$/ng-server/package.json" />
-        <option value="$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.spec.ts" />
-        <option value="$PROJECT_DIR$/ng-server/src/app/app.module.ts" />
-        <option value="$PROJECT_DIR$/ng-server/src/app/app.component.css" />
-        <option value="$PROJECT_DIR$/ng-server/src/pp.service.ts" />
-        <option value="$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.ts" />
-        <option value="$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.html" />
-        <option value="$PROJECT_DIR$/ng-server/src/app/paragraphs-table/paragraphs-table.component.css" />
-        <option value="$PROJECT_DIR$/ng-server/src/index.html" />
-        <option value="$PROJECT_DIR$/ng-server/src/styles.css" />
-        <option value="$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.css" />
-      </list>
-    </option>
-  </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="10" />
     <option name="y" value="20" />
     <option name="width" value="1346" />
     <option name="height" value="688" />
   </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="PrivacyPolicyModeling" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PrivacyPolicyModeling" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PrivacyPolicyModeling" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PrivacyPolicyModeling" type="462c0819:PsiDirectoryNode" />
-              <item name="ng-server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PrivacyPolicyModeling" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PrivacyPolicyModeling" type="462c0819:PsiDirectoryNode" />
-              <item name="ng-server" type="462c0819:PsiDirectoryNode" />
-              <item name="e2e" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PrivacyPolicyModeling" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PrivacyPolicyModeling" type="462c0819:PsiDirectoryNode" />
-              <item name="ng-server" type="462c0819:PsiDirectoryNode" />
-              <item name="e2e" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PrivacyPolicyModeling" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PrivacyPolicyModeling" type="462c0819:PsiDirectoryNode" />
-              <item name="ng-server" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PrivacyPolicyModeling" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PrivacyPolicyModeling" type="462c0819:PsiDirectoryNode" />
-              <item name="ng-server" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PrivacyPolicyModeling" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PrivacyPolicyModeling" type="462c0819:PsiDirectoryNode" />
-              <item name="ng-server" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="paragraphs-table" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PrivacyPolicyModeling" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PrivacyPolicyModeling" type="462c0819:PsiDirectoryNode" />
-              <item name="ng-server" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="pp-url-search" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
+  <component name="ProjectLevelVcsManager">
+    <OptionsSetting value="false" id="Update" />
   </component>
   <component name="PropertiesComponent">
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
@@ -265,6 +83,16 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="ServiceViewManager">
+    <option name="allServicesViewState">
+      <serviceView>
+        <treeState>
+          <expand />
+          <select />
+        </treeState>
+      </serviceView>
+    </option>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -279,182 +107,7 @@
     </task>
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14810000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info id="npm" side_tool="true" />
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20089285" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="TypeScript" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" visible="true" weight="0.3289689" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3289689" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout>
-    <layout-to-restore>
-      <window_info id="npm" order="0" side_tool="true" />
-      <window_info id="Favorites" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.25" />
-      <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="TypeScript" order="1" />
-      <window_info anchor="bottom" id="Terminal" order="2" visible="true" weight="0.3289689" />
-      <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="4" />
-      <window_info anchor="bottom" id="Message" order="5" />
-      <window_info anchor="bottom" id="Find" order="6" />
-      <window_info anchor="bottom" id="Run" order="7" weight="0.3289689" />
-      <window_info anchor="bottom" id="Debug" order="8" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="11" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout-to-restore>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/package-lock.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="19" selection-start-line="18" selection-start-column="19" selection-end-line="18" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="35" column="29" lean-forward="true" selection-start-line="35" selection-start-column="29" selection-end-line="35" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/e2e/src/app.po.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/e2e/src/app.e2e-spec.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/favicon.ico">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/karma.conf.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/theme.scss">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.spec.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-          <folding>
-            <element signature="e#0#71#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/app/app.module.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
-          <folding>
-            <element signature="e#0#56#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/pp.service.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="62" column="9" lean-forward="true" selection-start-line="62" selection-start-column="9" selection-end-line="62" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="31" column="20" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#58#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/app/paragraphs-table/paragraphs-table.component.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/app/paragraphs-table/paragraphs-table.component.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="1" lean-forward="true" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/app/app.component.css">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/styles.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="18" lean-forward="true" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="24" selection-start-line="3" selection-start-column="24" selection-end-line="3" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ng-server/src/app/pp-url-search/pp-url-search.component.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
   </component>
 </project>
