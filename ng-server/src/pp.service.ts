@@ -36,7 +36,7 @@ export interface Category {
 
 export class PpService {
   privacyPolicyData = new Subject<PrivacyPolicy>();
-  serverUrl = 'http://104.198.74.92:5000/';
+  serverUrl = 'http://localhost:5000/';
   progressBar: boolean = false;
   categories: Observable<Category[]>;
 

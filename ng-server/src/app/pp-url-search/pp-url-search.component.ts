@@ -1,6 +1,6 @@
-import {Component, NgModule, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
-import {Category, PpService, PrivacyPolicy} from "../../pp.service";
+import {PpService, PrivacyPolicy} from "../../pp.service";
 import {MatButtonModule} from '@angular/material/button';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatInputModule} from '@angular/material/input';
@@ -8,20 +8,16 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {ThemeService} from "../../theme.service";
 import {MatSelectModule} from "@angular/material";
 
-
+/**
+ * Represents a search box where the user can submit a privacy policy URL and a category.
+ */
 @Component({
   selector: 'app-pp-url-search',
   templateUrl: './pp-url-search.component.html',
   styleUrls: ['./pp-url-search.component.css']
 })
 
-@NgModule({
-  imports: [MatButtonModule, BrowserAnimationsModule, MatInputModule, MatFormFieldModule, MatSelectModule]
-})
-
-
 export class PpUrlSearchComponent implements OnInit {
-
   privacyPolicyUrl = new FormControl('', [
     Validators.required,
   ]);
@@ -31,7 +27,6 @@ export class PpUrlSearchComponent implements OnInit {
   ]);
   categories: string[];
 
-
   constructor(public privacyPolicyService: PpService, public themeService: ThemeService) {
     this.privacyPolicyService.privacyPolicyData.asObservable().subscribe((privacyPolicy: PrivacyPolicy) => {
       this.privacyPolicyService.progressBar = false;
@@ -39,10 +34,11 @@ export class PpUrlSearchComponent implements OnInit {
         return
       }
     });
-
-
   }
 
+  /**
+   * Gets the privacy policy data.
+   */
   getPrivacyPolicyData() {
     this.privacyPolicyService.progressBar = true;
     this.privacyPolicyService.getPrivacyPolicy(this.privacyPolicyUrl.value, this.privacyPolicyCategory.value).subscribe();
@@ -55,6 +51,4 @@ export class PpUrlSearchComponent implements OnInit {
       this.categories = categories;
     });
   }
-
-
 }

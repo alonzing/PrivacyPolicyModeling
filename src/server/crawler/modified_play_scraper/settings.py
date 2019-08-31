@@ -19,21 +19,10 @@ DEV_RESULTS = 24
 SIMILAR_RESULTS = 24
 
 # pagTok post data strings to paginate through search results
-PAGE_TOKENS = {
-    0: '',
-    1: 'GAEiAggU:S:ANO1ljLtUJw',
-    2: 'GAEiAggo:S:ANO1ljIeRQQ',
-    3: 'GAEiAgg8:S:ANO1ljIM1CI',
-    4: 'GAEiAghQ:S:ANO1ljLxWBY',
-    5: 'GAEiAghk:S:ANO1ljJkC4I',
-    6: 'GAEiAgh4:S:ANO1ljJfGC4',
-    7: 'GAEiAwiMAQ==:S:ANO1ljL7Yco',
-    8: 'GAEiAwigAQ==:S:ANO1ljLMTko',
-    9: 'GAEiAwi0AQ==:S:ANO1ljJ2maA',
-    10: 'GAEiAwjIAQ==:S:ANO1ljIG2D4',
-    11: 'GAEiAwjcAQ==:S:ANO1ljJ9Wk0',
-    12: 'GAEiAwjwAQ==:S:ANO1ljLFcVI',
-}
+PAGE_TOKENS = {0: '', 1: 'GAEiAggU:S:ANO1ljLtUJw', 2: 'GAEiAggo:S:ANO1ljIeRQQ', 3: 'GAEiAgg8:S:ANO1ljIM1CI',
+    4: 'GAEiAghQ:S:ANO1ljLxWBY', 5: 'GAEiAghk:S:ANO1ljJkC4I', 6: 'GAEiAgh4:S:ANO1ljJfGC4',
+    7: 'GAEiAwiMAQ==:S:ANO1ljL7Yco', 8: 'GAEiAwigAQ==:S:ANO1ljLMTko', 9: 'GAEiAwi0AQ==:S:ANO1ljJ2maA',
+    10: 'GAEiAwjIAQ==:S:ANO1ljIG2D4', 11: 'GAEiAwjcAQ==:S:ANO1ljJ9Wk0', 12: 'GAEiAwjwAQ==:S:ANO1ljLFcVI', }
 
 # Regex to find page tokens within scrip tags
 TOKEN_RE = r'GAEiA[\w=]{3,7}:S:ANO1lj[\w]{5}'
