@@ -24,7 +24,7 @@ def create_stat_table(pp_url, paragraph_list, category):
     category_avg_number_of_paragraphs = db_query_handler.get_average_paragraph_count_per_category(category)
     material_paragraphs_missing_count = random.randint(len(paragraph_list) / 8, len(paragraph_list) / 4)
     for p in paragraph_list:
-        p['topic'] = topic_dict[int(p['topic'])]
+        p['topic'] = topic_dict[str(int(p['topic']))]
     topic_list = [p['topic'] for p in paragraph_list]
     other_topic_count = len([p['topic'] for p in paragraph_list if p['topic'] == 'Other'])
     topic_count = len(set(topic_list)) + (other_topic_count - 1)
