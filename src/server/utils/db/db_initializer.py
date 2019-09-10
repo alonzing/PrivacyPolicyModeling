@@ -21,7 +21,7 @@ def init_pp_tables():
 def init_paragraphs_prediction_tables():
     db_utils.exec_command("DROP TABLE privacy_policy_paragraphs_prediction")
     db_utils.exec_command("CREATE TABLE privacy_policy_paragraphs_prediction (id serial not null primary key, \
-                                                        running_id numeric,topic_id numeric, probability numeric, paragraph text)")
+                                                        running_id numeric, topic_id numeric, probability numeric, privacy_policy_id numeric, paragraph text)")
 
 
 def init_db():

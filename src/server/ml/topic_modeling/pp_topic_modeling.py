@@ -122,25 +122,28 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
     docs_parg = docs_res['X1']
     for i in range(save_from, total_docs):
         x = docs_res_res[i]
+        paragraph = docs_parg[i]
+        pp_id = paragraph[paragraph.index('$') + 1:paragraph.rindex('$')]
         db_row = [topic_count,
                   x,
                   docs_res_prob[i][x],
-                  docs_parg[i]]
+                  pp_id,
+                  paragraph]
 
         db_rows.append(db_row)
         if single_predict:
             result_dict = {
                 'topic': db_row[1],
                 'probability': db_row[2],
-                'paragraph_text': db_row[3]
+                'paragraph_text': db_row[4]
             }
             single_predict_rows.append(result_dict)
 
         if records_count == 1000 or i == total_docs - 1:
             records_count = 0
             db_utils.exec_command("INSERT INTO privacy_policy_paragraphs_prediction \
-                                (running_id,topic_id,probability,paragraph)\
-                                                   VALUES (%s,%s,%s,%s)", db_rows)
+                                (running_id,topic_id,probability, privacy_policy_id, paragraph)\
+                                                   VALUES (%s,%s,%s,%s,%s)", db_rows)
             db_rows = []
             time.sleep(1)
             print("saved up to {} out of {}".format(i, total_docs))
