@@ -1,11 +1,13 @@
 from tools import db_utils
 
+# Drops old tables and creates new tables
+
 
 def init_applications_table():
     db_utils.exec_command("DROP TABLE applications")
     db_utils.exec_command(
         "CREATE TABLE applications (id serial not null primary key, name text, developer text, category name, "
-        "dev_url text , pp_url text, is_new boolean DEFAULT true )")
+        "dev_url text , pp_url text, is_new boolean DEFAULT true, created_at date not null default CURRENT_DATE )")
 
 
 def init_pp_tables():
@@ -13,7 +15,7 @@ def init_pp_tables():
     db_utils.exec_command("DROP TABLE privacy_policy_paragraphs")
     db_utils.exec_command("CREATE TABLE privacy_policy (id serial not null primary key, \
                                                         application_id numeric, pp_url text, html text, clean_html text,\
-                                                        process_status text, process_status_details text, url_return_code numeric, url_return_value text)")
+                                                        process_status text, process_status_details text, url_return_code numeric, url_return_value text, created_at date not null default CURRENT_DATE)")
     db_utils.exec_command("CREATE TABLE privacy_policy_paragraphs (id serial not null primary key, \
                                                                    pp_url text, paragraph text, index numeric,privacy_policy_id numeric)")
 

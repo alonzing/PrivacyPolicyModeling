@@ -20,7 +20,6 @@ class PreProcessingDBHandler:
         self._url_from_applications_table = "select DISTINCT pp_url from applications where pp_url <> 'none' and " \
                                             "is_new = true group by pp_url "
 
-        # TODO: Add LIMIT and STATUS column filters
         self._pp_pending_200_table = "select id,pp_url,html from privacy_policy where process_status='{}' and " \
                                      "url_return_code=200 ".format(PENDING)
 

@@ -1,11 +1,11 @@
 import logging
 import sys
 import time
-import traceback
 
 import psycopg2
 import psycopg2.extras
 
+# Connection details
 working_db_name = "postgres"
 working_db_host = "localhost"
 working_db_user = "postgres"
@@ -17,6 +17,10 @@ class DBUtils:
         pass
 
     def get_db_connection(self):
+        """
+        Create new database connection with the details from above
+        :return: the connection
+        """
         conn = None
         count = 0
         try:
@@ -26,6 +30,7 @@ class DBUtils:
             time.sleep(1)
             return conn
         except:
+            # Reconnect tries when the first connection didn't worked
             while conn is None and count < 10:
                 try:
                     conn = psycopg2.connect(
@@ -35,6 +40,7 @@ class DBUtils:
                     time.sleep(1)
                     count += 1
             if conn is None:
+                # Waits for user to fix database
                 uinput = raw_input("Postgres is down, press to continue...")
                 while True:
                     if uinput == ' ':
@@ -43,6 +49,12 @@ class DBUtils:
                 return self.get_db_connection()
 
     def exec_command(self, sql, value_list=None):
+        """
+        execute sql command without results
+        :param sql: the sql command
+        :param value_list: values for the command
+        :return: None
+        """
         try:
             conn = self.get_db_connection()
             cur = conn.cursor()
@@ -60,6 +72,12 @@ class DBUtils:
                 conn.close()
 
     def exec_command_with_result(self, sql, value_list=None):
+        """
+        execute sql command and return result from the command
+        :param sql: the sql command
+        :param value_list: values for the command
+        :return: result
+        """
         try:
             conn = self.get_db_connection()
             cur = conn.cursor()
@@ -76,6 +94,12 @@ class DBUtils:
         return result
 
     def db_select(self, sql, value_list=None):
+        """
+        Uses select commands and returns the result
+        :param sql: sql command
+        :param value_list: values for the command
+        :return: result
+        """
         try:
             conn = self.get_db_connection()
             cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
