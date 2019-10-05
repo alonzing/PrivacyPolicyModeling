@@ -99,7 +99,7 @@ class PreProcessingExecutor:
 
 
 # For debug, drops the tables
-db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
+# db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
 
 # Initialize the executor object
 executor = PreProcessingExecutor(consumers_number=1, batch_size=5)
