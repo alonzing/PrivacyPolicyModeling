@@ -67,8 +67,8 @@ python src/server/utils/db/db_initialzer.py
    Let it run for approx. 2-5 min to get some data.
    
    ##### Verifying the Results:
-   - By Querying the DB, using ```pgAdmin4``` or some other tool. 
-     The applications table should have data.
+   - By Querying the DB, using ```pgAdmin4``` or some other tool.  
+     - The applications table should have data.
 
 2. Run the pre-processing module under ```src/server/ml/pre_processing/pre_processing_executor.py```
    to split the privacy policies into paragraphs and perform some cleaning of the HTML.
@@ -76,7 +76,7 @@ python src/server/utils/db/db_initialzer.py
    You can let it complete its run, or stop it midway, and run it again at a later time. (Will resume from the same point it stopped).
    ##### Verifying the Results:
    - By Querying the DB directly, using ```pgAdmin4``` or some other tool.
-     The privacy_policy and privacy_policy_paragraphs table should have data.
+      - The privacy_policy and privacy_policy_paragraphs tables should have data.
    ##### OR
    - By running the debug http server under ```src/server/management_utils/debug_http_server.py```
      - Access ```localhost:8181``` to see the clean HTML.
