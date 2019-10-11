@@ -117,6 +117,7 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
     db_rows = []
     records_count = 0
 
+    #
     docs_res_res = docs_res['res']
     docs_res_prob = docs_res['res_prob']
     docs_parg = docs_res['X1']
@@ -131,6 +132,8 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
                   paragraph]
 
         db_rows.append(db_row)
+
+        # Stores each paragraph predict for a single predict in a list of dicts
         if single_predict:
             result_dict = {
                 'topic': db_row[1],
@@ -139,6 +142,7 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
             }
             single_predict_rows.append(result_dict)
 
+        # Insert into DB in batches or until the last predict
         if records_count == 1000 or i == total_docs - 1:
             records_count = 0
             db_utils.exec_command("INSERT INTO privacy_policy_paragraphs_prediction \
@@ -157,6 +161,14 @@ def model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_f
 
 
 def build_prediction_results(topic_count, model_file_name):
+    """
+    Writes the results from the model build phase into html files
+    Creates files for each topic and its paragraphs and their probabilities
+    and file for each topic and its belonging words
+    :param topic_count: number of topics
+    :param model_file_name: the file name of the model for loading it
+    :return: None
+    """
     model = gl.load_model(model_file_name)
     root_results_dir = 'my-privacypolicy-thesis/results{}'.format(topic_count)
     if os.path.exists(root_results_dir):
@@ -165,6 +177,8 @@ def build_prediction_results(topic_count, model_file_name):
 
     results_html_file = open(root_results_dir + "/results.html", "w+")
     results_html_file.write("<html><table border='1'><tr><td>Topic Number</td><td>Words</td><td>Paragraphs</td></tr>")
+
+    # Creates html file for each topic and its belonging words
     print('started phase 1 of build predictions results')
     paragraphs_html_list = []
     for i in range(topic_count):
@@ -178,6 +192,7 @@ def build_prediction_results(topic_count, model_file_name):
     results_html_file.write("</table></html>")
     results_html_file.close()
 
+    # Creating html files for each topic and its paragraphs and their probabilities
     print('started phase 2 of build predictions results')
     for topic_id in range(0, topic_count):
         results_records = db_utils.db_select(
@@ -205,23 +220,42 @@ def get_filenames(sframe_raw_working_dir, sframe_working_dir, model_working_dir,
 
 
 def build_topics_models():
+    """
+    Creates a model and predict for all pp paragraphs that are found in the table paragraphs_privacy_policy
+    The method also writes all the results into html files
+    :return: None
+    """
+    # Creating working dir for the single prediction
     working_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, 'test')
     os.makedirs(working_dir)
     print('directory {0} was created'.format(working_dir))
+    # Creating paths for sub dirs
     sframe_raw_filename, sframe_filename, model_filename, predictions_filename = \
         get_filenames(working_dir, working_dir, working_dir, working_dir)
     topic_count = model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename)
+    # Writes the results into html files
     build_prediction_results(topic_count, model_filename)
 
 
 def build_from_exists_modeling(pp_url, pp_id):
+    """
+    Creating prediction for a single pp url based on an existing model.
+    Must create a model before using this method
+    :param pp_url: url of a privacy policy
+    :param pp_id: the id in the table privacy_policy
+    :return: list of predictions, each contains the text, probability and topic
+    """
+    # Creating working dir for the single prediction
     working_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, "pp_" + str(pp_id))
+    # Using the existing model location
     working_model_dir = 'models_and_data{0}run_{1}'.format(os.path.sep, 'test')
     if not os.path.exists(working_dir):
         os.makedirs(working_dir)
+    # Creating filenames for the model needs
     sframe_raw_filename, sframe_filename, model_filename, predictions_filename = \
         get_filenames(working_dir, working_dir, working_model_dir, working_dir)
     script = get_paragraphs_from_db_for_single_pp_url(pp_url)
+    # Using the old model for creating a prediction
     single_predict_rows = model_pp(sframe_raw_filename, sframe_filename, model_filename, predictions_filename, script,
                                    single_predict=True)
     shutil.rmtree(working_dir)
@@ -230,5 +264,3 @@ def build_from_exists_modeling(pp_url, pp_id):
 
 if __name__ == '__main__':
     build_topics_models()
-    # pp_url = 'http://christianchannel.us/privacy-policy/'
-    # build_from_exists_modeling(pp_url, 1940)
