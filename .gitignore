@@ -2,6 +2,5 @@
 *.pyc
 venv
 words_files_status.txt
-requirements.txt
 ng-server/node_modules
 node_modules
