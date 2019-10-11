@@ -47,7 +47,8 @@ your registered email address here/your product key here/GraphLab-Create-License
 ```
 
 * Install NLTK stopwords
-```
+```python
 python -m nltk.downloader stopwords
 ```
 
+* Initialize the DB by running src/server/utils/db/db_initialzer.py
