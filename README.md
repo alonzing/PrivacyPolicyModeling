@@ -51,7 +51,7 @@ your registered email address here/your product key here/GraphLab-Create-License
 python -m nltk.downloader stopwords
 ```
 
-* Initialize the DB - use this only once, unless a reset of the DB is required.
+* Initialize the DB - **use this only once, unless a reset of the DB is required.**
 ```python
 python src/server/utils/db/db_initialzer.py
 ```
