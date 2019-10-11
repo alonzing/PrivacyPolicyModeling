@@ -61,7 +61,7 @@ python -m nltk.downloader stopwords
 python src/server/utils/db/db_initialzer.py
 ```
 
-## Test running the whole process 
+## Test Run
 ### For detailed reference regarding the project structure refer to the Project Documentation.
 1. Populate the DB with applications by running the crawler under ```src/server/crawler/main_crawler.py```
    Let it run for approx. 2-5 min to get some data.
