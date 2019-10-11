@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3ed2c350-7a47-4f40-99f0-3ff6bdb09635" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/PrivacyPolicyModeling.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PrivacyPolicyModeling.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ng-server/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/ng-server/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ng-server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ng-server/package-lock.json" afterDir="false" />
     </list>
     <list id="2ea9b75a-c0ea-4d6c-8bf8-6f5c38c52728" name="Revert &quot;Multithreading can be stop after timeout and modeling&quot;" comment="Revert &quot;Multithreading can be stop after timeout and modeling&quot;&#10;&#10;This reverts commit 805e9c0e" />
     <list id="49aa920c-8e00-41e6-b33a-e412fefa4f53" name="Revert &quot;Update pre_processing_executor.py&quot;" comment="Revert &quot;Update pre_processing_executor.py&quot;&#10;&#10;This reverts commit ea526604" />
@@ -12,11 +15,6 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>pPUrl</find>
-    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -32,6 +30,7 @@
     <option name="width" value="1346" />
     <option name="height" value="688" />
   </component>
+  <component name="ProjectId" id="1S3cw4nDXs4c0l5ZucdGWa1mVq8" />
   <component name="ProjectLevelVcsManager">
     <OptionsSetting value="false" id="Update" />
   </component>
@@ -40,6 +39,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -48,8 +48,8 @@
     <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs.protractor.protractor_package" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
-    <property name="ts.external.directory.path" value="C:\Users\barak\WebstormProjects\PrivacyPolicyModeling\ng-server\node_modules\typescript\lib" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="ts.external.directory.path" value="C:\Users\edeny\WebstormProjects\PrivacyPolicyModeling\ng-server\node_modules\typescript\lib" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -77,11 +77,6 @@
       </test-names>
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Protractor.workspace-project App" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="ServiceViewManager">
     <option name="allServicesViewState">
@@ -98,16 +93,31 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c5fcd507-6dac-4b42-b096-cc68b8107307" name="Default Changelist" comment="" />
+      <changelist id="3ed2c350-7a47-4f40-99f0-3ff6bdb09635" name="Default Changelist" comment="" />
       <created>1559736813574</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1559736813574</updated>
       <workItem from="1559736816155" duration="14810000" />
+      <workItem from="1570795956185" duration="667000" />
+      <workItem from="1570796633576" duration="1996000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
