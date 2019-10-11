@@ -46,3 +46,4 @@ tornado==4.3
 Unidecode==1.0.23
 urllib3==1.23
 Werkzeug==0.15.2
+bs4

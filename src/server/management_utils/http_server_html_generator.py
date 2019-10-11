@@ -1,4 +1,7 @@
 class HttpServerHTMLGenerator:
+    """
+    Generates the HTML for the debug_http_server.
+    """
     def __init__(self):
         pass
 

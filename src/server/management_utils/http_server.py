@@ -8,7 +8,10 @@ from src.server.ml.pre_processing.text_pre_processing_utils import load_pp_html_
 from src.server.ml.topic_modeling.pp_topic_modeling import build_from_exists_modeling
 
 http_server = Flask(__name__)
+
+# Use only on local dev environment - this method exposes server to CSRF.
 CORS(http_server)
+
 db_query_handler = http_server_db_handler.HttpServerDBHandler()
 
 
@@ -18,7 +21,13 @@ with open('topic_dict.json', 'rb') as topic_file:
     topic_dict = json.load(topic_file)
 
 
-def create_stat_table(pp_url, paragraph_list, category):
+def _create_stat_table(pp_url, paragraph_list, category):
+    """
+    :param pp_url: Privacy policy URL.
+    :param paragraph_list: List of paragraphs.
+    :param category: Category of the privacy policy.
+    :return: A statistics table, currently the scoring system isn't decided.
+    """
     import random
     random.seed(3)
     category_avg_number_of_paragraphs = db_query_handler.get_average_paragraph_count_per_category(category)
@@ -53,7 +62,14 @@ def create_stat_table(pp_url, paragraph_list, category):
     return table, score
 
 
-def duplicate_count_per_category(url, category, paragraph_model_list):
+def _duplicate_count_per_category(url, category, paragraph_model_list):
+    """
+    Counts the duplicate paragraphs in the given category.
+    :param url: URL of the privacy policy to check against.
+    :param category: The category of the privacy policy.
+    :param paragraph_model_list: List of paragraphs.
+    :return: The number of duplicates.
+    """
     duplicates_count = [
         db_query_handler.get_duplicate_paragraphs_per_category(url, category, p['paragraph_text'])[0]['count'] for p
         in paragraph_model_list]
@@ -62,6 +78,9 @@ def duplicate_count_per_category(url, category, paragraph_model_list):
 
 @http_server.route('/app-categories', methods=['GET'])
 def get_app_categories():
+    """
+    :return: The app categories that are present in the DB.
+    """
     result = db_query_handler.get_categories()
     categories = [cat[0] for cat in result]
     return json.dumps(categories)
@@ -69,6 +88,11 @@ def get_app_categories():
 
 @http_server.route('/pp-prediction', methods=['GET'])
 def get_pp_prediction_by_url():
+    """
+    Extracts, cleans and predicts on the given URL if not in the DB.
+    If the given URL is in the DB, re-runs the model on it.
+    :return: The prediction on the given privacy policy url.
+    """
     url = request.args.get('url', default=None, type=str)
     category = request.args.get('category', default=None, type=str)
     pp_id_query_result = db_query_handler.is_pp_url_in_privacy_policy_table(url)
@@ -76,8 +100,11 @@ def get_pp_prediction_by_url():
     if len(pp_id_query_result) > 0:
         print('URL in DB')
         paragraph_model_list = build_from_exists_modeling(url, pp_id_query_result[0][0])
+
+        # currently commented out as it impact performance greatly, if needed uncomment.
         # duplicates_count = duplicate_count_per_category(url, category, paragraph_model_list)
-        table, score = create_stat_table(url, paragraph_model_list, category)
+
+        table, score = _create_stat_table(url, paragraph_model_list, category)
         response = {'table': table, 'duplicates': 0, 'p': paragraph_model_list, 'score': score}
         return json.dumps(response)
     else:
@@ -90,8 +117,11 @@ def get_pp_prediction_by_url():
             cleaned_pp_records = clean_pp_html_records(url_record_http_ok)
             split_or_bypass_pp(cleaned_pp_records)
             paragraph_model_list = build_from_exists_modeling(url, pp_id)
+
+            # currently commented out as it impact performance greatly, if needed uncomment.
             # duplicates_count = duplicate_count_per_category(url, category, paragraph_model_list)
-            table, score = create_stat_table(url, paragraph_model_list, category)
+
+            table, score = _create_stat_table(url, paragraph_model_list, category)
             response = {'table': table, 'duplicates': 0, 'p': paragraph_model_list, 'score': score}
             return json.dumps(response)
 
@@ -99,4 +129,4 @@ def get_pp_prediction_by_url():
 
 
 if __name__ == '__main__':
-    http_server.run(host='0.0.0.0', debug=True)
+    http_server.run(host='127.0.0.1', debug=True)

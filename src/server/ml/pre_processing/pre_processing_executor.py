@@ -9,6 +9,7 @@ from src.server.utils.db.tools import db_utils
 # Limit the size of the queue between the producer and the consumers
 LIMIT = 1000
 
+
 class PreProcessingExecutor:
 
     def __init__(self, consumers_number, batch_size):
@@ -62,7 +63,7 @@ class PreProcessingExecutor:
             if url_records is None:
                 time.sleep(5)
                 continue
-            print(thread_name + " started to produce " + str(counter ) + " times")
+            print(thread_name + " started to produce " + str(counter) + " times")
             self._queue.put(url_records)
             time.sleep(1)
 
@@ -98,11 +99,10 @@ class PreProcessingExecutor:
             time.sleep(1)
 
 
-# For debug, drops the tables
+# For debug, truncates the tables
 # db_utils.exec_command("TRUNCATE privacy_policy, privacy_policy_paragraphs, privacy_policy_paragraphs_prediction")
 
 # Initialize the executor object
 executor = PreProcessingExecutor(consumers_number=1, batch_size=5)
 # Use timeout when you don't have enough resources, in seconds
 executor.start_produce_and_consume(timeout=0)
-

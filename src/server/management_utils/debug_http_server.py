@@ -5,6 +5,10 @@ from http_server_html_generator import HttpServerHTMLGenerator
 
 
 class RequestHandler(BaseHTTPRequestHandler):
+    """
+    This class is for more convenient debugging.
+    Used to see if the split to paragraphs worked as expected.
+    """
     def __init__(self, request, client_address, server):
         self.db_query_handler = http_server_db_handler.HttpServerDBHandler()
         self.id_param_dict = {'view_html': self.view_html,

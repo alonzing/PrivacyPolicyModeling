@@ -42,6 +42,8 @@ def scrape_gplay_to_db_by_search(words_file_name):
     applications table in the database.
     :param words_file_name: A path to a file with keywords such that each keyword is in a separate line.
     """
+
+    # Delete this file if you want to re-run on all the words.
     status_file_name = 'words_files_status.txt'
     try:
         with open(status_file_name, 'r') as status_file:
@@ -113,5 +115,5 @@ def scrape_gplay_to_db(num_of_threads=1):
 
 
 if __name__ == '__main__':
-    # scrape_gplay_to_db(1)
-    scrape_gplay_to_db_by_search('words.txt')
+    scrape_gplay_to_db(1)
+    # scrape_gplay_to_db_by_search('words.txt')
