@@ -51,4 +51,7 @@ your registered email address here/your product key here/GraphLab-Create-License
 python -m nltk.downloader stopwords
 ```
 
-* Initialize the DB by running src/server/utils/db/db_initialzer.py
+* Initialize the DB
+```python
+python src/server/utils/db/db_initialzer.py
+```
