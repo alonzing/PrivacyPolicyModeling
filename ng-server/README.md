@@ -1,5 +1,7 @@
 # Privacy Policy Modeling - Front End
 
+For back-end instructions, please refer to [this](https://github.com/alonzing/PrivacyPolicyModeling/tree/master/) page.
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.9.
 
 ## Development server
