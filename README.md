@@ -1,6 +1,6 @@
 # Privacy Policy Modeling
 
-For front-end client instructions, please refer to [this](https://github.com/alonzing/PrivacyPolicyModeling/tree/master/ng-server) page.
+*For front-end client instructions, please refer to [this](https://github.com/alonzing/PrivacyPolicyModeling/tree/master/ng-server) page.*
 
 ## Getting Started
 
