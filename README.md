@@ -1,5 +1,7 @@
 # Privacy Policy Modeling
 
+For front-end client instructions, please refer to [this](https://github.com/alonzing/PrivacyPolicyModeling/tree/master/ng-server) page.
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -14,7 +16,7 @@ These instructions will get you a copy of the project up and running on your loc
    
 
 ### Installing
-*The following steps can also be done via an IDE of your choice, this a step-by-step via CMD.*
+*The following steps can also be done via an IDE of your choice, this is a step-by-step Command Prompt guide.*
 
 * Clone the project
 ```
