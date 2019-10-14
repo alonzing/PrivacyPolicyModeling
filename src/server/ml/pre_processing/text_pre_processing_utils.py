@@ -174,7 +174,8 @@ def is_defective_pp(clean_pp):
 
 def split_pp_to_paragraphs(clean_pp, contractions_dict, pattern):
     """
-    Uses TextTilingTokenizer to split to paragraphs, but clean before the pp
+    Uses TextTilingTokenizer to split to paragraphs, the
+    privacy policy document should be pre-processed (HTML cleaned) before reaching this function.
     :param clean_pp: clean pp before expansion of contractions and special cases
     :param contractions_dict: a dictionary that includes all varieties of contractions and their expansion
     :param pattern: pattern for the expansion of contractions
