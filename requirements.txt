@@ -28,7 +28,7 @@ MarkupSafe==1.1.1
 multipledispatch==0.6.0
 nltk==3.4
 numpy==1.15.4
-Pillow==5.4.1
+Pillow==6.2.0
 prettytable==0.7.2
 psclient==2.0
 psycopg2==2.7.6.1
