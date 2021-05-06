@@ -10,7 +10,7 @@ decorator==4.0.9
 docutils==0.14
 enum34==1.1.6
 Flask==1.0.2
-Flask-Cors==3.0.7
+Flask-Cors==3.0.9
 functools32==3.2.3.post2
 futures==3.2.0
 genson==0.1.0
