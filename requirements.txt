@@ -44,6 +44,6 @@ six==1.11.0
 sseclient==0.0.8
 tornado==4.3
 Unidecode==1.0.23
-urllib3==1.23
+urllib3==1.26.5
 Werkzeug==0.15.2
 bs4
